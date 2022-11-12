@@ -25,8 +25,8 @@ class ScT_Installer(ExtensionInstaller):
                 'StdReport': {
                     'OBWX': {
                         'skin': 'obwx',
-                        'HTML_ROOT' : 'public_html/obwx',
-                        'enable': True
+                        'HTML_ROOT' : 'obwx',
+                        'enable': True,
                         'Extras' : {
                             'api_id' : '',
                             'api_secret' : '',
@@ -44,7 +44,7 @@ class ScT_Installer(ExtensionInstaller):
                     'skins/obwx/obwx.js.tmpl',
                     ]
                 ),
-                ('skins/obwx/icons'
+                ('skins/obwx/icons',
                     [
                     'skins/obwx/icons/mcloudytn@2x.png',
                     'skins/obwx/icons/showersw@2x.png',
