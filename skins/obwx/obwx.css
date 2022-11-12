@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  .inside-settings {
+    margin:0 auto;
+  }
+  
+  body {
+    background: #000000;
+    color: #f2f2f2;
+    font-size: 22px;
+    font-weight: 400;
+    overflow: hidden; /*Hide Scrollbars*/
+  }
+  
+  main {
+    max-width: 1900px;
+  }
+  
+  .bottom-row {
+    font-size: 20px;
+  }
+  
+  .airport1-obs {
+    background: #090b09;
+  }
+  
+  .airport2-obs {
+    background: #13131e;
+  }
+  
+  .current-wx {
+    background: #211722;
+    min-width: 150px;
+  }
+  
+  .current-wx-icon {
+    background: #42421f;
+    min-width: 110px;
+    min-height: 110px;
+  }
+  
+  .temp-humidity {
+    background: #201313;
+    min-width: 150px;
+  }
+  
+  .current-temp {
+    font-size: 45px;
+  }
+  
+  .wind-left {
+    min-height: 221px;
+    min-width: 150px;
+    background: #292e2f;
+  }
+  .wind-right {
+    min-width: 150px;
+    background: #27281c;
+  }
+  
