@@ -42,7 +42,7 @@ class getForecast(SearchList):
 
         # Set the path and other prep
         from pathlib import Path
-        forecast_file = Path( self.generator.config_dict['WEEWX_ROOT'] , self.generator.config_dict['StdReport']['Storm']['HTML_ROOT'] , 'forecast.json' )
+        forecast_file = Path( self.generator.config_dict['WEEWX_ROOT'] , self.generator.config_dict['StdReport']['OBWX']['HTML_ROOT'] , 'forecast.json' )
         forecast_update_needed = False
 
         # Check if forecast file exists
