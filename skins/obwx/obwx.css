@@ -2,68 +2,122 @@
     box-sizing: border-box;
   }
   
-  .inside-settings {
-    margin:0 auto;
-  }
-  
-  body {
-    background: #000000;
-    color: #f2f2f2;
-    font-size: 22px;
-    font-weight: 400;
-    overflow: hidden; /*Hide Scrollbars*/
-  }
-  
-  main {
-    max-width: 1900px;
-  }
-  
-  .bottom-row {
-    font-size: 20px;
-  }
-  
-  .airport1-obs {
-    background: #090b09;
-  }
-  
-  .airport2-obs {
-    background: #13131e;
-  }
-  
-  .current-wx {
-    background: #211722;
-    min-width: 150px;
-  }
-  
-  .current-wx-icon {
-    background: #42421f;
-    min-width: 110px;
-    min-height: 110px;
-  }
-  
-  .temp-humidity {
-    background: #201313;
-    min-width: 150px;
-  }
-  
-  .current-temp {
-    font-size: 65px;
-  }
-  
-  .wind-left {
-    min-height: 221px;
-    min-width: 150px;
-    background: #292e2f;
-  }
-  .wind-right {
-    min-width: 150px;
-    background: #27281c;
-  }
-  
-  .forecast-icon {
-    padding-right: 0px;
-  }
+.inside-settings {
+  margin:0 auto;
+}
 
-  .forecast-windRain {
-    font-size: 18px;
-  }
+body {
+  background: #000000;
+  color: #f2f2f2;
+  font-size: 22px;
+  font-weight: 400;
+  overflow: hidden; /*Hide Scrollbars*/
+}
+
+main {
+  max-width: 1900px;
+}
+
+.update {
+  font-size: 24px;
+  text-align: right;
+}
+
+.bottom-row {
+  font-size: 20px;
+}
+
+.airport1-obs {
+  background: #090b09;
+}
+
+.airport2-obs {
+  background: #13131e;
+}
+
+.current-wx {
+  background: #211722;
+  min-width: 150px;
+}
+
+.current-wx-icon {
+  background: #42421f;
+  min-width: 110px;
+  min-height: 110px;
+}
+
+.temp-humidity {
+  background: #201313;
+  min-width: 150px;
+}
+
+.current-temp {
+  font-size: 65px;
+}
+
+.wind-left {
+  min-height: 221px;
+  min-width: 150px;
+  background: #292e2f;
+}
+.wind-right {
+  min-width: 150px;
+  background: #27281c;
+}
+
+.forecast-icon {
+  padding-right: 0px;
+}
+
+.forecast-windRain {
+  font-size: 18px;
+}
+
+.wind-direction {
+  text-align: center;
+  padding-top: 20px;
+  display: block;
+}
+
+.wind-compass {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  position: relative;
+  /* color: #555; */
+  border: solid #808080 5px;
+  margin-left: 60px;
+  margin: 0 auto;
+}
+
+.wind-compass:before {
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  font-size: 14px;
+  top: -2px;
+}
+
+[class$="-windDirectionArrow"] {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  transition: -webkit-transform 1s ease-in;
+}
+
+[class$="-windDirectionArrow"]:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 21px solid #c50a1d;
+  position: absolute;
+  top: -10px;
+  left: 48px;
+  z-index: 99;
+}

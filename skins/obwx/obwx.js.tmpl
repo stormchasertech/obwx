@@ -50,6 +50,8 @@ function process_payload ( data ) {
     }
 
     // Update webpage with the live data
+    jQuery(".update").html( "Data updated: " + dayjs().format("MMM D, hh:mm:ss A") );
+
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
     }
@@ -87,7 +89,7 @@ function process_payload ( data ) {
     }
 
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
-        jQuery(".outHumidity").html("outHumidity: " +  parseFloat( data.outHumidity ).toFixed(1) );
+        jQuery(".outHumidity").html( parseFloat( data.outHumidity ).toFixed(1) );
     }
 
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
@@ -273,5 +275,4 @@ function process_forecast ( data ) {
         jQuery(".forecast-p" + i + "-pop").html(data.daynight[0].response[0].periods[i].pop + '%');
         jQuery(".forecast-p" + i + "-precip").html(data.daynight[0].response[0].periods[i].precipIN + '"');
     }
-
 }

@@ -1,16 +1,17 @@
 #errorCatcher Echo
+#import random
 <!DOCTYPE html>
     <head>
         <title>Stormchaser.tech Weather</title>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="obwx.css?as5575fdsfssddd5">
+        <link rel="stylesheet" type="text/css" href="obwx.css?v=#echo int(random.random()*123456789)#">
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.6/dayjs.min.js" integrity="sha512-hcV6DX35BKgiTiWYrJgPbu3FxS6CsCjKgmrsPRpUPkXWbvPiKxvSVSdhWX0yXcPctOI2FJ4WP6N1zH+17B/sAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="obwx.js?v=#echo int(time.time())#"></script> 
+        <script type="text/javascript" src="obwx.js?v=#echo int(random.random()*123456789)#"></script> 
 
         <script type="text/javascript">
             var mqttclient = "obwx" + Math.floor(Math.random() * 123456789);
@@ -33,6 +34,11 @@
     <body>
         <main>
             <div class="container-fluid">
+                <div class="row alert-row">
+                    <div class="col text-right">
+                        <div class="update">---</div>
+                    </div>
+                </div>
                 <div class="row first-row">
                     <div class="col text-center">
                         <div class="row">
@@ -46,18 +52,22 @@
                                 </div>
                                 <div class="current-dewpoint">
                                     <span class="dewpoint">--.-</span><span>&deg;</span>
-                                </div>    
+                                </div>
+                                <div class="outHumitity">---</div><span>&percnt;</span>
                             </div>
                         </div>
                     </div>
                     <div class="col airport1-obs">
                         <div class="row">
                             <div class="col wind-left">
-                                <div class="wind-direction">
-                                    <div class="KMEM-updated">---</div>
-                                    <div class="KMEM-wind-direction-deg">--.-&deg;</div>
-                                    <div class="KMEM-wind-direction">---</div>
+                                <div class="wind-compass">
+                                    <div class="direction">
+                                        <div class="KMEM-wind-direction">---</div>
+                                        <div class="KMEM-wind-direction-deg">--.-&deg;</div>
+                                    </div>
+                                    <div class="KMEM-windDirectionArrow"></div>
                                 </div>
+                                <div class="KMEM-updated">---</div>
                             </div>
                             <div class="col wind-right">
                                 <div class="wind-speed">
