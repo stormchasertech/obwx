@@ -31,7 +31,11 @@ class ScT_Installer(ExtensionInstaller):
                             'api_id' : '',
                             'api_secret' : '',
                             'api_call_freqency' : '240',
-                        }                        
+                            'websocket_enable' : '',
+                            'websocket_host' : '',
+                            'websocket_port' : '8080',
+                            'websocket_topic' : '',
+                        }
                     }
                 }
             },
@@ -275,7 +279,9 @@ class ScT_Installer(ExtensionInstaller):
                     'skins/obwx/icons/pcloudys.png',
                     'skins/obwx/icons/cloudywn@2x.png',
                     'skins/obwx/icons/mcloudysn@2x.png',
-                    'skins/obwx/icons/mcloudysw.png', 
+                    'skins/obwx/icons/mcloudysw.png',
+                    'skins/obwx/icons/raindrop.png',
+                    'skins/obwx/icons/windicon.png',
                     ]
                 )
             ]

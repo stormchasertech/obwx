@@ -47,7 +47,7 @@
   }
   
   .current-temp {
-    font-size: 45px;
+    font-size: 65px;
   }
   
   .wind-left {
@@ -60,3 +60,10 @@
     background: #27281c;
   }
   
+  .forecast-icon {
+    padding-right: 0px;
+  }
+
+  .forecast-windRain {
+    font-size: 18px;
+  }

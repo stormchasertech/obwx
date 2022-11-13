@@ -1,16 +1,12 @@
 // Makeshift debug function
-function debug ( mode , msg ) {
-    let debug_mode = 1;
-    if ( mode == debug_mode ) {
+function debug ( msg ) {
         console.log( "Info: " + msg );
-    } else if ( mode == debug_mode ) {
-        console.log("Med Info: " + msg );
     }
-}
+
 
 // Connect to mqtt server
 function connect() {
-    client = new Paho.Client("dev.stormchaser.tech", 2083, mqttclient);
+    client = new Paho.Client("$Extras.websocket_host", $Extras.websocket_port, mqttclient);
 
     let mqtt_options = {
         useSSL: true,
@@ -24,27 +20,25 @@ function connect() {
 }
 
 function onConnect () {
-    debug(1,"Successfully connected to mqtt server");
-    client.subscribe( "weather/loop" );
+    client.subscribe( "$Extras.websocket_topic" );
+    debug("Successfully connected to mqtt server");
 }
 
 function onFailure () {
-    debug(1,"Connection to mqtt server FAILED");
+    debug("Connection to mqtt server FAILED");
 }
 
 function onConnectionLost ( responseObject ) {
     if ( responseObject.errorCode !== 0 ) {
-        debug(1,"MQTT disconnected: " + responseObject.errorMessage);
+        debug("MQTT disconnected: " + responseObject.errorMessage);
     }
 }
 
 function onMessageArrived ( message ) {
-    debug(2, "MQTT data has been imported");
     process_payload ( message.payloadString  );
 }
 
 function process_payload ( data ) {
-    debug(2, "Processing incoming data");
     data = jQuery.parseJSON ( data );
 
     // interval_minute is unique to mqtt archive updates, signaling forecast.json has been updated
@@ -121,44 +115,22 @@ function process_forecast ( data ) {
 
     // Loop through METAR data for each station
     for ( let i = 0; i < data.observations[0].response.length; i++ ) {
-        let location = data.observations[0].response[i].id; // Station location identifier
-
-        jQuery("." + location + "-wind-direction").html( data.observations[0].response[i].ob.windDir );
-        jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
-        jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
-        jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
-        jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm | " );
-
-        metarColorCode ( location , data.observations[0].response[i].ob.timestamp );
-        rotateWindDir( location , data.observations[0].response[i].ob.windDirDEG );
-        rotateWindSpeed ( location , data.observations[0].response[i].ob.windSpeedMPH );
-        windGusts ( location , data.observations[0].response[i].ob.windGustMPH , data.observations[0].response[i].ob.windGustKTS );
-        flightRules ( location, data.observations[0].response[i].ob.flightRule );
-        sky ( location , data.observations[0].response[i].raw );
 
         // Display station ID and update times, color code depending on age of the data 
         function metarColorCode ( loc , time ) {
-            // Process observation time
-            let obs = new Date(time*1000);
-            let hours = obs.getHours();
-            let minutes = obs.getMinutes();
-            // Convert to 12 hr format
-            let xhours = hours % 12 == 0 ? 12 : hours % 12;
-            let xminutes = minutes < 10 ? ( "0" + minutes.toString() ) : minutes; 
-            let am_pm = hours > 12 ? "PM" : "AM";
+
             // Display time of observations
-            jQuery("." + loc + "-updated").html( loc + "<br>" + xhours + ":" + xminutes + " " + am_pm );
+            jQuery("." + loc + "-updated").html( loc + "<br>" + dayjs.unix(time).format("hh:mm A") ); 
 
             // Color code station ID based on age of observation
-            let now = new Date();
-            let timeDiff =  now.getTime() - obs.getTime();
-            if ( timeDiff < 1200000 ) {
+            let timeDiff = dayjs().unix() - dayjs(time);
+            if ( timeDiff < 1200 ) {
                 // Fresh data, less than 20 minutes old
                 jQuery("." + loc + "-updated").css( "color", "rgb(90, 170, 90)" );
-            } else if ( timeDiff > 1200000 && timeDiff < 2400000 ) {
+            } else if ( timeDiff > 1200 && timeDiff < 2400 ) {
                 // Semistale data - between 20 and 40 minutes old 
                 jQuery("." + loc + "-updated").css( "color", "rgb(244, 198, 113)" );
-            } else if ( timeDiff > 2400000 && timeDiff < 3600000 ) {
+            } else if ( timeDiff > 2400 && timeDiff < 3600 ) {
                 // Stale data - between 40 and 60 minutes old
                 jQuery("." + loc + "-updated").css( "color", "rgb(220, 120, 120)" );
             } else {
@@ -170,19 +142,25 @@ function process_forecast ( data ) {
         // Rotate wind direction widgit arrow
         function rotateWindDir ( loc , k_newRotation ) {
             if ( k_newRotation == "N/A") { return; }
+            
             let k_currentRotation;
             let k_finalRotation;
+            
             k_finalRotation = k_finalRotation || 0; // if k_finalRotation undefined or 0, make 0, else k_finalRotation
             k_currentRotation = k_finalRotation % 360;
+            
             if ( k_currentRotation < 0 ) { k_currentRotation += 360; }
             if ( k_currentRotation < 180 && (k_newRotation > (k_currentRotation + 180)) ) { k_finalRotation -= 360; }
             if ( k_currentRotation >= 180 && (k_newRotation <= (k_currentRotation - 180)) ) { k_finalRotation += 360; }
+            
             k_finalRotation += (k_newRotation - k_currentRotation);
+            
             jQuery("." + loc + "-windDirectionArrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
         }
 
         // Rotate wind speed widget arrow
         function rotateWindSpeed ( loc , windSpeed ) {
+            // Set default highest speed of the meter
             let scaleMax = 20;
 
             if ( windSpeed > scaleMax ) {
@@ -203,6 +181,7 @@ function process_forecast ( data ) {
 
         // Display wind gusts if observed
         function windGusts ( loc , gustMPH , gustKTS ) {
+
             if ( !gustMPH ){
                 jQuery("." + loc + "-wind-gust-mph").html( "" );
                 jQuery("." + loc + "-wind-gust-kts").html( "" );
@@ -214,6 +193,7 @@ function process_forecast ( data ) {
 
         // Display and color code flight rules
         function flightRules ( loc , rules ) {
+
             jQuery("." + loc + "-rules").html( rules );
             if ( rules === "MVFR" ) {
                 jQuery("." + loc + "-rules").css( "color", "rgb(102, 102, 255)" );
@@ -228,8 +208,10 @@ function process_forecast ( data ) {
 
         // Split up raw metar to display reported cloud layers
         function sky ( loc , raw ) {
+
             let rawSplit = raw.split(" ");
             let sky_html = "Sky:";
+            
             for ( let j = 0; j < rawSplit.length; j++ ) {
                 if ( rawSplit[j].slice(0,3) === "FEW" || rawSplit[j].slice(0,3) === "SCT"  || rawSplit[j].slice(0,3) === "BKN" || rawSplit[j].slice(0,3) === "OVC" ) {
                     sky_html += " " + rawSplit[j];
@@ -237,44 +219,59 @@ function process_forecast ( data ) {
                     sky_html += " Clear";
                 }
             }
+            
             jQuery("." + loc + "-sky").html( sky_html );
         }
 
-        //// Forecasts for Day Night Periods ////
-        // Loop through each day-night forecast period and build forecast section HTML
-        for (let i = 0; i < data.daynight[0].response[0].periods.length; i++) {
+        // Station location identifier
+        let location = data.observations[0].response[i].id;
 
-            if (data.daynight[0].response[0].periods[i].isDay) {
-                if (i === 0) {
-                    jQuery(".forecast-p" + i + "-date").html("Today");
-                } else {
-                    //jQuery(".forecast-p" + i + "-date").html(moment(data.daynight[0].response[0].periods[i].timestamp*1000).format("dddd"));
-                    jQuery(".forecast-p" + i + "-date").html( "Tonight"  );
-                }
-                jQuery(".forecast-p" + i + "-hilo").html('High: <span class="forecast-p0-hilo forecast-hi">' + parseFloat(data.daynight[0].response[0].periods[i].maxTempF).toFixed(0) + '&deg;</span>');
+        metarColorCode ( location , data.observations[0].response[i].ob.timestamp );
+        rotateWindDir( location , data.observations[0].response[i].ob.windDirDEG );
+        rotateWindSpeed ( location , data.observations[0].response[i].ob.windSpeedMPH );
+        windGusts ( location , data.observations[0].response[i].ob.windGustMPH , data.observations[0].response[i].ob.windGustKTS );
+        flightRules ( location, data.observations[0].response[i].ob.flightRule );
+        sky ( location , data.observations[0].response[i].raw );
 
-            } else {
-                if (i === 0 || i === 1) {
-                    jQuery(".forecast-p" + i + "-date").html("Tonight");
-                } else {
-                    // jQuery(".forecast-p" + i + "-date").html(moment(data.daynight[0].response[0].periods[i].timestamp*1000).format("ddd") + ' Night');
-                    jQuery(".forecast-p" + i + "-date").html(' Night');
-                }
-                jQuery(".forecast-p" + i + "-hilo").html('Low: <span class="forecast-p0-hilo forecast-lo">' + parseFloat(data.daynight[0].response[0].periods[i].minTempF).toFixed(0) + '&deg;</span>');
-            }
-
-            if (data.daynight[0].response[0].periods[i].windSpeedMinMPH === data.daynight[0].response[0].periods[i].windSpeedMaxMPH ){
-                jQuery(".forecast-p" + i + "-windSpd").html(data.daynight[0].response[0].periods[i].windSpeedMPH + '');
-            } else {
-                jQuery(".forecast-p" + i + "-windSpd").html(data.daynight[0].response[0].periods[i].windSpeedMinMPH + ' - ' + data.daynight[0].response[0].periods[i].windSpeedMaxMPH + '');
-            }
-
-            jQuery(".forecast-p" + i + "-windDir").html(data.daynight[0].response[0].periods[i].windDir);
-            jQuery(".forecast-p" + i + "-icon").html('<img id="icon" src="./icons/' + data.daynight[0].response[0].periods[i].icon + '">');
-            // jQuery(".forecast-p" + i + "-wxPriCode").html(aeris_coded_weather( data.daynight[0].response[0].periods[i].weatherPrimaryCoded, false ));
-            jQuery(".forecast-p" + i + "-wxPriCode").html( data.daynight[0].response[0].periods[i].weatherPrimary );
-            jQuery(".forecast-p" + i + "-pop").html(data.daynight[0].response[0].periods[i].pop + '%');
-            jQuery(".forecast-p" + i + "-precip").html(data.daynight[0].response[0].periods[i].precipIN + '"');
-        }
+        jQuery("." + location + "-wind-direction").html( data.observations[0].response[i].ob.windDir );
+        jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
+        jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
+        jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
+        jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm | " );
     }
+
+    //// Forecasts for Day Night Periods ////
+    // Loop through each day-night forecast period and build forecast section HTML
+    for (let i = 0; i < data.daynight[0].response[0].periods.length; i++) {
+
+        if (data.daynight[0].response[0].periods[i].isDay) {
+            if (i === 0) {
+                jQuery(".forecast-p" + i + "-date").html("Today");
+            } else {
+                jQuery(".forecast-p" + i + "-date").html( dayjs.unix(data.daynight[0].response[0].periods[i].timestamp).format('dddd')  );
+            }
+            jQuery(".forecast-p" + i + "-hilo").html('High: <span class="forecast-p0-hilo forecast-hi">' + parseFloat(data.daynight[0].response[0].periods[i].maxTempF).toFixed(0) + '&deg;</span>');
+
+        } else {
+            if (i === 0 || i === 1) {
+                jQuery(".forecast-p" + i + "-date").html("Tonight");
+            } else {
+                jQuery(".forecast-p" + i + "-date").html( dayjs.unix(data.daynight[0].response[0].periods[i].timestamp).format("ddd") + " Night"  );
+            }
+            jQuery(".forecast-p" + i + "-hilo").html('Low: <span class="forecast-p0-hilo forecast-lo">' + parseFloat(data.daynight[0].response[0].periods[i].minTempF).toFixed(0) + '&deg;</span>');
+        }
+
+        if (data.daynight[0].response[0].periods[i].windSpeedMinMPH === data.daynight[0].response[0].periods[i].windSpeedMaxMPH ){
+            jQuery(".forecast-p" + i + "-windSpd").html(data.daynight[0].response[0].periods[i].windSpeedMPH + '');
+        } else {
+            jQuery(".forecast-p" + i + "-windSpd").html(data.daynight[0].response[0].periods[i].windSpeedMinMPH + ' - ' + data.daynight[0].response[0].periods[i].windSpeedMaxMPH + '');
+        }
+
+        jQuery(".forecast-p" + i + "-windDir").html(data.daynight[0].response[0].periods[i].windDir);
+        jQuery(".forecast-p" + i + "-icon").html('<img src="./icons/' + data.daynight[0].response[0].periods[i].icon + '" align="right">');
+        jQuery(".forecast-p" + i + "-wxPriCode").html( data.daynight[0].response[0].periods[i].weatherPrimary );
+        jQuery(".forecast-p" + i + "-pop").html(data.daynight[0].response[0].periods[i].pop + '%');
+        jQuery(".forecast-p" + i + "-precip").html(data.daynight[0].response[0].periods[i].precipIN + '"');
+    }
+
 }
