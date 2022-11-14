@@ -50,14 +50,14 @@ function process_payload ( data ) {
     }
 
     // Update webpage with the live data
-    jQuery(".update").html( "Data updated: " + dayjs().format("MMM D, hh:mm:ss A") );
+    jQuery(".websocket-status").html( "Data updated: " + dayjs().format("MMM D, hh:mm:ss A") );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
     }
 
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
-        jQuery(".dewpoint").html("Dewpoint: " +  parseFloat( data.dewpoint_F ).toFixed(1) );
+        jQuery(".dewpoint").html("Dewpoint: " +  parseFloat( data.dewpoint_F ).toFixed(1) + "&deg;" );
     }
 
     if ( data.hasOwnProperty( 'extraHumid1' ) ) {
@@ -89,7 +89,7 @@ function process_payload ( data ) {
     }
 
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
-        jQuery(".outHumidity").html( parseFloat( data.outHumidity ).toFixed(1) );
+        jQuery(".outHumidity").html( "Humidity: " + parseFloat( data.outHumidity ).toFixed(1) + "&percnt;");
     }
 
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
@@ -122,22 +122,22 @@ function process_forecast ( data ) {
         function metarColorCode ( loc , time ) {
 
             // Display time of observations
-            jQuery("." + loc + "-updated").html( loc + "<br>" + dayjs.unix(time).format("hh:mm A") ); 
+            jQuery("." + loc + "-id-updated").html( "<div class='metar-id'>" + loc + "</div><div class='metar-update-time'>" + dayjs.unix(time).format("h:mm A") + "</div>" ); 
 
             // Color code station ID based on age of observation
             let timeDiff = dayjs().unix() - dayjs(time);
             if ( timeDiff < 1200 ) {
                 // Fresh data, less than 20 minutes old
-                jQuery("." + loc + "-updated").css( "color", "rgb(90, 170, 90)" );
+                jQuery("." + loc + "-id-updated").css( "color", "rgb(90, 170, 90)" );
             } else if ( timeDiff > 1200 && timeDiff < 2400 ) {
                 // Semistale data - between 20 and 40 minutes old 
-                jQuery("." + loc + "-updated").css( "color", "rgb(244, 198, 113)" );
+                jQuery("." + loc + "-id-updated").css( "color", "rgb(244, 198, 113)" );
             } else if ( timeDiff > 2400 && timeDiff < 3600 ) {
                 // Stale data - between 40 and 60 minutes old
-                jQuery("." + loc + "-updated").css( "color", "rgb(220, 120, 120)" );
+                jQuery("." + loc + "-id-updated").css( "color", "rgb(220, 120, 120)" );
             } else {
                 // Old data - older than an hour
-                jQuery("." + loc + "-updated").css( "color", "rgb(160, 90, 90)" );
+                jQuery("." + loc + "-id-updated").css( "color", "rgb(160, 90, 90)" );
             }
         }
 
@@ -168,7 +168,7 @@ function process_forecast ( data ) {
             if ( windSpeed > scaleMax ) {
                 scaleMax = windSpeed;
             }
-            jQuery("." + loc + "-windometer-max").html( scaleMax );
+            jQuery("." + loc + "-windometer-legend-hi").html( scaleMax );
 
             // Convert speeds into angles
             let windSpeedometer = ( windSpeed / scaleMax * 180 ) - 90;
@@ -178,7 +178,7 @@ function process_forecast ( data ) {
                 windSpeedometer = 90;
             }
 
-            jQuery("." + loc + "-windSpeedArrow").css( "transform", "rotate(" + windSpeedometer + "deg)" );
+            jQuery("." + loc + "-wind-speed-arrow").css( "transform", "rotate(" + windSpeedometer + "deg)" );
         }
 
         // Display wind gusts if observed
@@ -236,10 +236,16 @@ function process_forecast ( data ) {
         sky ( location , data.observations[0].response[i].raw );
 
         jQuery("." + location + "-wind-direction").html( data.observations[0].response[i].ob.windDir );
-        jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
+        //jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
         jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
         jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
-        jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm | " );
+        jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
+
+        if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
+            jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
+        } else {
+            jQuery("." + location + "-wind-direction-deg").html( "--" );
+        }
     }
 
     //// Forecasts for Day Night Periods ////

@@ -70,7 +70,7 @@ class getForecast(SearchList):
             api_secret = self.generator.skin_dict['Extras']['api_secret']
 
             current_url = "https://api.aerisapi.com/conditions/%s,%s?format=json&plimit=1&filter=1min&client_id=%s&client_secret=%s" % ( latitude, longitude, api_id, api_secret ) 
-            observations_url = "https://api.aerisapi.com/observations/%s,%s?format=json&filter=metar&limit=2&client_id=%s&client_secret=%s" % ( latitude, longitude, api_id, api_secret )
+            observations_url = "https://api.aerisapi.com/observations/%s,%s?format=json&filter=metar&limit=4&client_id=%s&client_secret=%s" % ( latitude, longitude, api_id, api_secret )
             daynight_url = "https://api.aerisapi.com/forecasts/%s,%s?format=json&filter=daynight&limit=6&client_id=%s&client_secret=%s" % ( latitude, longitude, api_id, api_secret )
             alerts_url = "https://api.aerisapi.com/alerts/%s,%s?format=json&limit=5&client_id=%s&client_secret=%s" % ( latitude, longitude, api_id, api_secret )
 

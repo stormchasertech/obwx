@@ -1,3 +1,57 @@
+/*Airport ID and update time*/
+.airport-id-container {
+  position: relative;
+}
+
+[class$="-id-updated"] {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 5px;
+}
+
+.metar-id {
+  font-size: 16px;
+}
+
+.metar-update-time {
+  font-size: 14px;
+}
+
+/*Flight Rules*/
+.flight-rules-container {
+  position: relative;
+}
+
+[class$="-rules"] {
+  width: 100%;
+  font-size: 18px;
+  text-align: center;
+  position: absolute;
+  top: 105px;
+}
+
+/*Visibility and Sky conditions*/
+.vis-container, .sky-container {
+  position: relative;
+  min-height: 80px;
+}
+
+[class$="-vis"] {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+}
+
+[class$="-sky"] {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+}
+
+/*Global*/
 * {
     box-sizing: border-box;
   }
@@ -18,51 +72,50 @@ main {
   max-width: 1900px;
 }
 
-.update {
+/*Announcements Row*/
+.announcements-container {
+  min-height: 60px;
+}
+
+.websocket-status {
   font-size: 24px;
   text-align: right;
+  width: 100%;
+  padding-top: 10px;
 }
 
 .bottom-row {
   font-size: 20px;
 }
 
-.airport1-obs {
-  background: #090b09;
-}
-
-.airport2-obs {
-  background: #13131e;
-}
-
 .current-wx {
-  background: #211722;
+  /*background: #211722;*/
   min-width: 150px;
 }
 
 .current-wx-icon {
-  background: #42421f;
+  /*background: #42421f;*/
   min-width: 110px;
   min-height: 110px;
 }
 
 .temp-humidity {
-  background: #201313;
+  /*background: #201313;*/
   min-width: 150px;
 }
 
-.current-temp {
+.current-outTemp {
   font-size: 65px;
 }
 
 .wind-left {
   min-height: 221px;
   min-width: 150px;
-  background: #292e2f;
+  /*background: #292e2f;*/
 }
 .wind-right {
   min-width: 150px;
-  background: #27281c;
+  /*background: #27281c;*/
 }
 
 .forecast-icon {
@@ -73,7 +126,14 @@ main {
   font-size: 18px;
 }
 
-.wind-direction {
+/* Wind Direction Compass*/
+
+.wind-direction-container {
+  padding-top: 10px;
+  min-width: 165px;  
+}
+
+.wind-direction-observations {
   text-align: center;
   padding-top: 20px;
   display: block;
@@ -120,4 +180,176 @@ main {
   top: -10px;
   left: 48px;
   z-index: 99;
+}
+
+/* Wind Speed-o-Meter */
+
+.wind-speed-container {
+  font-size: 20px;
+  line-height: 1.3;
+  padding-top: 15px;
+  min-height: 130px;
+  min-width: 165px;
+}
+
+.wind-speed-observations {
+  text-align: center;
+}
+
+[class$="-wind-speed-mph"] {
+  font-size: 33px;
+  padding-top: 30px;
+  /*display: block;*/
+}
+
+.windometer {
+  display: block;
+  width: 140px; /*This and height define size of whole meter*/
+  height: 70px; /*Must be half of width*/
+  position: relative;
+  /* color: #555; */
+  margin-left: 60px;
+  margin: 0 auto;
+  border-style: solid;
+  border-color: #808080;
+  border-width: 5px 5px 0px 5px; /*Size of the 'bar'*/
+  border-top-left-radius: 70px; /*Change to keep 'bar' round*/
+  border-top-right-radius: 70px; /*Change to keep 'bar' round*/
+}
+
+.windometer:before {
+font-weight: bold;
+position: absolute;
+text-align: center;
+width: 100%;
+font-size: 14px;
+top: -2px;
+}
+
+.windometer-legend {
+  text-align: center;
+  width: 100%;
+  padding-top: 5px;
+}
+
+.windometer-legend-lo {
+  margin-right: 60px;
+  padding-left: 5px;
+}
+
+[class$="-windometer-legend-hi"] {
+  margin-left: 60px;
+}
+
+[class$="-wind-speed-arrow"] {
+width: 100%;
+height: 200%;
+display: block;
+position: absolute;
+top: 0;
+transition: -webkit-transform 1s ease-in;
+/* background-color: blue; Enable to see how arrow lines up (use 0 degree rotation)*/
+}
+
+[class$="-wind-speed-arrow"]:after {
+content: "";
+width: 0;
+height: 0;
+border-left: 7px solid transparent;
+border-right: 7px solid transparent;
+border-top: 25px solid #c50a1d;
+position: absolute;
+top: -12px; /*Moves the arrow away or towards center of circle*/
+left: 59px; /*Centers the arrow on the box edge (use 0 degree rotation) */
+z-index: 99;
+}
+
+.windometer-tickmark-low {
+  width: 100%; /*No changes needed*/
+  height: 200%; /*No changes needed*/
+  display: block;
+  position: absolute;
+  /* background-color: grey; */
+  top: 0;
+  transition: -webkit-transform 1s ease-in;
+}
+
+.windometer-tickmark-low:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 3px solid #808080; /*2px solid transparent*/
+  border-right: 3px solid #808080; /*2px solid transparent*/
+  border-top: 7px solid #808080;
+  position: absolute;
+  top: -3px; /*Moves the arrow away or towards center of circle*/
+  left: 63px; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
+  z-index: 90;
+}
+
+.windometer-tickmark-mid {
+  width: 100%; /*No changes needed*/
+  height: 200%; /*No changes needed*/
+  display: block;
+  position: absolute;
+  /* background-color: grey; */
+  top: 0;
+  transition: -webkit-transform 1s ease-in;
+}
+
+.windometer-tickmark-mid:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 3px solid #808080; /*2px solid transparent*/
+  border-right:3px solid #808080; /*2px solid transparent*/
+  border-top: 7px solid #808080;
+  position: absolute;
+  top: -3px; /*Moves the arrow away or towards center of circle*/
+  left: 63px; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
+  z-index: 90;
+}
+
+.windometer-tickmark-hi {
+  width: 100%; /*No changes needed*/
+  height: 200%; /*No changes needed*/
+  display: block;
+  position: absolute;
+  top: 0;
+  transition: -webkit-transform 1s ease-in;
+}
+
+.windometer-tickmark-hi:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 3px solid #808080; /*2px solid transparent*/
+  border-right: 3px solid #808080; /*2px solid transparent*/
+  border-top: 7px solid #808080;
+  position: absolute;
+  top: -2px; /*Moves the arrow away or towards center of circle*/
+  left: 63px; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
+  z-index: 90;
+}
+
+.windometer-tickmark-recent { 
+  width: 100%; /*No changes needed*/
+  height: 200%; /*No changes needed*/
+  display: block;
+  position: absolute;
+  top: 0;
+  transition: -webkit-transform 1s ease-in;
+}
+
+.windometer-tickmark-recent:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-top: 15px solid #00c8c8;
+  position: absolute;
+  top: -5px; /*Moves the arrow away or towards center of circle*/
+  left: 64px; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
+  z-index: 98;
 }
