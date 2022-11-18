@@ -3,7 +3,6 @@ function debug ( msg ) {
         console.log( "Info: " + msg );
     }
 
-
 // Connect to mqtt server
 function connect() {
     client = new Paho.Client("$Extras.websocket_host", $Extras.websocket_port, mqttclient);
@@ -34,6 +33,7 @@ function onConnectionLost ( responseObject ) {
     }
 }
 
+// Process incoming mqtt data
 function onMessageArrived ( message ) {
     process_payload ( message.payloadString  );
 }
@@ -50,7 +50,7 @@ function process_payload ( data ) {
     }
 
     // Update webpage with the live data
-    jQuery(".websocket-status").html( "Data updated: " + dayjs().format("MMM D, hh:mm:ss A") );
+    jQuery(".websocket-status").html( "<u>Data updated</u><br> " + dayjs().format("MMM D, hh:mm:ss A") );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
@@ -97,7 +97,7 @@ function process_payload ( data ) {
     }
 }
 
-// Fetch the date from forecast.json
+// Fetch the data from forecast.json
 function get_forecast () {
     jQuery.getJSON ( "forecast.json", process_forecast );
 }
@@ -110,6 +110,23 @@ function process_forecast ( data ) {
     icon = icon.split(".");
     jQuery(".current-wx-icon").html('<img src="./icons/' + icon[0] + '@2x.png">');
     jQuery(".current-wx-text").html( data.current[0].response[0].periods[0].weatherPrimary );
+
+    // Alerts
+    if ( data.alerts[0].success && data.alerts[0].error === null ) {
+
+        let wx_alert_html = "";
+        // Build alerts HTML
+        for ( let i = 0; i < data.alerts[0].response.length; i++ ) {
+            
+            let wx_alert = data.alerts[0].response[i].details.name;
+            let wx_alert_start = dayjs(new Date( data.alerts[0].response[i].timestamps.beginsISO )).format('ddd h:mm A');
+            let wx_alert_end = dayjs(new Date( data.alerts[0].response[i].timestamps.expiresISO )).format('ddd h:mm A');
+
+            wx_alert_html += '<div class="wx-alert-' + i + '">' + wx_alert + " in effect " + wx_alert_start + ' until ' + wx_alert_end + '</div>';
+        }
+
+        jQuery(".weather-alerts").html( wx_alert_html );
+    }
 
     // More updates
     // jQuery(".KMEM-wind-direction-deg").html( data.current[0].response[0].ob.windDirDEG + " &deg;");

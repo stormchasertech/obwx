@@ -34,15 +34,26 @@
     <body>
         <main>
             <div class="container-fluid">
-                <div class="row alert-row">
+                <!-- Alerts Row -->
+                <div class="row announcements text-center">
+                    <div class="col-3 site-logo">
+                        <div class="logo">
+                            <img src="./icons/obwxLogo.png" title="Southaven, MS Weather" alt="Southaven, MS Weather">
+                        </div>
+                    </div>
                     <div class="col">
-                        <div class="announcements-container">
+                        <div class="weather-alerts d-flex justify-content-center align-items-center">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="connections">
                             <div class="websocket-status">---</div>
                         </div>
                     </div>
                 </div>
-                <div class="row first-row">
-                    <div class="col text-center">
+                <!-- First Row -->
+                <div class="row first-row justify-content-center">
+                    <div class="col-xl border text-center">
                         <div class="row">
                             <div class="col current-wx">
                                 <div class="current-wx-icon">---</div>                             
@@ -57,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col airport1-obs">
+                    <div class="col-xl border-top border-bottom airport1-obs">
                         <div class="airport-id-container">
                             <div class="$Extras.metar_id_1-id-updated">---<br>--</div>
                         </div>
@@ -106,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col airport2-obs">
+                    <div class="col-xl border airport2-obs">
                         <div class="airport-id-container">
                             <div class="$Extras.metar_id_2-id-updated">---<br>--</div>
                         </div>
@@ -156,230 +167,244 @@
                         </div>
                     </div>
                 </div>
-                <div class="row bottom-row">
-                    <!-- Start of Day 0 Forecast -->
-                    <div class="col-lg-2 text-center">
-                        <div class="forecast-p0">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p0-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p0-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p0-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p0-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p0-precip">---</span>
+                <!-- Start of Forecast Row -->
+                <div class="row bottom-row justify-content-center">
+                    <div class="col-xl">
+                        <!-- Container for periods 0 & 1 -->
+                        <div class="row flex-nowrap">
+                            <!-- Start of Day 0 Forecast -->
+                            <div class="col text-center">
+                                <div class="forecast-container-p0">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p0-date">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p0-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p0-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p0-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p0-precip">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p0-wxPriCode wxPC">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p0-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p0-windSpd">---</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p0-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p0-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p0-windSpd">---</span>
+                            <!-- Start of Period 1 Forecast -->
+                            <div class="col text-center">
+                                <div class="forecast-container-p1">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p1-date">---</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Start of Period 1 Forecast -->
-                    <div class="col-lg-2 text-center border-left">
-                        <div class="forecast-p1">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p1-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p1-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p1-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p1-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p1-precip">---</span>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p1-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p1-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p1-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p1-precip">---</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p1-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p1-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p1-windSpd">---</span>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p1-wxPriCode wxPC">---</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Start of Period 2 Forecast -->
-                    <div class="col-lg-2 text-center border-left">
-                        <div class="forecast-p2">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p2-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p2-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p2-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p2-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p2-precip">---</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p2-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p2-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p2-windSpd">---</span>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p1-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p1-windSpd">---</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Start of Period 3 Forecast -->
-                    <div class="col-lg-2 text-center border-left">
-                        <div class="forecast-p3">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p3-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p3-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p3-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p3-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p3-precip">---</span>
+                    <div class="col-xl">
+                        <div class="row flex-nowrap">
+                            <!-- Start of Period 2 Forecast -->
+                            <div class="col text-center border-left">
+                                <div class="forecast-container-p2">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p2-date">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p2-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p2-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p2-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p2-precip">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p2-wxPriCode wxPC">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p2-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p2-windSpd">---</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p3-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p3-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p3-windSpd">---</span>
+                            <!-- Start of Period 3 Forecast -->
+                            <div class="col text-center border-left">
+                                <div class="forecast-container-p3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p3-date">---</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Start of Period 4 Forecast -->
-                    <div class="col-lg-2 text-center border-left">
-                        <div class="forecast-p4">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p4-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p4-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p4-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p4-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p4-precip">---</span>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p3-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p3-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p3-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p3-precip">---</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p4-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p4-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p4-windSpd">---</span>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p3-wxPriCode wxPC">---</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Start of Period 5 Forecast -->
-                    <div class="col-lg-2 text-center border-left">
-                        <div class="forecast-p5">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p5-date">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-5 forecast-icon">
-                                    <div class="forecast-p5-icon">---</div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="forecast-p5-hilo"> </div>
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p5-pop">---</span>
-                                        <img src="icons/raindrop.png">
-                                        <span class="forecast-p5-precip">---</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-p5-wxPriCode wxPC">---</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="forecast-windRain">
-                                        <span class="forecast-p5-windDir">---</span>
-                                        <img src="icons/windicon.png">
-                                        <span class="forecast-p5-windSpd">---</span>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p3-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p3-windSpd">---</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-xl">                        
+                        <div class="row flex-nowrap">
+                            <!-- Start of Period 4 Forecast -->
+                            <div class="col text-center border-left">
+                                <div class="forecast-container-p4">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p4-date">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p4-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p4-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p4-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p4-precip">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p4-wxPriCode wxPC">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p4-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p4-windSpd">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Start of Period 5 Forecast -->
+                            <div class="col text-center border-left">
+                                <div class="forecast-container-p5">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p5-date">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 px-0 forecast-icon">
+                                            <div class="ps-4 forecast-p5-icon">---</div>
+                                        </div>
+                                        <div class="col px-0">
+                                            <div class="forecast-p5-hilo"> </div>
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p5-pop">---</span>
+                                                <img src="icons/raindrop.png">
+                                                <span class="forecast-p5-precip">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-p5-wxPriCode wxPC">---</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="forecast-windRain">
+                                                <span class="forecast-p5-windDir">---</span>
+                                                <img src="icons/windicon.png">
+                                                <span class="forecast-p5-windSpd">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
         </main>
     </body>
