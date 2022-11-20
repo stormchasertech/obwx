@@ -29,8 +29,8 @@ class ScT_Installer(ExtensionInstaller):
                         'enable': True,
                         'Extras' : {
                             'logo_img' : 'logo.png',
-                            'logo_title' = 'Site Title',
-                            'logo_alt' = 'Site Alt',
+                            'logo_title' : 'Site Title',
+                            'logo_alt' : 'Site Alt',
                             'api_id' : '',
                             'api_secret' : '',
                             'api_call_freqency' : '240',
