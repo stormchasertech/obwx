@@ -38,7 +38,11 @@
                 <div class="row announcements text-center">
                     <div class="col-3 site-logo">
                         <div class="logo">
-                            <img src="./icons/obwxLogo.png" title="Southaven, MS Weather" alt="Southaven, MS Weather">
+                            #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
+                            <img src="$Extras.logo_img" title="$Extras.logo_title" alt="$Extras.logo_alt">
+                            #else
+                            <div>$html_title</div>
+                            #end if
                         </div>
                     </div>
                     <div class="col">

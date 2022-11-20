@@ -6,7 +6,7 @@ VERSION      = "V.10"
 NAME         = 'OBWX'
 DESCRIPTION  = 'A project for learning how to do this stuff!'
 AUTHOR       = "StormchaserTech"
-AUTHOR_EMAIL = "https://github.com/stormchasertech"
+AUTHOR_EMAIL = "https://github.com/stormchasertech/obwx"
 
 #-------- main loader -----------
 
@@ -28,6 +28,9 @@ class ScT_Installer(ExtensionInstaller):
                         'HTML_ROOT' : 'obwx',
                         'enable': True,
                         'Extras' : {
+                            'logo_img' : 'logo.png',
+                            'logo_title' = 'Site Title',
+                            'logo_alt' = 'Site Alt',
                             'api_id' : '',
                             'api_secret' : '',
                             'api_call_freqency' : '240',
@@ -35,6 +38,8 @@ class ScT_Installer(ExtensionInstaller):
                             'websocket_host' : '',
                             'websocket_port' : '8080',
                             'websocket_topic' : '',
+                            'metar_id_1' : '',
+                            'metar_id_2' : '',
                         }
                     }
                 }
