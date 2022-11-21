@@ -4,7 +4,7 @@ from setup import ExtensionInstaller
 
 VERSION      = "V.10"
 NAME         = 'OBWX'
-DESCRIPTION  = 'A project for learning how to do this stuff!'
+DESCRIPTION  = 'Weather Data Console'
 AUTHOR       = "StormchaserTech"
 AUTHOR_EMAIL = "https://github.com/stormchasertech/obwx"
 
