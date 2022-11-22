@@ -36,7 +36,7 @@
             <div class="col mx-auto">
                 <!-- Alerts Row -->
                 <div class="row announcements text-center">
-                    <div class="col-3 site-logo">
+                    <div class="col-3 my-auto site-logo">
                         <div class="logo">
                             #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
                             <img src="$Extras.logo_img" title="$Extras.logo_title" alt="$Extras.logo_alt">
@@ -45,11 +45,11 @@
                             #end if
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="weather-alerts d-flex justify-content-center align-items-center">
+                    <div class="col my-auto">
+                        <div class="weather-alerts">
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-3 my-auto">
                         <div class="connections">
                             <div class="websocket-status">---</div>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
                 <!-- First Row -->
                 <div class="row first-row justify-content-center">
-                    <div class="col-xl border border-start-0 text-center">
+                    <div class="col-xl pt-2 border border-start-0 text-center">
                         <div class="row">
                             <div class="col current-wx">
                                 <div class="current-wx-icon">---</div>                             
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl border-top border-bottom airport1-obs">
+                    <div class="col-xl pt-2 border-top border-bottom airport1-obs">
                         <div class="airport-id-container">
                             <div class="$Extras.metar_id_1-id-updated">---<br>--</div>
                         </div>
@@ -111,7 +111,7 @@
                                         <div class="$Extras.metar_id_1-wind-speed-arrow"></div>
                                     </div>
                                     <div class="windometer-legend">
-                                        <span class="windometer-legend-lo">0</span>
+                                        <!--span class="windometer-legend-lo">0</span-->
                                         <span class="$Extras.metar_id_1-windometer-legend-hi">-</span>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl border border-end-0 airport2-obs">
+                    <div class="col-xl pt-2 border border-end-0 airport2-obs">
                         <div class="airport-id-container">
                             <div class="$Extras.metar_id_2-id-updated">---<br>--</div>
                         </div>
@@ -160,7 +160,7 @@
                                         <div class="$Extras.metar_id_2-wind-speed-arrow"></div>
                                     </div>
                                     <div class="windometer-legend">
-                                        <span class="windometer-legend-lo">0</span>
+                                        <!--span class="windometer-legend-lo">0</span-->
                                         <span class="$Extras.metar_id_2-windometer-legend-hi">-</span>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                 </div>
                 <!-- Start of Forecast Row -->
                 <div class="row bottom-row justify-content-center">
-                    <div class="col-xl">
+                    <div class="col-xl pt-2">
                         <!-- Container for periods 0 & 1 -->
                         <div class="row flex-nowrap">
                             <!-- Start of Day 0 Forecast -->
@@ -252,7 +252,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl">
+                    <div class="col-xl pt-2">
                         <div class="row flex-nowrap">
                             <!-- Start of Period 2 Forecast -->
                             <div class="col text-center border-left">
@@ -330,7 +330,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl">                        
+                    <div class="col-xl pt-2"> 
                         <div class="row flex-nowrap">
                             <!-- Start of Period 4 Forecast -->
                             <div class="col text-center border-left">

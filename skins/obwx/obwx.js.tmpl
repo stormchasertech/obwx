@@ -50,7 +50,7 @@ function process_payload ( data ) {
     }
 
     // Update webpage with the live data
-    jQuery(".websocket-status").html( "<u>Data updated</u><br> " + dayjs().format("MMM D, hh:mm:ss A") );
+    jQuery(".websocket-status").html( dayjs().format("MMM D, hh:mm:ss A") );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
