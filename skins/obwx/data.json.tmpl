@@ -1,25 +1,26 @@
-## Extra data from weewx
-
-## Almanac Information
-
+#encoding UTF-8
+###import datetime
+#errorCatcher Echo
 {
     "station": {
         "latitude" : "$station.stn_info.latitude_f",
         "longitude" : "$station.stn_info.longitude_f",
         "altitude": "$station.altitude",
-        "serveruptime": "$station.os_uptime",
-    }
+        "serveruptime": "$station.os_uptime"
+    },
     "today" : {
-        "outTemp: {
+        "outTemp" : {
             "max" : "$day.outTemp.max",
             "maxtime" : "$day.outTemp.maxtime",
             "min" : "$day.outTemp.min",
-            "mintime" : "$day.outTemp.mintime",
+            "mintime" : "$day.outTemp.mintime"
         }
-    }
+    },
     "almanac" : {
         "sunrise" : "$almanac.sunrise",
-        "sunrise_bare" : "$almanac(pressure=0, horizon=-34.0/60.0).sun.rise",
-        "sunrise3" : "$almanac.sun.rise",
+        "sunset" : "$almanac.sunset",
+        "moonphase" : "$almanac.moon_phase",
+        "moonvisible" : "$almanac.moon_fullness"
     }
 }
+
