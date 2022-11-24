@@ -3,6 +3,34 @@ function debug ( msg ) {
         console.log( "Info: " + msg );
     }
 
+// Global Functions
+
+// Colorize Temps
+function colorizeTemp ( temp ) {
+    if ( temp >= 100 ) { return "rgb(223, 71, 150)"; }
+    if ( temp >= 95 ) { return "rgb(221, 0, 0)"; }
+    if ( temp >= 90 ) { return "rgb(232, 55, 0)"; }
+    if ( temp >= 85 ) { return "rgb(242, 109, 0)"; }
+    if ( temp >= 80 ) { return "rgb(253, 164, 0)"; }
+    if ( temp >= 75 ) { return "rgb(244, 185, 0)"; }
+    if ( temp >= 70 ) { return "rgb(236, 206, 0)"; }
+    if ( temp >= 65 ) { return "rgb(227, 227, 0)"; }
+    if ( temp >= 60 ) { return "rgb(151, 210, 15)"; }
+    if ( temp >= 55 ) { return "rgb(76, 193, 29)"; }
+    if ( temp >= 50 ) { return "rgb(0, 176, 44)"; }
+    if ( temp >= 45 ) { return "rgb(0, 173, 167)"; }
+    if ( temp >= 40 ) { return "rgb(0, 171, 220)"; }
+    if ( temp >= 35 ) { return "rgb(0, 170, 255)"; }
+    if ( temp >= 30 ) { return "rgb(59, 187, 248)"; }
+    if ( temp >= 25 ) { return "rgb(117, 203, 241)"; }
+    if ( temp >= 20 ) { return "rgb(176, 220, 234)"; }
+    if ( temp >= 15 ) { return "rgb(160, 190, 239)"; }
+    if ( temp >= 10 ) { return "rgb(144, 160, 243)"; }
+    if ( temp >=  5 ) { return "rgb(128, 130, 248)"; }
+    if ( temp >=  0 ) { return "rgb(155, 131, 247)"; }
+    if ( temp < 0 ) { return "rgb(181, 132, 247)"; }
+}
+
 // Connect to mqtt server
 function connect() {
     client = new Paho.Client("$Extras.websocket_host", $Extras.websocket_port, mqttclient);
@@ -50,7 +78,10 @@ function process_payload ( data ) {
     }
 
     // Update webpage with the live data
-    jQuery(".websocket-status").html( dayjs().format("MMM D, hh:mm:ss A") );
+    let status_date = dayjs().format("dddd, MMM D");
+    let status_time = dayjs().format("h:mm:ss A");
+    ####jQuery(".websocket-status").html( dayjs().format("dddd MMM D, hh:mm:ss A") );
+    jQuery(".websocket-status").html( status_date + "<br>" + status_time );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
@@ -93,7 +124,8 @@ function process_payload ( data ) {
     }
 
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
-        jQuery(".outTemp").html( parseFloat( data.outTemp_F ).toFixed(1) );
+        jQuery(".outTemp").html( parseFloat( data.outTemp_F ).toFixed(1) + "<sup>&deg;</sup>" );
+        jQuery(".outTemp").css( "color", colorizeTemp( data.outTemp_F) );
     }
 }
 
@@ -221,7 +253,7 @@ function process_forecast ( data ) {
             } else if ( rules === "LIFR" ) {
                 jQuery("." + loc + "-rules").css( "color", "purple" );
             } else if ( rules === "VFR" ) {
-                jQuery("." + loc + "-rules").css( "color", "" );
+                jQuery("." + loc + "-rules").css( "color", "rgba(0,0,0,0)" );
             }
         }
 
@@ -275,7 +307,10 @@ function process_forecast ( data ) {
             } else {
                 jQuery(".forecast-p" + i + "-date").html( dayjs.unix(data.daynight[0].response[0].periods[i].timestamp).format('dddd')  );
             }
-            jQuery(".forecast-p" + i + "-hilo").html('High: <span class="forecast-p0-hilo forecast-hi">' + parseFloat(data.daynight[0].response[0].periods[i].maxTempF).toFixed(0) + '&deg;</span>');
+            let temp =  parseFloat(data.daynight[0].response[0].periods[i].maxTempF).toFixed(0);
+            jQuery(".forecast-p" + i + "-hilo-txt").html( "High: " );
+            jQuery(".forecast-p" + i + "-hilo-temp").html( temp + "&deg;" );
+            jQuery(".forecast-p" + i + "-hilo-temp").css( "color", colorizeTemp( temp ) );
 
         } else {
             if (i === 0 || i === 1) {
@@ -283,7 +318,10 @@ function process_forecast ( data ) {
             } else {
                 jQuery(".forecast-p" + i + "-date").html( dayjs.unix(data.daynight[0].response[0].periods[i].timestamp).format("ddd") + " Night"  );
             }
-            jQuery(".forecast-p" + i + "-hilo").html('Low: <span class="forecast-p0-hilo forecast-lo">' + parseFloat(data.daynight[0].response[0].periods[i].minTempF).toFixed(0) + '&deg;</span>');
+            let temp = parseFloat(data.daynight[0].response[0].periods[i].minTempF).toFixed(0);
+            jQuery(".forecast-p" + i + "-hilo-txt").html( "Low: " );
+            jQuery(".forecast-p" + i + "-hilo-temp").html( temp + "&deg;" );
+            jQuery(".forecast-p" + i + "-hilo-temp").css( "color", colorizeTemp( temp ) );
         }
 
         if (data.daynight[0].response[0].periods[i].windSpeedMinMPH === data.daynight[0].response[0].periods[i].windSpeedMaxMPH ){

@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col-3 my-auto">
-                        <div class="connections">
+                        <div class="connections pe-2">
                             <div class="websocket-status">---</div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="col temp-humidity">
                                 <div class="current-outTemp">
-                                    <span class="outTemp">--.-</span><sup>&deg;</sup>
+                                    <span class="outTemp">--.-<sup>&deg;</sup></span>
                                 </div>
                                 <div class="dewpoint">---</div>
                                 <div class="outHumidity">---</div>
@@ -189,7 +189,10 @@
                                             <div class="ps-4 forecast-p0-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p0-hilo"> </div>
+                                            <div class="forecast-p0-hilo">
+                                                <span class="forecast-p0-hilo-txt"></span>
+                                                <span class="forecast-p0-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p0-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -226,7 +229,10 @@
                                             <div class="ps-4 forecast-p1-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p1-hilo"> </div>
+                                            <div class="forecast-p1-hilo"> 
+                                                <span class="forecast-p1-hilo-txt"></span>
+                                                <span class="forecast-p1-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p1-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -267,7 +273,10 @@
                                             <div class="ps-4 forecast-p2-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p2-hilo"> </div>
+                                            <div class="forecast-p2-hilo">
+                                                <span class="forecast-p2-hilo-txt"></span>
+                                                <span class="forecast-p2-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p2-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -304,7 +313,10 @@
                                             <div class="ps-4 forecast-p3-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p3-hilo"> </div>
+                                            <div class="forecast-p3-hilo">
+                                                <span class="forecast-p3-hilo-txt"></span>
+                                                <span class="forecast-p3-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p3-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -345,7 +357,10 @@
                                             <div class="ps-4 forecast-p4-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p4-hilo"> </div>
+                                            <div class="forecast-p4-hilo">
+                                                <span class="forecast-p4-hilo-txt"></span>
+                                                <span class="forecast-p4-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p4-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -382,7 +397,10 @@
                                             <div class="ps-4 forecast-p5-icon">---</div>
                                         </div>
                                         <div class="col px-0">
-                                            <div class="forecast-p5-hilo"> </div>
+                                            <div class="forecast-p5-hilo">
+                                                <span class="forecast-p5-hilo-txt"></span>
+                                                <span class="forecast-p5-hilo-temp"></span>
+                                            </div>
                                             <div class="forecast-windRain">
                                                 <span class="forecast-p5-pop">---</span>
                                                 <img src="icons/raindrop.png">
@@ -408,7 +426,23 @@
                             </div>
                         </div>
                     </div>
-                </div>  
+                </div>
+                <!--Start of Extras Row-->
+                <div class="row extras-row">
+                    <div class="col pt-2">
+                        <div>Records</div>
+                    </div>
+                    <div class="col pt-2">
+                        <div>Extra Sensors</div>
+                    </div>
+                    <div class="col pt-2">
+                        <div>Airport Data</div>
+                    </div>
+                    <div class="col pt-2">
+                        <div>Almanac Data</div>
+                    </div>
+                </div>
+                <!--End of Rows-->  
             </div>
         </main>
     </body>
