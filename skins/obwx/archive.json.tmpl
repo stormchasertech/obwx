@@ -1,0 +1,26 @@
+#encoding UTF-8
+###import datetime
+#errorCatcher Echo
+{
+    "station": {
+        "latitude" : "$station.stn_info.latitude_f",
+        "longitude" : "$station.stn_info.longitude_f",
+        "altitude": "$station.altitude",
+        "serveruptime": "$station.os_uptime"
+    },
+    "today" : {
+        "outTemp" : {
+            "max" : "$day.outTemp.max",
+            "maxtime" : "$day.outTemp.maxtime",
+            "min" : "$day.outTemp.min",
+            "mintime" : "$day.outTemp.mintime"
+        }
+    },
+    "almanac" : {
+        "sunrise" : "$almanac.sunrise",
+        "sunset" : "$almanac.sunset",
+        "moonphase" : "$almanac.moon_phase",
+        "moonvisible" : "$almanac.moon_fullness"
+    }
+}
+

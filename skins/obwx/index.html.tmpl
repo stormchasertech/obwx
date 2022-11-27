@@ -23,11 +23,12 @@
 
             // Wait for page to load, then connect to mqtt data
             jQuery(document).ready(function() {
+                // Connect to mqtt broker
                 connect();
-            });
-
-            // First call to populate the site
-            get_forecast();
+                // Inital call to populate site with data
+                get_forecast();
+                get_archive();
+             });
 
         </script>
     </head>
@@ -429,17 +430,31 @@
                 </div>
                 <!--Start of Extras Row-->
                 <div class="row extras-row">
-                    <div class="col pt-2">
+                    <div class="col pt-3">
                         <div>Records</div>
+                        <div class="archive">
+                            <span>High: </span>
+                            <span class="outTemp-day-high">--&deg;</span>
+                        </div>
+                        <div class="archive">
+                            <span>Low: </span>
+                            <span class="outTemp-day-low">--&deg;</span>
+                        </div>
                     </div>
-                    <div class="col pt-2">
+                    <div class="col pt-3">
                         <div>Extra Sensors</div>
+                        <div class="extraTemp1">--</div>
+                        <div class="extraTemp2">--</div>
+                        <div class="inTemp">--</div>
                     </div>
-                    <div class="col pt-2">
+                    <div class="col pt-3">
                         <div>Airport Data</div>
+                        <div class="KOLVupdated">---<br>--</div>
                     </div>
-                    <div class="col pt-2">
+                    <div class="col pt-3">
                         <div>Almanac Data</div>
+                        <div class="sunrise">Sunrise: --:--:--</div>
+                        <div class="sunset">Sunset: --:--:--</div>
                     </div>
                 </div>
                 <!--End of Rows-->  

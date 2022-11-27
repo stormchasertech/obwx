@@ -2,36 +2,9 @@
 function debug ( msg ) {
         console.log( "Info: " + msg );
     }
-
-// Global Functions
-
-// Colorize Temps
-function colorizeTemp ( temp ) {
-    if ( temp >= 100 ) { return "rgb(223, 71, 150)"; }
-    if ( temp >= 95 ) { return "rgb(221, 0, 0)"; }
-    if ( temp >= 90 ) { return "rgb(232, 55, 0)"; }
-    if ( temp >= 85 ) { return "rgb(242, 109, 0)"; }
-    if ( temp >= 80 ) { return "rgb(253, 164, 0)"; }
-    if ( temp >= 75 ) { return "rgb(244, 185, 0)"; }
-    if ( temp >= 70 ) { return "rgb(236, 206, 0)"; }
-    if ( temp >= 65 ) { return "rgb(227, 227, 0)"; }
-    if ( temp >= 60 ) { return "rgb(151, 210, 15)"; }
-    if ( temp >= 55 ) { return "rgb(76, 193, 29)"; }
-    if ( temp >= 50 ) { return "rgb(0, 176, 44)"; }
-    if ( temp >= 45 ) { return "rgb(0, 173, 167)"; }
-    if ( temp >= 40 ) { return "rgb(0, 171, 220)"; }
-    if ( temp >= 35 ) { return "rgb(0, 170, 255)"; }
-    if ( temp >= 30 ) { return "rgb(59, 187, 248)"; }
-    if ( temp >= 25 ) { return "rgb(117, 203, 241)"; }
-    if ( temp >= 20 ) { return "rgb(176, 220, 234)"; }
-    if ( temp >= 15 ) { return "rgb(160, 190, 239)"; }
-    if ( temp >= 10 ) { return "rgb(144, 160, 243)"; }
-    if ( temp >=  5 ) { return "rgb(128, 130, 248)"; }
-    if ( temp >=  0 ) { return "rgb(155, 131, 247)"; }
-    if ( temp < 0 ) { return "rgb(181, 132, 247)"; }
-}
-
+/////////////////////////
 // Connect to mqtt server
+/////////////////////////
 function connect() {
     client = new Paho.Client("$Extras.websocket_host", $Extras.websocket_port, mqttclient);
 
@@ -66,21 +39,57 @@ function onMessageArrived ( message ) {
     process_payload ( message.payloadString  );
 }
 
+///////////////////////////////////////////////////////////////////////
+// Global functions available to live, archive, and forecast data sets
+///////////////////////////////////////////////////////////////////////
+
+// Colorize Temps
+function colorizeTemp ( temp ) {
+    if ( temp >= 100 ) { return "rgb(223, 71, 150)"; }
+    if ( temp >= 95 ) { return "rgb(221, 0, 0)"; }
+    if ( temp >= 90 ) { return "rgb(232, 55, 0)"; }
+    if ( temp >= 85 ) { return "rgb(242, 109, 0)"; }
+    if ( temp >= 80 ) { return "rgb(253, 164, 0)"; }
+    if ( temp >= 75 ) { return "rgb(244, 185, 0)"; }
+    if ( temp >= 70 ) { return "rgb(236, 206, 0)"; }
+    if ( temp >= 65 ) { return "rgb(227, 227, 0)"; }
+    if ( temp >= 60 ) { return "rgb(151, 210, 15)"; }
+    if ( temp >= 55 ) { return "rgb(76, 193, 29)"; }
+    if ( temp >= 50 ) { return "rgb(0, 176, 44)"; }
+    if ( temp >= 45 ) { return "rgb(0, 173, 167)"; }
+    if ( temp >= 40 ) { return "rgb(0, 171, 220)"; }
+    if ( temp >= 35 ) { return "rgb(0, 170, 255)"; }
+    if ( temp >= 30 ) { return "rgb(59, 187, 248)"; }
+    if ( temp >= 25 ) { return "rgb(117, 203, 241)"; }
+    if ( temp >= 20 ) { return "rgb(176, 220, 234)"; }
+    if ( temp >= 15 ) { return "rgb(160, 190, 239)"; }
+    if ( temp >= 10 ) { return "rgb(144, 160, 243)"; }
+    if ( temp >=  5 ) { return "rgb(128, 130, 248)"; }
+    if ( temp >=  0 ) { return "rgb(155, 131, 247)"; }
+    if ( temp < 0 ) { return "rgb(181, 132, 247)"; }
+}
+
+/////////////////////
+// Process Live Data
+/////////////////////
 function process_payload ( data ) {
     data = jQuery.parseJSON ( data );
 
-    // interval_minute is unique to mqtt archive updates, signaling forecast.json has been updated
+    // interval_minute is unique to mqtt archive updates, signaling json data has been updated
     if ( data.hasOwnProperty( 'interval_minute' ) ) {
         // Get and process forecast after 15 sec delay to allow new json files to be fully updated by weewx
         setTimeout( function() {
             get_forecast();
+        }, 15000);
+        // Same for archive data
+        setTimeout( function() {
+            get_archive();
         }, 15000);
     }
 
     // Update webpage with the live data
     let status_date = dayjs().format("dddd, MMM D");
     let status_time = dayjs().format("h:mm:ss A");
-    ####jQuery(".websocket-status").html( dayjs().format("dddd MMM D, hh:mm:ss A") );
     jQuery(".websocket-status").html( status_date + "<br>" + status_time );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
@@ -94,27 +103,23 @@ function process_payload ( data ) {
     if ( data.hasOwnProperty( 'extraHumid1' ) ) {
         jQuery(".extraHumid1").html("extraHumid1: " +  parseFloat( data.extraHumid1 ).toFixed(0) );
     }
-
     if ( data.hasOwnProperty( 'extraHumid2' ) ) {
         jQuery(".extraHumid2").html("extraHumid2: " +  parseFloat( data.extraHumid2 ).toFixed(0) );
     }
 
     if ( data.hasOwnProperty( 'extraTemp1_F' ) ) {
-        jQuery(".extraTemp1").html("Inside Temp 1: " +  parseFloat( data.extraTemp1_F ).toFixed(1) );
+        jQuery(".extraTemp1").html("Living Area: " +  parseFloat( data.extraTemp1_F ).toFixed(1) );
     }
-
     if ( data.hasOwnProperty( 'extraTemp2_F' ) ) {
-        jQuery(".extraTemp2").html("Inside Temp 2: " +  parseFloat( data.extraTemp2_F ).toFixed(1) );
+        jQuery(".extraTemp2").html("Bedroom: " +  parseFloat( data.extraTemp2_F ).toFixed(1) );
     }
 
     if ( data.hasOwnProperty( 'inDewpoint_F' ) ) {
         jQuery(".inDewpoint").html("inDewpoint: " +  parseFloat( data.inDewpoint_F ).toFixed(1) );
     }
-
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
         jQuery(".inHumidity").html("Raspi Humidity: " +  parseFloat( data.inHumidity ).toFixed(0) );
     }
-
     if ( data.hasOwnProperty( 'inTemp_F' ) ) {
         jQuery(".inTemp").html("Raspi Temp: " +  parseFloat( data.inTemp_F ).toFixed(1) );
     }
@@ -122,12 +127,33 @@ function process_payload ( data ) {
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
         jQuery(".outHumidity").html( "Humidity: " + parseFloat( data.outHumidity ).toFixed(1) + "&percnt;");
     }
-
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
         jQuery(".outTemp").html( parseFloat( data.outTemp_F ).toFixed(1) + "<sup>&deg;</sup>" );
         jQuery(".outTemp").css( "color", colorizeTemp( data.outTemp_F) );
     }
 }
+
+/////////////////////////////
+// Process archive.json data 
+/////////////////////////////
+
+function get_archive () {
+    jQuery.getJSON ( "archive.json", process_archive );
+}
+
+function process_archive ( data ) {
+    // Daily records
+    jQuery(".outTemp-day-high").html( data.today.outTemp.max );
+    jQuery(".outTemp-day-low").html( data.today.outTemp.min );
+
+    // Alamanac
+    jQuery(".sunrise").html( "Sunrise: " + data.almanac.sunrise );
+    jQuery(".sunset").html( "Sunset: " + data.almanac.sunset );
+}
+
+//////////////////////////////
+// Process forecast.json data
+//////////////////////////////
 
 // Fetch the data from forecast.json
 function get_forecast () {
@@ -172,6 +198,8 @@ function process_forecast ( data ) {
 
             // Display time of observations
             jQuery("." + loc + "-id-updated").html( "<div class='metar-id'>" + loc + "</div><div class='metar-update-time'>" + dayjs.unix(time).format("h:mm A") + "</div>" ); 
+
+            jQuery(".KOLVupdated").html( "OLV Updated: " + dayjs.unix(time).format("h:mm A") );
 
             // Color code station ID based on age of observation
             let timeDiff = dayjs().unix() - dayjs(time);
