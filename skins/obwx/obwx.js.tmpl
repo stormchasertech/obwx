@@ -90,7 +90,8 @@ function process_payload ( data ) {
     // Update webpage with the live data
     let status_date = dayjs().format("dddd, MMM D");
     let status_time = dayjs().format("h:mm:ss A");
-    jQuery(".websocket-status").html( status_date + "<br>" + status_time );
+    jQuery(".websocket-date").html( status_date );
+    jQuery(".websocket-time").html( status_time );
 
     if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
         jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
@@ -182,8 +183,11 @@ function process_forecast ( data ) {
 
             wx_alert_html += '<div class="wx-alert-' + i + '">' + wx_alert + " in effect " + wx_alert_start + ' until ' + wx_alert_end + '</div>';
         }
-
+        // Update the page with alert html
         jQuery(".weather-alerts").html( wx_alert_html );
+    } else {
+        // No alerts to disaply
+        jQuery(".weather-alerts").html( "" );
     }
 
     // More updates
@@ -198,8 +202,12 @@ function process_forecast ( data ) {
 
             // Display time of observations
             jQuery("." + loc + "-id-updated").html( "<div class='metar-id'>" + loc + "</div><div class='metar-update-time'>" + dayjs.unix(time).format("h:mm A") + "</div>" ); 
-
-            jQuery(".KOLVupdated").html( "OLV Updated: " + dayjs.unix(time).format("h:mm A") );
+            // New bottom row info
+            if ( loc == "KMEM" ) {
+                jQuery(".airport1-id").html( loc + " " + dayjs.unix(time).format("h:mm A") );
+                jQuery(".airport1-temp").html( "OAT: " + data.observations[0].response[i].ob.tempF );
+            }
+            // jQuery(".KOLVupdated").html( "OLV Updated: " + dayjs.unix(time).format("h:mm A") );
 
             // Color code station ID based on age of observation
             let timeDiff = dayjs().unix() - dayjs(time);
