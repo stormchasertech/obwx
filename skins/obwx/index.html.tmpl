@@ -31,6 +31,7 @@
                 // Inital call to populate site with data
                 get_forecast();
                 get_archive();
+                canvas_sunInit();
              });
 
         </script>
@@ -457,7 +458,11 @@
                         <div class="airport1-temp">---</div>
                     </div>
                     <div class="col-6 col-xl-3 mt-2 pt-2 border-top">
-                        <div>Almanac Data</div>
+                        <div class="sun-n-moon">
+                            <canvas id="arcs" height="200" width="200"></canvas>
+                        </div>
+
+                        <!--div>Almanac Data</div>
                         <div class="sunrise">Sunrise: --:--:--</div>
                         <div class="sunset">Sunset: --:--:--</div>
                         <div class="row row-no-gutters border-top">
@@ -484,7 +489,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div-->
                     </div>
                 </div>
                 <!--End of Rows-->  

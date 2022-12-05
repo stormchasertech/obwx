@@ -374,3 +374,45 @@ function process_forecast ( data ) {
         jQuery(".forecast-p" + i + "-precip").html(data.daynight[0].response[0].periods[i].precipIN + '"');
     }
 }
+
+////////////////////
+// Sun animation
+////////////////////
+console.log("C-v1");
+var ctx;
+var sunPath;
+
+function canvas_sunInit () {
+    const canvasSunPath = document.querySelector('#arcs');
+    ctx = canvasSunPath.getContext('2d');
+
+    // The circular path which the sun, moon, and markings travel upon
+    // changing radius here will scale entire drawing
+    sunPath = {
+        x: canvasSunPath.width / 2,
+        y: canvasSunPath.height / 2,
+        radius: 80,
+        strA: 0,
+        endA: Math.PI * 2,
+    }
+    drawSunPath();
+}
+// Returns an object containing the (x,y) coordinates along the sun/moon path for a given angle
+// alternativly if radius is given, returns a point anywhere on canvas defined by angle and radius
+function PointOnPath ( angle , radius ) {
+    // Use the down/midnight position as zero degrees (referance)
+    this.radians = ( angle + 90 ) * Math.PI / 180;
+    this.radius = radius === undefined ? sunPath.radius : radius;
+    this.x = sunPath.x + ( this.radius * Math.cos( this.radians ) );
+    this.y = sunPath.y + ( this.radius * Math.sin( this.radians ) );
+}
+
+// Begin function list that defines the several shapes on canvas
+function drawSunPath () {
+    ctx.beginPath();
+    ctx.arc( sunPath.x, sunPath.y, sunPath.radius, sunPath.strA, sunPath.endA );
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgb(80, 80, 80)';
+    ctx.stroke();
+}
+
