@@ -106,9 +106,7 @@ min-height: 84px;
 }
 
 .websocket-status {
-  font-size: 1.25rem;
-  text-align: right;
-  min-width: 300px;
+  font-size: 1.375rem;
 }
 
 .extras-row {

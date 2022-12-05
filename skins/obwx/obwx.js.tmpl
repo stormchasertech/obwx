@@ -180,8 +180,9 @@ function process_forecast ( data ) {
             let wx_alert = data.alerts[0].response[i].details.name;
             let wx_alert_start = dayjs(new Date( data.alerts[0].response[i].timestamps.beginsISO )).format('ddd h:mm A');
             let wx_alert_end = dayjs(new Date( data.alerts[0].response[i].timestamps.expiresISO )).format('ddd h:mm A');
+            let wx_alert_color = data.alerts[0].response[i].details.color;
 
-            wx_alert_html += '<div class="wx-alert-' + i + '">' + wx_alert + " in effect " + wx_alert_start + ' until ' + wx_alert_end + '</div>';
+            wx_alert_html += '<div class="wx-alert-' + i + '" style="color:#' + wx_alert_color + ';">' + wx_alert + " - " + wx_alert_start + ' until ' + wx_alert_end + '</div>';
         }
         // Update the page with alert html
         jQuery(".weather-alerts").html( wx_alert_html );
