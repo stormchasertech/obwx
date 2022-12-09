@@ -1,33 +1,45 @@
 #encoding UTF-8
-###import datetime
 #errorCatcher Echo
 {
+    "timestamp": "$current.dateTime.raw",
     "station": {
-        "latitude" : "$station.stn_info.latitude_f",
-        "longitude" : "$station.stn_info.longitude_f",
+        "latitude": "$station.stn_info.latitude_f",
+        "longitude": "$station.stn_info.longitude_f",
         "altitude": "$station.altitude",
         "serveruptime": "$station.os_uptime"
     },
-    "today" : {
-        "outTemp" : {
-            "max" : "$day.outTemp.max",
-            "maxtime" : "$day.outTemp.maxtime",
-            "min" : "$day.outTemp.min",
-            "mintime" : "$day.outTemp.mintime"
+    "today": {
+        "outTemp": {
+            "max": "$day.outTemp.max",
+            "maxtime": "$day.outTemp.maxtime",
+            "min": "$day.outTemp.min",
+            "mintime": "$day.outTemp.mintime"
         }
     },
-    "almanac" : {
-        "weesunrise" : "$almanac.sunrise",
-        "weesunset" : "$almanac.sunset",
-        "sunrise" : "$almanac.sun.rise.raw",
-        "solarnoon" : "$almanac.sun.transit.raw",
-        "sunset" : "$almanac.sun.set.raw",
-        "moonrise" : "$almanac.moon.rise.raw",
-        "lunarnoon" : "$almanac.moon.transit.raw",
-        "moonset" : "$almanac.moon.set.raw",
-        "moonphase" : "$almanac.moon_phase",
-        "moonvisible" : "$almanac.moon_fullness",
-        "moonindex" : "$almanac.moon_index"
+    "almanac": {
+        "sun": {
+            "rise": "$almanac.sun.rise.raw",
+            "transit": "$almanac.sun.transit.raw",
+            "set": "$almanac.sun.set.raw"
+        },
+        "moon": {
+            "rise": "$almanac.moon.rise.raw",
+            "set": "$almanac.moon.set.raw",
+            "phase": "$almanac.moon_phase",
+            "percentfull": "$almanac.moon_fullness",
+            "index": "$almanac.moon_index",
+            "antitransit": {
+                "previous": "$almanac.moon.previous_antitransit.raw",
+                "next": "$almanac.moon.next_antitransit.raw"
+            },
+            "new": {
+                "previous": "$almanac.previous_new_moon.raw",
+                "next": "$almanac.next_new_moon.raw"
+            },
+            "full": {
+                "previous": "$almanac.previous_full_moon.raw",
+                "next": "$almanac.next_full_moon.raw"
+            }
+        }
     }
 }
-

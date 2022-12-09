@@ -151,21 +151,37 @@ function process_archive ( data ) {
     jQuery(".sunrise").html( "Sunrise: " + data.almanac.sunrise );
     jQuery(".sunset").html( "Sunset: " + data.almanac.sunset );
 
-    let sol = {
-        now: new Date(),
-        dayStart: new Date().setHours( 0, 0, 0, 0 ),
-        dayEnd: new Date().setHours( 23, 59, 59, 999 ),
-        sunrise: parseFloat( data.almanac.sunrise * 1000 ),
-        solarnoon: parseFloat( data.almanac.solarnoon * 1000 ),
-        sunset: parseFloat( data.almanac.sunset * 1000 ),
-        moonrise: parseFloat( data.almanac.moonrise * 1000 ),
-        lunarnoon: parseFloat( data.almanac.lunarnoon * 1000 ),
-        moonset: parseFloat( data.almanac.moonset * 1000 ),
-        moonphase: data.almanac.moonphase,
-        moonvisible: data.almanac.moonvisible
-    };
-    console.log(sol);
-    draw( sol );
+    // MOVE ALL THIS TO JSON - Thinking through cheetah
+    // let data = {
+    //     
+    //         now: new Date(),
+    //         dayStart: new Date().setHours( 0, 0, 0, 0 ),
+    //         dayEnd: new Date().setHours( 23, 59, 59, 999 ),
+    //     
+    //         sunrise: parseFloat( data.almanac.sunrise ) * 1000,
+    //         solarnoon: parseFloat( data.almanac.solarnoon ) * 1000,
+    //         sunset: parseFloat( data.almanac.sunset ) * 1000,
+    //     
+    //     moonrise: parseFloat( data.almanac.moonrise ) * 1000,
+    //     lunarnoon: parseFloat( data.almanac.lunarnoon ) * 1000,
+    //     moonset: parseFloat( data.almanac.moonset ) * 1000,
+    //     moonMidnight_prev: parseFloat( data.almanac.lunarmidnight_prev ) * 1000,
+    //     moonMidnight_next: parseFloat( data.almanac.lunarmidnight_next ) * 1000,
+
+    //     newmoon_next: parseFloat( data.almanac.newmoon_next ) * 1000,
+    //     newmoon_prev: parseFloat( data.almanac.newmoon_prev ) * 1000,
+    //     firstquarter_next: parseFloat( data.almanac.firstquarter_next ) * 1000,
+    //     firstquarter_prev: parseFloat( data.almanac.firstquarter_prev ) * 1000,
+    //     fullmoon_next: parseFloat( data.almanac.fullmoon_next ) * 1000,
+    //     fullmoon_prev: parseFloat( data.almanac.fullmoon_prev ) * 1000,
+    //     lastquarter_next: parseFloat( data.almanac.lastquarter_next ) * 1000,
+    //     lastquarter_prev: parseFloat( data.almanac.lastquarter_prev ) * 1000,
+
+    //     moonphase: data.almanac.moonphase,
+    //     moonvisible: data.almanac.moonvisible
+    // };
+    //console.log(data);
+    draw( data );
 }
 
 //////////////////////////////
@@ -304,7 +320,7 @@ function process_forecast ( data ) {
             } else if ( rules === "IFR" ) {
                 jQuery("." + loc + "-rules").css( "color", "red" );
             } else if ( rules === "LIFR" ) {
-                jQuery("." + loc + "-rules").css( "color", "purple" );
+                jQuery("." + loc + "-rules").css( "color", "rgb(204, 0, 204)" );
             } else if ( rules === "VFR" ) {
                 jQuery("." + loc + "-rules").css( "color", "rgba(0,0,0,0)" );
             }
@@ -394,109 +410,181 @@ function process_forecast ( data ) {
 ////////////////////
 // Sun animation
 ////////////////////
-console.log("D-vnight");
+console.log("Y-60");
 var ctx;
 var sunPath;
 
-function draw ( sol ) {
+// Main function: initializes and calls all drawing functions in correct order
+function draw ( data ) {
     const canvasSunPath = document.querySelector('#arcs');
     ctx = canvasSunPath.getContext('2d');
 
     // The circular path which the sun, moon, and markings travel upon
     // changing radius here will scale entire drawing
     sunPath = {
-        x: canvasSunPath.width / 2,
-        y: canvasSunPath.height / 2,
-        radius: 80,
+        cx: canvasSunPath.width / 2,
+        cy: canvasSunPath.height / 2,
+        radius: 70,
         strA: 0,
-        endA: Math.PI * 2,
+        endA: Math.PI * 2
     };
-    drawTickMarks( sol );
+    ctx.clearRect( 0 , 0, canvasSunPath.width , canvasSunPath.height );
+    drawTickMarks( data );
     drawSunPath();
-    drawSunLight( sol );
-    drawSun( sol );
-}
-// Returns an object containing the (x,y) coordinates along the sun/moon path for a given angle
-// alternativly if radius is given, returns a point anywhere on canvas defined by angle and radius
-function PointOnPath ( angle , radius ) {
-    // Use the down/midnight position as zero degrees (referance)
-    this.radians = ( angle + 90 ) * Math.PI / 180;
-    this.radius = radius === undefined ? sunPath.radius : radius;
-    this.x = sunPath.x + ( this.radius * Math.cos( this.radians ) );
-    this.y = sunPath.y + ( this.radius * Math.sin( this.radians ) );
+    drawSunLight( data );
+    drawSun( data );
+    drawMoon( data );
+    drawMoonPhase( data );
 }
 
-// Begin function list that defines the several shapes on canvas
+// Point returns an object containing information about a point on the canvass
+// required paramter 'time_angle' can be a time or an angle. timestamps are expected to be much much bigger than an angle
+// optional 'radius' paramter defaults to a point along the sunPath.radius circle 
+function Point ( time_angle , radius ) {
+    
+    if ( time_angle > 3600 ){
+        angle = timeToAngle( time_angle );
+    } else {
+        angle = time_angle;
+    }
+
+    // return an angle from the percent of time passed in the midnight to midnight 24hr time period
+    function timeToAngle (time) {
+        let dayStart = new Date().setHours(0,0,0,0) / 1000;
+        let dayEnd = new Date().setHours(23,59,59,999) / 1000;
+        return ( ( time - dayStart ) / ( dayEnd - dayStart ) * 360 ) ;
+    } 
+    
+    // build the Point object
+    this.degrees = ( angle );
+    this.radians = ( angle + 90 ) * Math.PI / 180;
+    this.radius = radius === undefined ? sunPath.radius : radius;
+    this.x = sunPath.cx + ( this.radius * Math.cos( this.radians ) );
+    this.y = sunPath.cy + ( this.radius * Math.sin( this.radians ) );
+}
+
 function drawSunPath () {
     ctx.beginPath();
-    ctx.arc( sunPath.x, sunPath.y, sunPath.radius, sunPath.strA, sunPath.endA );
+    ctx.arc( sunPath.cx, sunPath.cy, sunPath.radius, sunPath.strA, sunPath.endA );
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'rgb(80, 80, 80)';
     ctx.stroke();
 }
 
-// Returns angle from midnight position to point on path given a time during the day
-function timeToAngle (time) {
-    let sol = {
-    now: new Date(),
-    dayStart: new Date().setHours(0,0,0,0),
-    dayEnd: new Date().setHours(23,59,59,999)
+function drawTickMarks ( data ) {
+    let tick = {
+        color: "rgb(128, 128, 128)",
+        width: 3,
+        radius: {
+            inner: 1,
+            outer: 8
+        },
+        times: [
+            parseInt( data.almanac.sun.rise ),
+            parseInt( data.almanac.sun.set ),
+            parseInt( data.almanac.sun.transit )
+        ]
     }
 
-    let angle = ( ( ( time - sol.dayStart ) / ( sol.dayEnd - sol.dayStart ) ) * 360 ) ;
-    return angle;
-}
-
-function drawTickMarks ( sol ) {
-    // Length of tickmark (px of radius inward/outward from center)
-    let tickLen = {rIn: 1, rOut: 8};
-    let color = "rgb(128, 128, 128)"
-
-    let times = [ sol.sunrise , sol.sunset , sol.solarnoon ];
     ctx.beginPath();
-    
-    for ( i = 0; i < times.length; i++ ) {
-        let point1 = new PointOnPath ( timeToAngle ( times[i]) , sunPath.radius + tickLen.rOut );
-        let point2 = new PointOnPath ( timeToAngle ( times[i]) , sunPath.radius + tickLen.rIn );
+    for ( i = 0; i < tick.times.length; i++ ) {
+        let point1 = new Point ( tick.times[i] , sunPath.radius + tick.radius.outer );
+        let point2 = new Point ( tick.times[i] , sunPath.radius + tick.radius.inner );
         ctx.moveTo( point1.x, point1.y );
         ctx.lineTo( point2.x, point2.y );
     }
-   
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = color;
+    ctx.lineWidth = tick.width;
+    ctx.strokeStyle = tick.color;
     ctx.stroke();
 }
 
-function drawSunLight ( sol ) {
+function drawSunLight ( data ) {
+    // consider moving this into tick marks or visaversa using end markers 
+    let sunrise = new Point( parseInt( data.almanac.sun.rise ) );
+    let sunset = new Point( parseInt( data.almanac.sun.set ) );
     
-    let sunrise = new PointOnPath( timeToAngle( sol.sunrise ) );
-    let sunset = new PointOnPath( timeToAngle( sol.sunset) );
-    
-    let gradient = ctx.createRadialGradient( sunPath.x , sunPath.y , 0 , sunPath.x, sunPath.y , sunPath.radius + 1 );
+    let gradient = ctx.createRadialGradient( sunPath.cx , sunPath.cy , 0 , sunPath.cx, sunPath.cy , sunPath.radius + 1 );
     gradient.addColorStop(0.85, 'rgb(13, 13, 13');
     gradient.addColorStop(1, 'rgb(102, 87, 0)');
     
     // Sunlight slice
     ctx.beginPath();
-    ctx.moveTo( sunPath.x , sunPath.y ); // Center of circle
-    ctx.arc( sunPath.x , sunPath.y , sunPath.radius , sunrise.radians , sunset.radians );
+    ctx.moveTo( sunPath.cx , sunPath.cy ); // Center of circle
+    ctx.arc( sunPath.cx , sunPath.cy , sunPath.radius , sunrise.radians , sunset.radians );
     ctx.fillStyle = gradient;
     ctx.fill();
 }
 
-function drawSun ( sol ) {
-    
-    let sun = new PointOnPath ( timeToAngle( sol.now ) );
-    sun.sunRadius = 7;
-    sun.strA = 0; 
-    sun.endA = 2*Math.PI;
-    
+function drawSun ( data ) {
+    const point = new Point( parseInt( data.timestamp ) );
+
+    let sun = {
+        x: point.x,
+        y: point.y,
+        sunRadius: 7,
+        startAngle: 0, 
+        endAngle: 2*Math.PI,
+        color: "yellow"
+    }
     ctx.beginPath();
-    ctx.arc( sun.x, sun.y, sun.sunRadius, sun.strA, sun.endA );
-    ctx.fillStyle = 'yellow';
+    ctx.arc( sun.x, sun.y, sun.sunRadius, sun.startAngle, sun.endAngle );
+    ctx.fillStyle = sun.color;
     ctx.fill();
 }
 
-function drawMoon ( sol ) {
-    console.log( sol.moonphase + ' looking good! Keep it going!!' );
+function drawMoon ( data ) {
+    let lunarDay = {
+        now: parseInt( data.timestamp ),
+        antitransit: {
+            previous: parseInt( data.almanac.moon.antitransit.previous ),
+            next: parseInt( data.almanac.moon.antitransit.next )
+        }
+    }
+    let angle = ( ( lunarDay.now - lunarDay.antitransit.previous ) / ( lunarDay.antitransit.next - lunarDay.antitransit.previous ) ) * 360;
+    let point = new Point ( angle );
+    let moon = {
+        x: point.x,
+        y: point.y,
+        moonRadius: 5,
+        startAngle: 0,
+        endAngle: 2*Math.PI,
+        color: "white"
+    }
+    
+    ctx.beginPath();
+    ctx.arc( moon.x , moon.y , moon.moonRadius , moon.startAngle , moon.endAngle );
+    ctx.fillStyle = moon.color;
+    ctx.fill();
+}
+
+function drawMoonPhase ( data ) {
+   let phase = {
+       timestamp: parseInt( data.timestamp ),
+       timelimit: 864000,
+       percentfull: parseInt( data.almanac.moon.percentfull ),
+       newmoon: {
+           previous: parseInt( data.almanac.moon.new.previous ),
+           next: parseInt ( data.almanac.moon.new.next )
+       },
+       fullmoon: {
+           previous: parseInt( data.almanac.moon.full.previous ),
+           next: parseInt( data.almanac.moon.full.next )
+       }
+   }
+
+    if ( phase.percentfull < 50 && phase.timestamp - phase.newmoon.previous < phase.timelimit ) { 
+        console.log("new moon to first quarter");
+
+    } else if ( phase.percentfull > 50 && phase.fullmoon.next - phase.timestamp < phase.timelimit ) { 
+        console.log("first quater to full moon");
+
+    } else if ( phase.percentfull > 50 && phase.timestamp - phase.fullmoon.previous < phase.timelimit ) { 
+        console.log("full moon to last quarter");
+
+    } else if ( phase.percentfull < 50 && phase.newmoon.next - phase.timestamp < phase.timelimit ) { 
+        console.log("last quarter to new moon");
+
+    } else {
+        console.log("This can go away ....");
+    }
 }
