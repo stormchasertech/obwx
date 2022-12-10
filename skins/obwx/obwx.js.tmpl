@@ -381,7 +381,7 @@ function process_forecast ( data ) {
 ///////////////////////
 // Sun and Moon canvas 
 ///////////////////////
-console.log("Y-767");
+console.log("Y-777");
 
 // Main function: initializes and calls all drawing functions in correct order
 function drawAlmanac ( data ) {
@@ -419,8 +419,8 @@ function drawAlmanac ( data ) {
 
         // return an angle from the percent of time passed in the midnight to midnight 24hr time period
         function timeToAngle (time) {
-            let dayStart = new Date().setHours(0,0,0,0) / 1000;
-            let dayEnd = new Date().setHours(23,59,59,999) / 1000;
+            const dayStart = new Date().setHours(0,0,0,0) / 1000;
+            const dayEnd = new Date().setHours(23,59,59,999) / 1000;
             return ( ( time - dayStart ) / ( dayEnd - dayStart ) * 360 ) ;
         } 
 
@@ -441,7 +441,7 @@ function drawAlmanac ( data ) {
     }
 
     function drawTickMarks () {
-        let tick = {
+        const tick = {
             color: "rgb(128, 128, 128)",
             width: 3,
             radius: {
@@ -457,8 +457,8 @@ function drawAlmanac ( data ) {
 
         ctx.beginPath();
         for ( i = 0; i < tick.times.length; i++ ) {
-            let point1 = new Point ( tick.times[i] , sunPath.radius + tick.radius.outer );
-            let point2 = new Point ( tick.times[i] , sunPath.radius + tick.radius.inner );
+            const point1 = new Point ( tick.times[i] , sunPath.radius + tick.radius.outer );
+            const point2 = new Point ( tick.times[i] , sunPath.radius + tick.radius.inner );
             ctx.moveTo( point1.x, point1.y );
             ctx.lineTo( point2.x, point2.y );
         }
@@ -469,10 +469,10 @@ function drawAlmanac ( data ) {
 
     function drawSunLight() {
         // consider moving this into tick marks or visaversa using end markers 
-        let sunrise = new Point( parseInt( data.almanac.sun.rise ) );
-        let sunset = new Point( parseInt( data.almanac.sun.set ) );
+        const sunrise = new Point( parseInt( data.almanac.sun.rise ) );
+        const sunset = new Point( parseInt( data.almanac.sun.set ) );
 
-        let gradient = ctx.createRadialGradient( sunPath.cx , sunPath.cy , 0 , sunPath.cx, sunPath.cy , sunPath.radius + 1 );
+        const gradient = ctx.createRadialGradient( sunPath.cx , sunPath.cy , 0 , sunPath.cx, sunPath.cy , sunPath.radius + 1 );
         gradient.addColorStop(0.85, 'rgb(13, 13, 13');
         gradient.addColorStop(1, 'rgb(102, 87, 0)');
 
@@ -487,7 +487,7 @@ function drawAlmanac ( data ) {
     function drawSun() {
         const point = new Point( parseInt( data.timestamp ) );
 
-        let sun = {
+        const sun = {
             x: point.x,
             y: point.y,
             sunRadius: 7,
@@ -502,16 +502,16 @@ function drawAlmanac ( data ) {
     }
 
     function drawMoon() {
-        let lunarDay = {
+        const lunarDay = {
             now: parseInt( data.timestamp ),
             antitransit: {
                 previous: parseInt( data.almanac.moon.antitransit.previous ),
                 next: parseInt( data.almanac.moon.antitransit.next )
             }
         }
-        let angle = ( ( lunarDay.now - lunarDay.antitransit.previous ) / ( lunarDay.antitransit.next - lunarDay.antitransit.previous ) ) * 360;
-        let point = new Point ( angle );
-        let moon = {
+        const angle = ( ( lunarDay.now - lunarDay.antitransit.previous ) / ( lunarDay.antitransit.next - lunarDay.antitransit.previous ) ) * 360;
+        const point = new Point ( angle );
+        const moon = {
             x: point.x,
             y: point.y,
             moonRadius: 5,
@@ -527,10 +527,10 @@ function drawAlmanac ( data ) {
     }
 
     function drawMoonPhase() {
-        let phase = {
+        const percentfull = parseInt( data.almanac.moon.percentfull );
+        const phaseTimes = {
             timestamp: parseInt( data.timestamp ),
             timelimit: 864000,
-            percentfull: parseInt( data.almanac.moon.percentfull ),
             newmoon: {
                 previous: parseInt( data.almanac.moon.new.previous ),
                 next: parseInt ( data.almanac.moon.new.next )
@@ -540,21 +540,90 @@ function drawAlmanac ( data ) {
                 next: parseInt( data.almanac.moon.full.next )
             }
         }
+        const moon = {
+            x: sunPath.cx,
+            y: sunPath.cy-10,
+            r: 20,
+            lightColor: "rgb(139, 138, 143)",
+            darkColor: "rgb(0, 0, 0)",
+        };
 
-        if ( phase.percentfull < 50 && phase.timestamp - phase.newmoon.previous < phase.timelimit ) { 
+        // determine which quarter needs to be drawn
+        if ( percentfull == 0 ) {
+            console.log("new moon");
+
+        } else if ( percentfull < 50 && phaseTimes.timestamp - phaseTimes.newmoon.previous < phaseTimes.timelimit ) {
+            drawNewToFirst(percentfull);
             console.log("new moon to first quarter");
 
-        } else if ( phase.percentfull > 50 && phase.fullmoon.next - phase.timestamp < phase.timelimit ) { 
+        } else if ( percentfull > 50 && phaseTimes.fullmoon.next - phaseTimes.timestamp < phaseTimes.timelimit ) { 
+            drawFirstToFull(percentfull);
             console.log("first quater to full moon");
 
-        } else if ( phase.percentfull > 50 && phase.timestamp - phase.fullmoon.previous < phase.timelimit ) { 
+        } else if ( percentfull > 50 && phaseTimes.timestamp - phaseTimes.fullmoon.previous < phaseTimes.timelimit ) { 
+            drawFullToLast(percentfull);
             console.log("full moon to last quarter");
 
-        } else if ( phase.percentfull < 50 && phase.newmoon.next - phase.timestamp < phase.timelimit ) { 
+        } else if ( percentfull < 50 && phaseTimes.newmoon.next - phaseTimes.timestamp < phaseTimes.timelimit ) { 
+            drawLastToNew(percentfull);
             console.log("last quarter to new moon");
 
         } else {
-            console.log("This can go away ....");
+            console.log("Error: Moon phase not drawn");
+        }
+
+        // ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle)
+        function drawNewToFirst(percent) {
+            const radiusMod = (100-(percent*2))/100;
+            // Draw light on right side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r , moon.r , 0 , 3*Math.PI/2 , Math.PI/2 );
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+            // Draw waxing light by un-shadowing it
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r * radiusMod , moon.r , 0 , 3*Math.PI/2 , Math.PI/2 );
+            ctx.fillStyle = moon.darkColor;
+            ctx.fill();
+        }
+        function drawFirstToFull(percent) {
+            const radiusMod = 2*(percent-50)/100;
+            // Draw light on right side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r , moon.r , 0 , 3*Math.PI/2 , Math.PI/2 );
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+            // Draw waxing light on left side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r * radiusMod , moon.r , 0 , Math.PI/2, 3*Math.PI/2 ) ;
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+        }
+        function drawFullToLast(percent) {
+            const radiusMod = 2*(percent-50)/100;
+            // Draw light on left side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r , moon.r , 0 , Math.PI/2 , 3*Math.PI/2 );
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+            // Draw waning light on right side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r * radiusMod , moon.r , 0 , 3*Math.PI/2 , Math.PI/2 );
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+        }
+        function drawLastToNew(percent){
+            const radiusMod = (100-(percent*2))/100;
+            // Draw light on left side
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r , moon.r , 0 , Math.PI/2 , 3*Math.PI/2 );
+            ctx.fillStyle = moon.lightColor;
+            ctx.fill();
+            // Draw waxing light by shadowing light
+            ctx.beginPath();
+            ctx.ellipse (moon.x , moon.y , moon.r * radiusMod , moon.r , 0 , Math.PI/2 , 3*Math.PI/2 );
+            ctx.fillStyle = moon.darkColor;
+            ctx.fill();
         }
     }
 }
