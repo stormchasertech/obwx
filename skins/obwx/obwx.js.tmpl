@@ -148,8 +148,12 @@ function process_archive ( data ) {
     jQuery(".outTemp-day-low").html( data.today.outTemp.min );
 
     // Alamanac
-    jQuery(".sunrise").html( "Sunrise: " + data.almanac.sunrise );
-    jQuery(".sunset").html( "Sunset: " + data.almanac.sunset );
+    jQuery(".sunrise-time").html(dayjs( parseInt( data.almanac.sun.rise ) * 1000 ).format("h:mm"));
+    jQuery(".sunset-time").html(dayjs( parseInt(  data.almanac.sun.set ) * 1000 ).format("h:mm"));
+    jQuery(".solarnoon-time").html(dayjs( parseInt(  data.almanac.sun.transit ) * 1000 ).format("h:mm"));
+    jQuery(".moonrise-time").html(dayjs( parseInt( data.almanac.moon.rise ) * 1000 ).format("h:mm a"));
+    jQuery(".moonset-time").html(dayjs( parseInt( data.almanac.moon.set ) * 1000 ).format("h:mm a"));
+    jQuery(".moon-phase").html( data.almanac.moon.phase );
 
     // Draw sun and moon widget
     drawAlmanac( data );
@@ -542,7 +546,7 @@ function drawAlmanac ( data ) {
         }
         const moon = {
             x: sunPath.cx,
-            y: sunPath.cy-10,
+            y: sunPath.cy+20,
             r: 20,
             lightColor: "rgb(139, 138, 143)",
             darkColor: "rgb(0, 0, 0)",

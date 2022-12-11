@@ -161,6 +161,49 @@ min-height: 84px;
   font-size: 1.125rem;
 }
 
+/* Almanac Section*/
+/*.almanac {
+    background: rgb(25,25,25);
+}*/
+
+[class$="rise-label"], [class$="set-label"], .noon {
+    font-size: 1.125rem;
+
+}
+
+.sunrise, .moonrise {
+    margin-right: 40px;
+}
+.sunset, .moonset {
+    margin-left: 40px;
+}
+
+.noonrow {
+    position: relative;
+    top: -5px;
+}
+
+.sunrow {
+    position: relative;
+    top: 0px;
+}
+
+.moonrow {
+    position: relative;
+    top: 45px;
+}
+
+.phaserow {
+    position: relative;
+    top: 60px;
+}
+
+.label-position {
+    width: 400px;
+    left: 50%;
+    line-height: 1.5rem;
+}
+
 /* Wind Direction Compass*/
 
 .wind-direction-container {
