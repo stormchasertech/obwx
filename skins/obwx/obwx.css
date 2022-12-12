@@ -1,3 +1,27 @@
+.compass-rose {
+    position: relative;
+    /*left: 50%;*/
+}
+
+.compass-rose-text {
+    min-width: 60px;
+    top: 62px;
+    text-align: center;
+    font-size: 1.125rem;
+    position: absolute;
+    translate: -50%;
+}
+
+.arrow {
+    position: absolute;
+    translate: -50%;
+    transition: -webkit-transform 1s ease-in;
+}
+
+.rose { 
+    position: absolute;
+    translate: -50%;
+}
 /*Global*/
 /* {
   box-sizing: border-box;
@@ -166,8 +190,8 @@ min-height: 84px;
     background: rgb(25,25,25);
 }*/
 
-[class$="rise-label"], [class$="set-label"], .noon {
-    font-size: 1.125rem;
+[class$="rise-label"], [class$="set-label"], .noon, .moon-phase {
+    font-size: 1rem;
 
 }
 
@@ -199,7 +223,7 @@ min-height: 84px;
 }
 
 .label-position {
-    width: 400px;
+    min-width: 400px;
     left: 50%;
     line-height: 1.5rem;
 }
@@ -208,7 +232,9 @@ min-height: 84px;
 
 .wind-direction-container {
   padding-top: 10px;
-  min-width: 165px;  
+  min-width: 165px;
+  min-height: 140px;
+  left: 50%;
 }
 
 .wind-direction-observations {

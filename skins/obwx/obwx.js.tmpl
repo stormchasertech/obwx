@@ -2,13 +2,23 @@
 function debug ( msg ) {
         console.log( "Info: " + msg );
     }
+
+jQuery(document).ready(function() {
+    // Inital call to populate site with data
+    drawCompassRose();
+    drawCompassArrow();
+    get_forecast();
+    get_archive();
+    mqttconnect()
+});
+
 /////////////////////////
 // Connect to mqtt server
 /////////////////////////
-function connect() {
+function mqttconnect() {
     client = new Paho.Client("$Extras.websocket_host", $Extras.websocket_port, mqttclient);
 
-    let mqtt_options = {
+    const mqtt_options = {
         useSSL: true,
         reconnect: true,
         onSuccess: onConnect,
@@ -17,28 +27,27 @@ function connect() {
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
     client.connect( mqtt_options );
-}
 
-function onConnect () {
-    client.subscribe( "$Extras.websocket_topic" );
-    debug("Successfully connected to mqtt server");
-}
 
-function onFailure () {
-    debug("Connection to mqtt server FAILED");
-}
+    function onConnect () {
+        client.subscribe( "$Extras.websocket_topic" );
+        debug("Successfully connected to mqtt server");
+    }
 
-function onConnectionLost ( responseObject ) {
-    if ( responseObject.errorCode !== 0 ) {
-        debug("MQTT disconnected: " + responseObject.errorMessage);
+    function onFailure () {
+        debug("Connection to mqtt server FAILED");
+    }
+
+    function onConnectionLost ( responseObject ) {
+        if ( responseObject.errorCode !== 0 ) {
+            debug("MQTT disconnected: " + responseObject.errorMessage);
+        }
+    }
+
+    function onMessageArrived ( message ) {
+        process_payload ( message.payloadString  );
     }
 }
-
-// Process incoming mqtt data
-function onMessageArrived ( message ) {
-    process_payload ( message.payloadString  );
-}
-
 ///////////////////////////////////////////////////////////////////////
 // Global functions available to live, archive, and forecast data sets
 ///////////////////////////////////////////////////////////////////////
@@ -251,6 +260,9 @@ function process_forecast ( data ) {
             k_finalRotation += (k_newRotation - k_currentRotation);
             
             jQuery("." + loc + "-windDirectionArrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
+            if ( loc == "KMEM" ) {
+                jQuery(".arrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
+            }
         }
 
         // Rotate wind speed widget arrow
@@ -335,7 +347,7 @@ function process_forecast ( data ) {
         jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
 
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
-            jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
+            jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );
         } else {
             jQuery("." + location + "-wind-direction-deg").html( "--" );
         }
@@ -630,4 +642,126 @@ function drawAlmanac ( data ) {
             ctx.fill();
         }
     }
+}
+
+//////////
+// Wind Compass Rose
+// //////
+function drawCompassRose(){
+    const canvasRose = document.getElementById("rose");
+    const rose = canvasRose.getContext("2d");
+
+    const roseObj = {
+        cx: canvasRose.height/2,
+        cy: canvasRose.width/2,
+        r: 60,
+        color1: "rgb(75,57,28)",
+        divisions: 16,
+        major: {
+            inner: 0,
+            outer: 55,
+            color: "rgb(255, 215, 0)"
+        },
+        middle: {
+            inner: 0,
+            outer: 50,
+            color: "grey"
+        },
+        minor: {
+            inner: 0,
+            outer: 40,
+            color: "grey"
+        }
+    }
+
+    drawRoseTicks();
+    drawPeddles();
+    drawDegreeBox();
+
+    //     function drawRose(rose,roseObj){
+    //         //draw compass rose
+    //         //arc(x, y, radius, startAngle, endAngle, counterclockwise)
+    // 
+    function Point ( angle , radius ) {
+        // build the Point object
+        this.degrees = ( angle );
+        this.radians = ( angle + 90 ) * Math.PI / 180;
+        this.radius = radius === undefined ? roseObj.r : radius;
+        this.x = roseObj.cx + ( this.radius * Math.cos( this.radians ) );
+        this.y = roseObj.cy + ( this.radius * Math.sin( this.radians ) );
+    }
+
+    function drawRoseTicks() {
+        rose.beginPath();
+        for (let i = 0; i < 36; i++ ){
+            const p1 = new Point (10*i , roseObj.r - 2);
+            const p2 = new Point (10*i , roseObj.r + 2);
+            rose.moveTo(p1.x,p1.y);
+            rose.lineTo(p2.x,p2.y);
+        }
+        rose.lineWidth = 2;
+        rose.strokeStyle = 'grey';
+        rose.stroke();
+    }
+
+    function drawPeddles() {
+        rose.beginPath();
+        for ( let i = 0; i < roseObj.divisions; i++ ){
+            if ( i%4 == 0 ){
+                const p1 = new Point (360 / roseObj.divisions * i , roseObj.major.inner );
+                const p2 = new Point (360 / roseObj.divisions * i , roseObj.major.outer );
+                rose.moveTo(p1.x, p1.y);
+                rose.lineTo(p2.x, p2.y);
+                rose.strokeStyle = roseObj.major.color;
+                rose.lineWidth = 2;
+            } else if ( i%4 == 1 || i%4 == 3) {
+                const p1 = new Point (360 / roseObj.divisions * i , roseObj.minor.inner );
+                const p2 = new Point (360 / roseObj.divisions * i , roseObj.minor.outer );
+                rose.moveTo(p1.x, p1.y);
+                rose.lineTo(p2.x, p2.y);
+                rose.lineWidth = 2;
+                rose.strokeStyle = roseObj.minor.color;
+            } else if ( i%4 == 2 ) {
+                const p1 = new Point (360 / roseObj.divisions * i , roseObj.middle.inner );
+                const p2 = new Point (360 / roseObj.divisions * i , roseObj.middle.outer );
+                rose.moveTo(p1.x, p1.y);
+                rose.lineTo(p2.x, p2.y);
+                rose.lineWidth = 2;
+                rose.strokeStyle = roseObj.middle.color;
+            }
+        }
+        rose.strokeStyle = 'grey';
+        rose.stroke();
+    }
+
+    function drawDegreeBox () {
+        rose.beginPath();
+        rose.arc(roseObj.cx, roseObj.cy, 22, 0, 2*Math.PI);
+        rose.fillStyle = 'rgb(40,40,40)';
+        rose.fill();
+
+        rose.beginPath();
+        rose.arc(roseObj.cx, roseObj.cy, 22, 0, 2*Math.PI);
+        rose.lineWidth = 2;
+        rose.strokeStyle = 'rgb(150, 150, 150)';
+        rose.stroke();
+
+    }
+}
+function drawCompassArrow(){
+    const canvasArrow = document.getElementById("rose-arrow");
+    const arrow = canvasArrow.getContext("2d");
+
+    const arrowObj = {
+        cx: canvasArrow.height/2,
+        cy: canvasArrow.width/2,
+        r: 60,
+    }
+
+    arrow.beginPath();
+    arrow.moveTo(arrowObj.cx,arrowObj.cy-55);
+    arrow.lineTo(arrowObj.cx,arrowObj.cy-65);
+    arrow.lineWidth = 3;
+    arrow.strokeStyle = "red";
+    arrow.stroke();
 }

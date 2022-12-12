@@ -25,14 +25,14 @@
             });
 
             // Wait for page to load, then connect to mqtt data
-            jQuery(document).ready(function() {
+            //jQuery(document).ready(function() {
                 // Connect to mqtt broker
-                connect();
+                //connect();
                 // Inital call to populate site with data
-                get_forecast();
-                get_archive();
+                //get_forecast();
+                //get_archive();
                 //canvas_sunInit();
-             });
+             //});
 
         </script>
     </head>
@@ -87,13 +87,13 @@
                         </div>
                         <div class="row flex-nowrap">
                             <div class="col wind-left">
-                                <div class="wind-direction-container">
-                                    <div class="wind-compass">
-                                        <div class="wind-direction-observations">
-                                            <div class="$Extras.metar_id_1-wind-direction">---</div>
-                                            <div class="$Extras.metar_id_1-wind-direction-deg">--.-&deg;</div>
+                                <div class="wind-direction-container position-relative">
+                                    <div class="compass-rose">
+                                        <canvas id="rose" class="rose" width="150" height="150"></canvas>
+                                        <canvas id="rose-arrow" class="arrow" width="150" height="150"></canvas>
+                                        <div class="compass-rose-text">
+                                            <div class="$Extras.metar_id_1-wind-direction-deg">---</div>
                                         </div>
-                                        <div class="$Extras.metar_id_1-windDirectionArrow"></div>
                                     </div>
                                 </div>
                                 <div class="sky-container">
