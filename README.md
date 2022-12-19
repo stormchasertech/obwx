@@ -21,9 +21,11 @@ developers, folks like Belchertown developers, and myself come into play!
 ### Example
 As an example, my current OBWX display is using a 14" portable monitor with a raspberry pi zero wireless
 providing the CPU power to run the display. Previously it was displayed on a 10" monitor,
-which is a good size for the display. I will add some screenshots/pictures soon.
+which is a good size to consider. 
 
 It also displays nicely on laptops, and is built using Bootstrap 5 to provide cell phone / tablet functionality. 
+
+To avoid confusion, I should mention that the weewx software itself is running on a raspberry pi 4.
 
 ### Status
 OBWX has changed in scope a few times during its implementation, firstly as a personal (unpublished) add-on 
