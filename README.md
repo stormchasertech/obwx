@@ -20,7 +20,8 @@ developers, folks like Belchertown developers, and myself come into play!
 
 ### Example
 As an example, my current OBWX display is using a 14" portable monitor with a raspberry pi zero wireless
-providing the CPU power to run the display. I will add some screenshots/pictures soon.
+providing the CPU power to run the display. Previously it was displayed on a 10" monitor,
+which is a good size for the display. I will add some screenshots/pictures soon.
 
 It also displays nicely on laptops, and is built using Bootstrap 5 to provide cell phone / tablet functionality. 
 
@@ -45,8 +46,9 @@ Current work includes:
 * Aeries Weather account for forecast, alerts, and other observations
 
 #### Acknowledgments
-This is my first coding project and it has been an extremely fun and challenging journey. From learning linux,
-javascript, and a touch of python ... this project continues to enhanced my skill set which I can apply to 
+Outside of a couple of minor websites, this could be considered my first large coding project and it has been
+an extremely fun and challenging journey. From learning linux, javascript, and a touch of python ... 
+this project continues to enhanced my skill set which I can apply to 
 my other personal and professional projects. I need to mention the Belchertown skin as I have
 used that extension as a learning platform and it provided lots of insperation for this project. Thanks!!
 
