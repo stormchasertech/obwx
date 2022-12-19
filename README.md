@@ -1,8 +1,9 @@
 # OBWX
+*Olive Branch Weather*
 *Skin extension for [weewx](http://www.weewx.com) weather software*
 
 ## Description
-OBwx generates html, javascript, css, and json files to display live weather
+OBWX generates html, javascript, css, and json files to display live weather
 conditions, forecasts, and other observations.
 
 ### Goals
@@ -16,22 +17,16 @@ themselves so that we can have the most accurate measurements we can get for the
 do not take these criticisms as something that needs to be addressed per se. That is where the weewx
 developers, folks like Belchertown developers, and myself come into play!
 
-#### Secondary Goals
-This is my first coding project and it has been an extremely fun and challenging journey. From learning linux,
-javascript, and a touch of python ... this project continues to enhanced my skill set which I can apply to 
-my other personal and professional projects. I need to mention the Belchertown skin as I have
-used that extension as a learning platform and it provided lots of insperation for this project. Thanks!!
-
 ### Example
-As an example, my current OBwx display is using a 14" portable monitor with a raspberry pi zero wireless
+As an example, my current OBWX display is using a 14" portable monitor with a raspberry pi zero wireless
 providing the CPU power to run the display. I will add some screenshots/pictures soon.
 
 It also displays nicely on laptops, and is built using Bootstrap 5 to provide cell phone / tablet functionality. 
 
 ### Status
-OBwx has changed in scope a few times during its implementation, firstly as an add-on to the Belchertown skin, and now
-as its own stand-alone extention to weewx.
-OBwx is still in development, and will eventually have a release version.
+OBWX has changed in scope a few times during its implementation, firstly as a personal (unpublished) add-on 
+to the Belchertown skin, and now as its own stand-alone extention to weewx.
+OBWX is still in development, and will eventually have a release version.
 Current work includes:
 
 1) Changing css based graphics to HTML5 Canvas drawings and animation
@@ -42,11 +37,17 @@ Current work includes:
 3) Add/rework daily/weekly records table/section
 
 ### Prerequisites
-weewx weather software
-mqtt extension
-web server 
-mqtt broker
-Aeries Weather account for forecast, alerts, and other observations!
+* weewx weather software
+* mqtt extension
+* web server 
+* mqtt broker
+* Aeries Weather account for forecast, alerts, and other observations
+
+#### Acknowledgments
+This is my first coding project and it has been an extremely fun and challenging journey. From learning linux,
+javascript, and a touch of python ... this project continues to enhanced my skill set which I can apply to 
+my other personal and professional projects. I need to mention the Belchertown skin as I have
+used that extension as a learning platform and it provided lots of insperation for this project. Thanks!!
 
 More to come!!
 
