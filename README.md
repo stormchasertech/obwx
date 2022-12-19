@@ -1,6 +1,7 @@
 # OBWX
 *Olive Branch Weather*
-*Skin extension for [weewx](http://www.weewx.com) weather software*
+
+*A skin/theme extension for [weewx](http://www.weewx.com) weather software*
 
 ## Description
 OBWX generates html, javascript, css, and json files to display live weather
