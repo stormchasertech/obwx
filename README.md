@@ -46,6 +46,12 @@ weewx weather software
 mqtt extension
 web server 
 mqtt broker
-Aeries Weather account for forecast, alerts, and other observations
+Aeries Weather account for forecast, alerts, and other observations!
 
 More to come!!
+
+[obwx_current(small)](https://user-images.githubusercontent.com/116417003/208509364-560b3c28-fcfd-4604-a8e0-4c3a3683a616.PNG)
+
+[obwx(small)](https://user-images.githubusercontent.com/116417003/208509492-5cf0b30d-d955-4058-996a-060f51b9a92e.PNG)
+
+
