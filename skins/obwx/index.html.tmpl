@@ -1,6 +1,7 @@
 #errorCatcher Echo
 #import random
 <!DOCTYPE html>
+<html lang="en">
     <head>
         <title>Stormchaser.tech Weather</title>
 
@@ -177,8 +178,87 @@
                         </div>
                     </div>
                 </div>
+                <!--Start of Extras Row-->
+                <div class="row extras-row text-center">
+                    <div class="col-6 col-xl-4 mt-2 pt-2">
+                        <div>Records</div>
+                        <div class="archive">
+                            <span>High: </span>
+                            <span class="outTemp-day-high">--&deg;</span>
+                        </div>
+                        <div class="archive">
+                            <span>Low: </span>
+                            <span class="outTemp-day-low">--&deg;</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-4 mt-2 pt-2">
+                        <div>Extra Sensors</div>
+                        <div class="extraTemp1">--</div>
+                        <div class="extraTemp2">--</div>
+                        <div class="inTemp">--</div>
+                    </div>
+                    <!--div class="col-6 col-xl-3 mt-2 pt-2 border-top">
+                        <div>Airport Data</div>
+                        <div class="airport1-id">---</div>
+                        <div class="airport1-temp">---</div>
+                    </div-->
+                    <div class="col-6 col-xl-4 pt-2">
+                         <div class="almanac position-relative">
+                             <div class="label-position position-absolute translate-middle-x">
+                                 <div class="row noonrow">
+                                     <div class="col">
+                                         <div class="noon">
+                                             <span class="daylight-label">Daylight: </span>
+                                             <span class="daylight-time">-:--</span>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="row sunrow">
+                                     <div class="col">
+                                         <div class="sunrise pb-2 border-bottom">
+                                             <span class="sunrise-time">-:--</span>
+                                             <br>
+                                             <span class="sunrise-label">Sunrise</span>
+                                         </div>
+                                     </div>
+                                     <div class="col">
+                                         <div class="sunset pb-2 border-bottom">
+                                             <span class="sunset-time">-:--</span>
+                                             <br>
+                                             <span class="sunset-label">Sunset</span>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="row moonrow">
+                                     <div class="col">
+                                         <div class="moonrise">
+                                             <span class="moonrise-label">Moonrise</span>
+                                             <br>
+                                             <span class="moonrise-time">-:--</span>
+                                         </div>
+                                     </div>
+                                     <div class="col">
+                                         <div class="moonset">
+                                             <span class="moonset-label">Moonset</span>
+                                             <br>
+                                             <span class="moonset-time">-:--</span>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="row phaserow">
+                                     <div class="col">
+                                         <div class="moon-phase">---</div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="sun-n-moon">
+                                 <canvas id="arcs" height="160" width="160"></canvas>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
                 <!-- Start of Forecast Row -->
-                <div class="row bottom-row justify-content-center">
+                <div class="row bottom-row justify-content-center border-top">
                     <div class="col-xl pt-2">
                         <!-- Container for periods 0 & 1 -->
                         <div class="row flex-nowrap">
@@ -433,85 +513,6 @@
                         </div>
                     </div>
                 </div>
-                <!--Start of Extras Row-->
-                <div class="row extras-row text-center">
-                    <div class="col-6 col-xl-4 mt-2 pt-2 border-top">
-                        <div>Records</div>
-                        <div class="archive">
-                            <span>High: </span>
-                            <span class="outTemp-day-high">--&deg;</span>
-                        </div>
-                        <div class="archive">
-                            <span>Low: </span>
-                            <span class="outTemp-day-low">--&deg;</span>
-                        </div>
-                    </div>
-                    <div class="col-6 col-xl-4 mt-2 pt-2 border-top">
-                        <div>Extra Sensors</div>
-                        <div class="extraTemp1">--</div>
-                        <div class="extraTemp2">--</div>
-                        <div class="inTemp">--</div>
-                    </div>
-                    <!--div class="col-6 col-xl-3 mt-2 pt-2 border-top">
-                        <div>Airport Data</div>
-                        <div class="airport1-id">---</div>
-                        <div class="airport1-temp">---</div>
-                    </div-->
-                    <div class="col-6 col-xl-4 mt-2 pt-2 border-top">
-                         <div class="almanac position-relative">
-                             <div class="label-position position-absolute translate-middle-x">
-                                 <div class="row noonrow">
-                                     <div class="col">
-                                         <div class="noon">
-                                             <span class="solarnoon-label">Noon: </span>
-                                             <span class="solarnoon-time">-:--</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row sunrow">
-                                     <div class="col">
-                                         <div class="sunrise">
-                                             <span class="sunrise-time">-:--</span>
-                                             <br>
-                                             <span class="sunrise-label">Sunrise</span>
-                                         </div>
-                                     </div>
-                                     <div class="col">
-                                         <div class="sunset">
-                                             <span class="sunset-time">-:--</span>
-                                             <br>
-                                             <span class="sunset-label">Sunset</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row moonrow">
-                                     <div class="col">
-                                         <div class="moonrise">
-                                             <span class="moonrise-time">-:--</span>
-                                             <br>
-                                             <span class="moonrise-label">Moonrise</span>
-                                         </div>
-                                     </div>
-                                     <div class="col">
-                                         <div class="moonset">
-                                             <span class="moonset-time">-:--</span>
-                                             <br>
-                                             <span class="moonset-label">Moonset</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row phaserow">
-                                     <div class="col">
-                                         <div class="moon-phase">---</div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="sun-n-moon">
-                                 <canvas id="arcs" height="200" width="200"></canvas>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
                 <!--End of Rows-->  
             </div>
         </main>

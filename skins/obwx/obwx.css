@@ -1,3 +1,7 @@
+.sun-n-moon {
+    padding-top: 10px;
+}
+
 .compass-rose {
     position: relative;
     /*left: 50%;*/
@@ -135,6 +139,7 @@ min-height: 84px;
 
 .extras-row {
   font-size: 1.25rem;
+  min-height: 200px;
 }
 
 /* Clean this up */
@@ -195,11 +200,27 @@ min-height: 84px;
 
 }
 
+[class$="rise-time"], [class$="set-time"] {
+    font-size: 1.25rem;
+}
+
 .sunrise, .moonrise {
-    margin-right: 40px;
+    margin-right: 10px;
+    line-height: 1.35rem;
 }
 .sunset, .moonset {
-    margin-left: 40px;
+    margin-left: 10px;
+    line-height: 1.35rem;
+}
+
+.sunrise, .sunset {
+    width: 35%;
+    margin: auto;
+}
+
+.moonrise, .moonset {
+    width: 45%;
+    margin: auto;
 }
 
 .noonrow {
@@ -209,17 +230,17 @@ min-height: 84px;
 
 .sunrow {
     position: relative;
-    top: 0px;
+    top: 20px;
 }
 
 .moonrow {
     position: relative;
-    top: 45px;
+    top: 25px;
 }
 
 .phaserow {
     position: relative;
-    top: 60px;
+    top: 40px;
 }
 
 .label-position {

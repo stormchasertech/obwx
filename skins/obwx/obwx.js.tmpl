@@ -157,12 +157,23 @@ function process_archive ( data ) {
     jQuery(".outTemp-day-low").html( data.today.outTemp.min );
 
     // Alamanac
+    const daylightRaw = parseInt(data.almanac.sun.daylight);
+    const daylight = {
+        hrs: parseInt( daylightRaw / 3600 ),
+        mins: parseInt( daylightRaw / 3600 % 1 * 60 ),
+        secs: parseInt( daylightRaw / 3600 % 1 * 60 % 1 * 60 )
+    }
+    console.log(daylightRaw, daylight);
     jQuery(".sunrise-time").html(dayjs( parseInt( data.almanac.sun.rise ) * 1000 ).format("h:mm"));
     jQuery(".sunset-time").html(dayjs( parseInt(  data.almanac.sun.set ) * 1000 ).format("h:mm"));
-    jQuery(".solarnoon-time").html(dayjs( parseInt(  data.almanac.sun.transit ) * 1000 ).format("h:mm"));
+    jQuery(".daylight-time").html( daylight.hrs + "hrs " + daylight.mins + "mins");
     jQuery(".moonrise-time").html(dayjs( parseInt( data.almanac.moon.rise ) * 1000 ).format("h:mm a"));
     jQuery(".moonset-time").html(dayjs( parseInt( data.almanac.moon.set ) * 1000 ).format("h:mm a"));
-    jQuery(".moon-phase").html( data.almanac.moon.phase );
+    if ( data.almanac.moon.phase == "New" ) {
+        jQuery(".moon-phase").html( data.almanac.moon.phase + " Moon");
+    } else {
+        jQuery(".moon-phase").html( data.almanac.moon.phase );
+    }
 
     // Draw sun and moon widget
     drawAlmanac( data );
@@ -399,7 +410,7 @@ function process_forecast ( data ) {
 ///////////////////////
 console.log("Y-777");
 
-// Main function: initializes and calls all drawing functions in correct order
+// Initialize and call all drawing functions in correct order
 function drawAlmanac ( data ) {
     const canvasSunPath = document.querySelector('#arcs');
     const ctx = canvasSunPath.getContext('2d');
@@ -409,7 +420,7 @@ function drawAlmanac ( data ) {
     sunPath = {
         cx: canvasSunPath.width / 2,
         cy: canvasSunPath.height / 2,
-        radius: 70,
+        radius: 60,
         strA: 0,
         endA: Math.PI * 2
     };
@@ -435,8 +446,11 @@ function drawAlmanac ( data ) {
 
         // return an angle from the percent of time passed in the midnight to midnight 24hr time period
         function timeToAngle (time) {
-            const dayStart = new Date().setHours(0,0,0,0) / 1000;
-            const dayEnd = new Date().setHours(23,59,59,999) / 1000;
+            //const dayStart = new Date().setHours(0,0,0,0) / 1000;
+            //const dayEnd = new Date().setHours(23,59,59,999) / 1000;
+            const dayStart = data.almanac.sun.antitransit.previous;
+            const dayEnd = data.almanac.sun.antitransit.next;
+            console.log(dayStart, dayEnd);
             return ( ( time - dayStart ) / ( dayEnd - dayStart ) * 360 ) ;
         } 
 
@@ -654,7 +668,7 @@ function drawCompassRose(){
     const roseObj = {
         cx: canvasRose.height/2,
         cy: canvasRose.width/2,
-        r: 60,
+        r: 70,
         color1: "rgb(75,57,28)",
         divisions: 16,
         major: {
@@ -746,6 +760,13 @@ function drawCompassRose(){
         rose.strokeStyle = 'rgb(150, 150, 150)';
         rose.stroke();
 
+        // Enable this when re-configuring this for live data
+        // rose.font = "20px lucida";
+        // rose.textAlign = "center";
+        // rose.textBaseline = "middle";
+        // rose.fillStyle = "white";
+        // rose.fillText( windDir, roseObj.cx, roseObj.cy );
+
     }
 }
 function drawCompassArrow(){
@@ -755,12 +776,12 @@ function drawCompassArrow(){
     const arrowObj = {
         cx: canvasArrow.height/2,
         cy: canvasArrow.width/2,
-        r: 60,
+        r: 70,
     }
 
     arrow.beginPath();
-    arrow.moveTo(arrowObj.cx,arrowObj.cy-55);
-    arrow.lineTo(arrowObj.cx,arrowObj.cy-65);
+    arrow.moveTo(arrowObj.cx,arrowObj.cy-65);
+    arrow.lineTo(arrowObj.cx,arrowObj.cy-75);
     arrow.lineWidth = 3;
     arrow.strokeStyle = "red";
     arrow.stroke();

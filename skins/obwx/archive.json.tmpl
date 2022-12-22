@@ -1,5 +1,6 @@
 #encoding UTF-8
 #errorCatcher Echo
+#set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
 {
     "timestamp": "$current.dateTime.raw",
     "station": {
@@ -20,7 +21,12 @@
         "sun": {
             "rise": "$almanac.sun.rise.raw",
             "transit": "$almanac.sun.transit.raw",
-            "set": "$almanac.sun.set.raw"
+            "set": "$almanac.sun.set.raw",
+            "daylight": "$daylight",
+            "antitransit": {
+                "previous": "$almanac.sun.previous_antitransit.raw",
+                "next": "$almanac.sun.next_antitransit.raw"
+            }
         },
         "moon": {
             "rise": "$almanac.moon.rise.raw",
