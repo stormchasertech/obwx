@@ -356,7 +356,10 @@ function process_forecast ( data ) {
         jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
         jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
         jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
-
+        jQuery("." + location + "-appTemp").html("App Temp: " + data.observations[0].response[i].ob.feelslikeF + "&deg;");
+        jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
+        console.log("data:" + data.observations[0].response[i].ob.feelslikeF);
+        
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
             jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );
         } else {
