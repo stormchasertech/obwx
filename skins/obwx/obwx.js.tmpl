@@ -1,7 +1,7 @@
 // Makeshift debug function
 function debug ( msg ) {
-        console.log( "Info: " + msg );
-    }
+    console.log( "Info: " + msg );
+}
 
 jQuery(document).ready(function() {
     // Inital call to populate site with data
@@ -52,31 +52,44 @@ function mqttconnect() {
 // Global functions available to live, archive, and forecast data sets
 ///////////////////////////////////////////////////////////////////////
 
-// Colorize Temps
-function colorizeTemp ( temp ) {
-    if ( temp >= 100 ) { return "rgb(223, 71, 150)"; }
-    if ( temp >= 95 ) { return "rgb(221, 0, 0)"; }
-    if ( temp >= 90 ) { return "rgb(232, 55, 0)"; }
-    if ( temp >= 85 ) { return "rgb(242, 109, 0)"; }
-    if ( temp >= 80 ) { return "rgb(253, 164, 0)"; }
-    if ( temp >= 75 ) { return "rgb(244, 185, 0)"; }
-    if ( temp >= 70 ) { return "rgb(236, 206, 0)"; }
-    if ( temp >= 65 ) { return "rgb(227, 227, 0)"; }
-    if ( temp >= 60 ) { return "rgb(151, 210, 15)"; }
-    if ( temp >= 55 ) { return "rgb(76, 193, 29)"; }
-    if ( temp >= 50 ) { return "rgb(0, 176, 44)"; }
-    if ( temp >= 45 ) { return "rgb(0, 173, 167)"; }
-    if ( temp >= 40 ) { return "rgb(0, 171, 220)"; }
-    if ( temp >= 35 ) { return "rgb(0, 170, 255)"; }
-    if ( temp >= 30 ) { return "rgb(59, 187, 248)"; }
-    if ( temp >= 25 ) { return "rgb(117, 203, 241)"; }
-    if ( temp >= 20 ) { return "rgb(176, 220, 234)"; }
-    if ( temp >= 15 ) { return "rgb(160, 190, 239)"; }
-    if ( temp >= 10 ) { return "rgb(144, 160, 243)"; }
-    if ( temp >=  5 ) { return "rgb(128, 130, 248)"; }
-    if ( temp >=  0 ) { return "rgb(155, 131, 247)"; }
-    if ( temp < 0 ) { return "rgb(181, 132, 247)"; }
-}
+    // Colorize Temps
+    function colorizeTemp ( temp ) {
+        if ( temp >= 120 ) { return "rgb(160,0,128)"; }
+        if ( temp >= 115 ) { return "rgb(176,0,112)"; }
+        if ( temp >= 110 ) { return "rgb(192,0,96)"; }
+        if ( temp >= 105 ) { return "rgb(208,0,80)"; }
+        if ( temp >= 100 ) { return "rgb(224,0,60)"; }
+        if ( temp >= 95 ) { return "rgb(225,0,0)"; }
+        if ( temp >= 90 ) { return "rgb(225,86,25)"; }
+        if ( temp >= 85 ) { return "rgb(240,128,50)"; }
+        if ( temp >= 80 ) { return "rgb(240,160,70)"; }
+        if ( temp >= 75 ) { return "rgb(228,196,85)"; }
+        if ( temp >= 70 ) { return "rgb(240,228,85)"; }
+        if ( temp >= 65 ) { return "rgb(212,240,60)"; }
+        if ( temp >= 60 ) { return "rgb(160,240,0)"; }
+        if ( temp >= 55 ) { return "rgb(0,240,0)"; }
+        if ( temp >= 50 ) { return "rgb(0,240,144)"; }
+        if ( temp >= 45 ) { return "rgb(0,224,176)"; }
+        if ( temp >= 40 ) { return "rgb(0,208,208)"; }
+        if ( temp >= 35 ) { return "rgb(32,196,240)"; }
+        if ( temp >= 30 ) { return "rgb(64,160,240)"; }
+        if ( temp >= 25 ) { return "rgb(64,128,240)"; }
+        if ( temp >= 20 ) { return "rgb(64,64,255)"; }
+        if ( temp >= 15 ) { return "rgb(128,0,255)"; }
+        if ( temp >= 10 ) { return "rgb(144,32,224)"; }
+        if ( temp >= 5 ) { return "rgb(160,32,208)"; }
+        if ( temp >= 0 ) { return "rgb(176,32,192)"; }
+        if ( temp >= -5 ) { return "rgb(160,64,176)"; }
+        if ( temp >= -10 ) { return "rgb(144,96,160)"; }
+        if ( temp >= -15 ) { return "rgb(128,112,14)"; }
+        if ( temp >= -20 ) { return "rgb(144,128,160)"; }
+        if ( temp >= -25 ) { return "rgb(160,144,176)"; }
+        if ( temp >= -30 ) { return "rgb(176,160,192)"; }
+        if ( temp >= -35 ) { return "rgb(200,181,200)"; }
+        if ( temp >= -40 ) { return "rgb(219,210,220)"; }
+        if ( temp >= -45 ) { return "rgb(220,220,225)"; }
+        if ( temp >= -50 ) { return "rgb(240,240,240)"; }
+    }
 
 /////////////////////
 // Process Live Data
@@ -203,7 +216,7 @@ function process_forecast ( data ) {
         let wx_alert_html = "";
         // Build alerts HTML
         for ( let i = 0; i < data.alerts[0].response.length; i++ ) {
-            
+
             let wx_alert = data.alerts[0].response[i].details.name;
             let wx_alert_start = dayjs(new Date( data.alerts[0].response[i].timestamps.beginsISO )).format('ddd h:mm A');
             let wx_alert_end = dayjs(new Date( data.alerts[0].response[i].timestamps.expiresISO )).format('ddd h:mm A');
@@ -257,19 +270,19 @@ function process_forecast ( data ) {
         // Rotate wind direction widgit arrow
         function rotateWindDir ( loc , k_newRotation ) {
             if ( k_newRotation == "N/A") { return; }
-            
+
             let k_currentRotation;
             let k_finalRotation;
-            
+
             k_finalRotation = k_finalRotation || 0; // if k_finalRotation undefined or 0, make 0, else k_finalRotation
             k_currentRotation = k_finalRotation % 360;
-            
+
             if ( k_currentRotation < 0 ) { k_currentRotation += 360; }
             if ( k_currentRotation < 180 && (k_newRotation > (k_currentRotation + 180)) ) { k_finalRotation -= 360; }
             if ( k_currentRotation >= 180 && (k_newRotation <= (k_currentRotation - 180)) ) { k_finalRotation += 360; }
-            
+
             k_finalRotation += (k_newRotation - k_currentRotation);
-            
+
             jQuery("." + loc + "-windDirectionArrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
             if ( loc == "KMEM" ) {
                 jQuery(".arrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
@@ -329,7 +342,7 @@ function process_forecast ( data ) {
 
             let rawSplit = raw.split(" ");
             let sky_html = "Sky:";
-            
+
             for ( let j = 0; j < rawSplit.length; j++ ) {
                 if ( rawSplit[j].slice(0,3) === "FEW" || rawSplit[j].slice(0,3) === "SCT"  || rawSplit[j].slice(0,3) === "BKN" || rawSplit[j].slice(0,3) === "OVC" ) {
                     sky_html += " " + rawSplit[j];
@@ -337,7 +350,7 @@ function process_forecast ( data ) {
                     sky_html += " Clear";
                 }
             }
-            
+
             jQuery("." + loc + "-sky").html( sky_html );
         }
 
@@ -359,7 +372,7 @@ function process_forecast ( data ) {
         jQuery("." + location + "-appTemp").html( data.observations[0].response[i].ob.feelslikeF + "&deg;");
         jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
         console.log("data:" + data.observations[0].response[i].ob.feelslikeF);
-        
+
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
             jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );
         } else {
@@ -429,9 +442,9 @@ function drawAlmanac ( data ) {
     };
     ctx.clearRect( 0 , 0, canvasSunPath.width , canvasSunPath.height );
 
-    drawTickMarks();
     drawSunPath();
-    drawSunLight();
+    drawTickMarks();
+    //drawSunLight();
     drawSun();
     drawMoon();
     drawMoonPhase();
@@ -469,35 +482,62 @@ function drawAlmanac ( data ) {
         ctx.beginPath();
         ctx.arc( sunPath.cx, sunPath.cy, sunPath.radius, sunPath.strA, sunPath.endA );
         ctx.lineWidth = 2;
-        ctx.strokeStyle = 'rgb(80, 80, 80)';
+        ctx.strokeStyle = 'rgb(20, 20, 20)';
         ctx.stroke();
     }
 
     function drawTickMarks () {
-        const tick = {
-            color: "rgb(128, 128, 128)",
-            width: 3,
-            radius: {
-                inner: 1,
-                outer: 8
-            },
-            times: [
-                parseInt( data.almanac.sun.rise ),
-                parseInt( data.almanac.sun.set ),
-                parseInt( data.almanac.sun.transit )
-            ]
-        }
+        const innerRadius = 2;
+         const outerRadius = 9;
+         const riseTick = {
+             innerPoint: new Point( parseInt( data.almanac.sun.rise ), sunPath.radius + innerRadius ),
+             outerPoint: new Point( parseInt( data.almanac.sun.rise ), sunPath.radius + outerRadius )
+         };
+         const setTick = {
+             innerPoint: new Point( parseInt( data.almanac.sun.set ), sunPath.radius + innerRadius ),
+             outerPoint: new Point( parseInt( data.almanac.sun.set ), sunPath.radius + outerRadius )
+         };
+         const noonTick = {
+             innerPoint: new Point( parseInt( data.almanac.sun.transit ), sunPath.radius + innerRadius ),
+             outerPoint: new Point( parseInt( data.almanac.sun.transit ), sunPath.radius + outerRadius )
+         };
+         ctx.beginPath();
+         ctx.arc( sunPath.cx, sunPath.cy, sunPath.radius + innerRadius, riseTick.innerPoint.radians, setTick.innerPoint.radians );
+         console.log ( sunPath.cx, sunPath.cy, sunPath.radius + innerRadius, riseTick.innerPoint.radians, setTick.innerPoint.radians );
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = "rgb(255, 215, 0)";
+         ctx.stroke();
 
-        ctx.beginPath();
-        for ( i = 0; i < tick.times.length; i++ ) {
-            const point1 = new Point ( tick.times[i] , sunPath.radius + tick.radius.outer );
-            const point2 = new Point ( tick.times[i] , sunPath.radius + tick.radius.inner );
-            ctx.moveTo( point1.x, point1.y );
-            ctx.lineTo( point2.x, point2.y );
-        }
-        ctx.lineWidth = tick.width;
-        ctx.strokeStyle = tick.color;
-        ctx.stroke();
+         ctx.beginPath();
+         ctx.moveTo( riseTick.innerPoint.x, riseTick.innerPoint.y );
+         ctx.lineTo( riseTick.outerPoint.x, riseTick.outerPoint.y );
+         ctx.lineWidth = 1;
+         ctx.stroke();
+
+        // const tick = {
+        //     color: "rgb(128, 128, 128)",
+        //     width: 3,
+        //     radius: {
+        //         inner: 1,
+        //         outer: 8
+        //     },
+        //     times: [
+        //         parseInt( data.almanac.sun.rise ),
+        //         parseInt( data.almanac.sun.set ),
+        //         parseInt( data.almanac.sun.transit )
+        //     ]
+        // }
+
+        // ctx.beginPath();
+        // for ( i = 0; i < tick.times.length; i++ ) {
+        //     const point1 = new Point ( tick.times[i] , sunPath.radius + tick.radius.outer );
+        //     const point2 = new Point ( tick.times[i] , sunPath.radius + tick.radius.inner );
+        //     ctx.moveTo( point1.x, point1.y );
+        //     ctx.lineTo( point2.x, point2.y );
+        // }
+        // ctx.lineWidth = tick.width;
+        // ctx.strokeStyle = tick.color;
+        // ctx.stroke();
     }
 
     function drawSunLight() {
