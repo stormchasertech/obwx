@@ -322,7 +322,7 @@ min-height: 84px;
   text-align: center;
 }
 
-[class$="-wind-speed-mph"] {
+[class$="wind-speed-mph"] {
   font-size: 2.063rem;
   padding-top: 30px;
   /*display: block;*/
@@ -367,7 +367,7 @@ top: -2px;
   margin-left: 137px;
 }
 
-[class$="-wind-speed-arrow"] {
+[class$="wind-speed-arrow"], .windometer-arrow {
 width: 100%;
 height: 200%;
 display: block;
@@ -377,7 +377,7 @@ transition: -webkit-transform 1s ease-in;
 /* background-color: blue; Enable to see how arrow lines up (use 0 degree rotation)*/
 }
 
-[class$="-wind-speed-arrow"]:after {
+[class$="wind-speed-arrow"]:after, .windometer-arrow:after {
 content: "";
 width: 0;
 height: 0;
@@ -458,7 +458,7 @@ z-index: 99;
   z-index: 90;
 }
 
-.windometer-tickmark-recent { 
+.windometer-tickmark-recentHi { 
   width: 100%; /*No changes needed*/
   height: 200%; /*No changes needed*/
   display: block;
@@ -467,7 +467,7 @@ z-index: 99;
   transition: -webkit-transform 1s ease-in;
 }
 
-.windometer-tickmark-recent:after {
+.windometer-tickmark-recentHi:after {
   content: "";
   width: 0;
   height: 0;

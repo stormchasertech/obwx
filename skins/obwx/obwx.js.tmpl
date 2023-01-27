@@ -52,44 +52,86 @@ function mqttconnect() {
 // Global functions available to live, archive, and forecast data sets
 ///////////////////////////////////////////////////////////////////////
 
-    // Colorize Temps
-    function colorizeTemp ( temp ) {
-        if ( temp >= 120 ) { return "rgb(160,0,128)"; }
-        if ( temp >= 115 ) { return "rgb(176,0,112)"; }
-        if ( temp >= 110 ) { return "rgb(192,0,96)"; }
-        if ( temp >= 105 ) { return "rgb(208,0,80)"; }
-        if ( temp >= 100 ) { return "rgb(224,0,60)"; }
-        if ( temp >= 95 ) { return "rgb(225,0,0)"; }
-        if ( temp >= 90 ) { return "rgb(225,86,25)"; }
-        if ( temp >= 85 ) { return "rgb(240,128,50)"; }
-        if ( temp >= 80 ) { return "rgb(240,160,70)"; }
-        if ( temp >= 75 ) { return "rgb(228,196,85)"; }
-        if ( temp >= 70 ) { return "rgb(240,228,85)"; }
-        if ( temp >= 65 ) { return "rgb(212,240,60)"; }
-        if ( temp >= 60 ) { return "rgb(160,240,0)"; }
-        if ( temp >= 55 ) { return "rgb(0,240,0)"; }
-        if ( temp >= 50 ) { return "rgb(0,240,144)"; }
-        if ( temp >= 45 ) { return "rgb(0,224,176)"; }
-        if ( temp >= 40 ) { return "rgb(0,208,208)"; }
-        if ( temp >= 35 ) { return "rgb(32,196,240)"; }
-        if ( temp >= 30 ) { return "rgb(64,160,240)"; }
-        if ( temp >= 25 ) { return "rgb(64,128,240)"; }
-        if ( temp >= 20 ) { return "rgb(64,64,255)"; }
-        if ( temp >= 15 ) { return "rgb(128,0,255)"; }
-        if ( temp >= 10 ) { return "rgb(144,32,224)"; }
-        if ( temp >= 5 ) { return "rgb(160,32,208)"; }
-        if ( temp >= 0 ) { return "rgb(176,32,192)"; }
-        if ( temp >= -5 ) { return "rgb(160,64,176)"; }
-        if ( temp >= -10 ) { return "rgb(144,96,160)"; }
-        if ( temp >= -15 ) { return "rgb(128,112,14)"; }
-        if ( temp >= -20 ) { return "rgb(144,128,160)"; }
-        if ( temp >= -25 ) { return "rgb(160,144,176)"; }
-        if ( temp >= -30 ) { return "rgb(176,160,192)"; }
-        if ( temp >= -35 ) { return "rgb(200,181,200)"; }
-        if ( temp >= -40 ) { return "rgb(219,210,220)"; }
-        if ( temp >= -45 ) { return "rgb(220,220,225)"; }
-        if ( temp >= -50 ) { return "rgb(240,240,240)"; }
+// Colorize Temps
+function colorizeTemp ( temp ) {
+    if ( temp >= 120 ) { return "rgb(160,0,128)"; }
+    if ( temp >= 115 ) { return "rgb(176,0,112)"; }
+    if ( temp >= 110 ) { return "rgb(192,0,96)"; }
+    if ( temp >= 105 ) { return "rgb(208,0,80)"; }
+    if ( temp >= 100 ) { return "rgb(224,0,60)"; }
+    if ( temp >= 95 ) { return "rgb(225,0,0)"; }
+    if ( temp >= 90 ) { return "rgb(225,86,25)"; }
+    if ( temp >= 85 ) { return "rgb(240,128,50)"; }
+    if ( temp >= 80 ) { return "rgb(240,160,70)"; }
+    if ( temp >= 75 ) { return "rgb(228,196,85)"; }
+    if ( temp >= 70 ) { return "rgb(240,228,85)"; }
+    if ( temp >= 65 ) { return "rgb(212,240,60)"; }
+    if ( temp >= 60 ) { return "rgb(160,240,0)"; }
+    if ( temp >= 55 ) { return "rgb(0,240,0)"; }
+    if ( temp >= 50 ) { return "rgb(0,240,144)"; }
+    if ( temp >= 45 ) { return "rgb(0,224,176)"; }
+    if ( temp >= 40 ) { return "rgb(0,208,208)"; }
+    if ( temp >= 35 ) { return "rgb(32,196,240)"; }
+    if ( temp >= 30 ) { return "rgb(64,160,240)"; }
+    if ( temp >= 25 ) { return "rgb(64,128,240)"; }
+    if ( temp >= 20 ) { return "rgb(64,64,255)"; }
+    if ( temp >= 15 ) { return "rgb(128,0,255)"; }
+    if ( temp >= 10 ) { return "rgb(144,32,224)"; }
+    if ( temp >= 5 ) { return "rgb(160,32,208)"; }
+    if ( temp >= 0 ) { return "rgb(176,32,192)"; }
+    if ( temp >= -5 ) { return "rgb(160,64,176)"; }
+    if ( temp >= -10 ) { return "rgb(144,96,160)"; }
+    if ( temp >= -15 ) { return "rgb(128,112,14)"; }
+    if ( temp >= -20 ) { return "rgb(144,128,160)"; }
+    if ( temp >= -25 ) { return "rgb(160,144,176)"; }
+    if ( temp >= -30 ) { return "rgb(176,160,192)"; }
+    if ( temp >= -35 ) { return "rgb(200,181,200)"; }
+    if ( temp >= -40 ) { return "rgb(219,210,220)"; }
+    if ( temp >= -45 ) { return "rgb(220,220,225)"; }
+    if ( temp >= -50 ) { return "rgb(240,240,240)"; }
+}
+
+// https://stackoverflow.com/a/19872672/1177153
+var finalRotation;
+function rotateThis(newRotation) {
+    if ( newRotation == "N/A") { return; }
+
+    finalRotation = finalRotation || 0; // if finalRotation undefined or 0, make 0, else finalRotation
+    let currentRotation = finalRotation % 360;
+
+    if ( currentRotation < 0 ) { currentRotation += 360; }
+    if ( currentRotation < 180 && (newRotation > (currentRotation + 180)) ) { finalRotation -= 360; }
+    if ( currentRotation >= 180 && (newRotation <= (currentRotation - 180)) ) { finalRotation += 360; }
+
+    finalRotation += (newRotation - currentRotation);
+    jQuery(".arrow").css( "transform", "rotate(" + finalRotation + "deg)" );
+}
+
+var windometerMax = 10;
+function rotateSpd(data) {
+    // Highest wind in last hour
+    let lastHourWindMaximum = parseFloat(windometerMax);
+    let windCurrent = data;
+    let scaleMax = 20;
+
+    if ( lastHourWindMaximum > scaleMax ) {
+        scaleMax = lastHourWindMaximum;
     }
+
+    jQuery(".windometer-max").html( scaleMax );
+
+    // Convert speeds into angles
+    let windSpeedometer = ( windCurrent / scaleMax * 180 ) - 90;
+    let windSpeedometerHi = ( lastHourWindMaximum / scaleMax * 180 ) - 90;
+
+    // Keep the meter from over-shooting
+    if ( windSpeedometer > 90 ) {
+        windSpeedometer = 90;
+    }
+
+    jQuery(".windometer-arrow").css( "transform", "rotate(" + windSpeedometer + "deg)" );
+    jQuery(".windometer-tickmark-recentHi").css( "transform", "rotate(" + windSpeedometerHi + "deg)" );
+}
 
 /////////////////////
 // Process Live Data
@@ -115,44 +157,56 @@ function process_payload ( data ) {
     jQuery(".websocket-date").html( status_date );
     jQuery(".websocket-time").html( status_time );
 
-    if ( data.hasOwnProperty( 'barometer_inHg' ) ) {
-        jQuery(".barometer").html("Barometer: " + parseFloat( data.barometer_inHg ).toFixed(2) );
+    if ( data.hasOwnProperty( 'altimeter' ) ) {
+        jQuery('.altimeter').html( data.altimeter );
     }
-
+    if ( data.hasOwnProperty( 'appTemp_F' ) ) {
+        jQuery('.feels-like').html( parseFloat(data.appTemp_F).toFixed(1) + '<sup>&deg;</sup>' );
+    }
+    if ( data.hasOwnProperty('barometer_inHg') ) {
+        jQuery('.barometer').html('Barometer: ' + parseFloat( data.barometer_inHg ).toFixed(2) );
+    }
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
-        jQuery(".dewpoint").html("Dewpoint: " +  parseFloat( data.dewpoint_F ).toFixed(1) + "&deg;" );
+        jQuery('.dewpoint').html('Dewpoint: ' +  parseFloat( data.dewpoint_F ).toFixed(1) + '&deg;' );
     }
-
     if ( data.hasOwnProperty( 'extraHumid1' ) ) {
-        jQuery(".extraHumid1").html("extraHumid1: " +  parseFloat( data.extraHumid1 ).toFixed(0) );
+        jQuery('.extraHumid1').html('extraHumid1: ' +  parseFloat( data.extraHumid1 ).toFixed(0) );
     }
     if ( data.hasOwnProperty( 'extraHumid2' ) ) {
-        jQuery(".extraHumid2").html("extraHumid2: " +  parseFloat( data.extraHumid2 ).toFixed(0) );
+        jQuery('.extraHumid2').html('extraHumid2: ' +  parseFloat( data.extraHumid2 ).toFixed(0) );
     }
-
     if ( data.hasOwnProperty( 'extraTemp1_F' ) ) {
-        jQuery(".extraTemp1").html("Living Area: " +  parseFloat( data.extraTemp1_F ).toFixed(1) );
+        jQuery('.extraTemp1').html('Living Area: ' +  parseFloat( data.extraTemp1_F ).toFixed(1) );
     }
     if ( data.hasOwnProperty( 'extraTemp2_F' ) ) {
-        jQuery(".extraTemp2").html("Bedroom: " +  parseFloat( data.extraTemp2_F ).toFixed(1) );
+        jQuery('.extraTemp2').html('Bedroom: ' +  parseFloat( data.extraTemp2_F ).toFixed(1) );
     }
-
     if ( data.hasOwnProperty( 'inDewpoint_F' ) ) {
-        jQuery(".inDewpoint").html("inDewpoint: " +  parseFloat( data.inDewpoint_F ).toFixed(1) );
+        jQuery('.inDewpoint').html('inDewpoint: ' +  parseFloat( data.inDewpoint_F ).toFixed(1) );
     }
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
-        jQuery(".inHumidity").html("Raspi Humidity: " +  parseFloat( data.inHumidity ).toFixed(0) );
+        jQuery('.inHumidity').html('Raspi Humidity: ' +  parseFloat( data.inHumidity ).toFixed(0) );
     }
     if ( data.hasOwnProperty( 'inTemp_F' ) ) {
-        jQuery(".inTemp").html("Raspi Temp: " +  parseFloat( data.inTemp_F ).toFixed(1) );
+        jQuery('.inTemp').html('Raspi Temp: ' +  parseFloat( data.inTemp_F ).toFixed(1) );
     }
-
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
-        jQuery(".outHumidity").html( "Humidity: " + parseFloat( data.outHumidity ).toFixed(1) + "&percnt;");
+        jQuery('.outHumidity').html( 'Humidity: ' + parseFloat( data.outHumidity ).toFixed(1) + '&percnt;');
     }
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
-        jQuery(".outTemp").html( parseFloat( data.outTemp_F ).toFixed(1) + "<sup>&deg;</sup>" );
-        jQuery(".outTemp").css( "color", colorizeTemp( data.outTemp_F) );
+        jQuery('.outTemp').html( parseFloat( data.outTemp_F ).toFixed(1) + '<sup>&deg;</sup>' );
+        jQuery('.outTemp').css( 'color', colorizeTemp( data.outTemp_F) );
+    }
+    if (data.hasOwnProperty( 'windDir' )) {
+        rotateThis (data.windDir);
+        jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
+    }
+    if ( data.hasOwnProperty('windSpeed_mph') ) {
+        rotateSpd( data.windSpeed_mph );
+        jQuery('.wind-speed-mph').html( parseFloat(data.windSpeed_mph).toFixed(0) );
+    }
+    if ( data.hasOwnProperty( 'UV' ) ) {
+        jQuery('.UV').html( parseInt(data.UV) );
     }
 }
 
@@ -169,6 +223,13 @@ function process_archive ( data ) {
     jQuery(".outTemp-day-high").html( data.today.outTemp.max );
     jQuery(".outTemp-day-low").html( data.today.outTemp.min );
 
+    // Wind records
+    windometerMax = data.today.wind.windGust_lastHr;
+    jQuery(".windDir-2hrAvg").html( data.today.wind.windDir_2hrAvg );
+    jQuery(".windSpd-2hrAvg").html( data.today.wind.windSpd_2hrAvg );
+    jQuery(".wind-max").html( data.today.wind.max );
+    jQuery(".wind-max-time").html( data.today.wind.maxtime );
+
     // Alamanac
     const daylightRaw = parseInt(data.almanac.sun.daylight);
     const daylight = {
@@ -176,13 +237,13 @@ function process_archive ( data ) {
         mins: parseInt( daylightRaw / 3600 % 1 * 60 ),
         secs: parseInt( daylightRaw / 3600 % 1 * 60 % 1 * 60 )
     }
-    console.log(daylightRaw, daylight);
+    
     jQuery(".sunrise-time").html(dayjs( parseInt( data.almanac.sun.rise ) * 1000 ).format("h:mm"));
     jQuery(".sunset-time").html(dayjs( parseInt(  data.almanac.sun.set ) * 1000 ).format("h:mm"));
     jQuery(".daylight-time").html( daylight.hrs + "hrs " + daylight.mins + "mins");
     jQuery(".moonrise-time").html(dayjs( parseInt( data.almanac.moon.rise ) * 1000 ).format("h:mm a"));
     jQuery(".moonset-time").html(dayjs( parseInt( data.almanac.moon.set ) * 1000 ).format("h:mm a"));
-    if ( data.almanac.moon.phase == "New" ) {
+    if ( data.almanac.moon.phase == "New" || data.almanac.moon.phase == "Full" ) {
         jQuery(".moon-phase").html( data.almanac.moon.phase + " Moon");
     } else {
         jQuery(".moon-phase").html( data.almanac.moon.phase );
@@ -284,9 +345,9 @@ function process_forecast ( data ) {
             k_finalRotation += (k_newRotation - k_currentRotation);
 
             jQuery("." + loc + "-windDirectionArrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
-            if ( loc == "KMEM" ) {
-                jQuery(".arrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
-            }
+            // if ( loc == "KMEM" ) {
+            //     jQuery(".arrow").css( "transform", "rotate(" + k_finalRotation + "deg)" );
+            // }
         }
 
         // Rotate wind speed widget arrow
@@ -371,7 +432,6 @@ function process_forecast ( data ) {
         jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
         jQuery("." + location + "-appTemp").html( data.observations[0].response[i].ob.feelslikeF + "&deg;");
         jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
-        console.log("data:" + data.observations[0].response[i].ob.feelslikeF);
 
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
             jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );
@@ -424,7 +484,7 @@ function process_forecast ( data ) {
 ///////////////////////
 // Sun and Moon canvas 
 ///////////////////////
-console.log("Y-777");
+console.log("J-727");
 
 // Initialize and call all drawing functions in correct order
 function drawAlmanac ( data ) {
@@ -466,7 +526,6 @@ function drawAlmanac ( data ) {
             //const dayEnd = new Date().setHours(23,59,59,999) / 1000;
             const dayStart = data.almanac.sun.antitransit.previous;
             const dayEnd = data.almanac.sun.antitransit.next;
-            console.log(dayStart, dayEnd);
             return ( ( time - dayStart ) / ( dayEnd - dayStart ) * 360 ) ;
         } 
 
@@ -503,7 +562,6 @@ function drawAlmanac ( data ) {
          };
          ctx.beginPath();
          ctx.arc( sunPath.cx, sunPath.cy, sunPath.radius + innerRadius, riseTick.innerPoint.radians, setTick.innerPoint.radians );
-         console.log ( sunPath.cx, sunPath.cy, sunPath.radius + innerRadius, riseTick.innerPoint.radians, setTick.innerPoint.radians );
          ctx.lineWidth = 2;
          ctx.strokeStyle = "rgb(255, 215, 0)";
          ctx.stroke();
@@ -623,23 +681,18 @@ function drawAlmanac ( data ) {
 
         // determine which quarter needs to be drawn
         if ( percentfull == 0 ) {
-            console.log("new moon");
 
         } else if ( percentfull < 50 && phaseTimes.timestamp - phaseTimes.newmoon.previous < phaseTimes.timelimit ) {
             drawNewToFirst(percentfull);
-            console.log("new moon to first quarter");
 
         } else if ( percentfull > 50 && phaseTimes.fullmoon.next - phaseTimes.timestamp < phaseTimes.timelimit ) { 
             drawFirstToFull(percentfull);
-            console.log("first quater to full moon");
 
         } else if ( percentfull > 50 && phaseTimes.timestamp - phaseTimes.fullmoon.previous < phaseTimes.timelimit ) { 
             drawFullToLast(percentfull);
-            console.log("full moon to last quarter");
 
         } else if ( percentfull < 50 && phaseTimes.newmoon.next - phaseTimes.timestamp < phaseTimes.timelimit ) { 
             drawLastToNew(percentfull);
-            console.log("last quarter to new moon");
 
         } else {
             console.log("Error: Moon phase not drawn");

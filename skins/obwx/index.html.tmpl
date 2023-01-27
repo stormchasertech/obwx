@@ -75,8 +75,8 @@
                                     <span class="outTemp">--.-<sup>&deg;</sup></span>
                                 </div>
                                 <div>
-                                    <span class="appTemp-label">App Temp: </span>
-                                    <span class="KMEM-appTemp">--</span>
+                                    <span class="feels-like-label">Feels Like: </span>
+                                    <span class="feels-like">--</span>
                                 </div>
                                 <div class="dewpoint">---</div>
                                 <div class="outHumidity">---</div>
@@ -84,12 +84,6 @@
                         </div>
                     </div>
                     <div class="col-xl pt-2 border-top border-bottom airport1-obs">
-                        <div class="airport-id-container">
-                            <div class="$Extras.metar_id_1-id-updated">---<br>--</div>
-                        </div>
-                        <div class="flight-rules-container">
-                            <div class="$Extras.metar_id_1-rules">--</div>
-                        </div>
                         <div class="row flex-nowrap">
                             <div class="col wind-left">
                                 <div class="wind-direction-container position-relative">
@@ -97,37 +91,46 @@
                                         <canvas id="rose" class="rose" width="150" height="150"></canvas>
                                         <canvas id="rose-arrow" class="arrow" width="150" height="150"></canvas>
                                         <div class="compass-rose-text">
-                                            <div class="$Extras.metar_id_1-wind-direction-deg">---</div>
+                                            <div class="wind-direction-deg">---</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="sky-container">
-                                    <div class="$Extras.metar_id_1-sky">---</div>
+                                <div class="average-wind pt-4 text-center">
+                                    <div>
+                                        <span class="windDir-2hrAvg">--</span>
+                                        <span class="windSpd-2hrAvg">--</span>
+                                    </div>
+                                    <div>
+                                        <span class="wind-2hrAvg-label">Average Wind</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col wind-right">
                                 <div class="wind-speed-container">
                                     <div class="windometer">
                                         <div class="wind-speed-observations">
-                                            <div class="$Extras.metar_id_1-wind-speed-mph">---</div>
-                                            <div class="$Extras.metar_id_1-wind-gust-mph">---</div>
-                                            <div class="knots">
-                                                <span class="$Extras.metar_id_1-wind-speed-kts">---</span>
-                                                <span class="$Extras.metar_id_1-wind-gust-kts">---</span>
-                                            </div>
+                                            <div class="wind-speed-mph">---</div>
+                                            <!--div class="wind-gust-mph">---</div-->
                                         </div>
                                         <div class="windometer-tickmark-low" style="transform: rotate(-45deg);"></div>
                                         <div class="windometer-tickmark-mid" style="transform: rotate(0deg);"></div>
                                         <div class="windometer-tickmark-hi" style="transform: rotate(45deg);"></div>
-                                        <div class="$Extras.metar_id_1-wind-speed-arrow"></div>
+                                        <div class="windometer-tickmark-recentHi" style="transform: rotate(90deg);"></div>
+                                        <div class="windometer-arrow"></div>
                                     </div>
                                     <div class="windometer-legend">
                                         <!--span class="windometer-legend-lo">0</span-->
                                         <span class="$Extras.metar_id_1-windometer-legend-hi">-</span>
                                     </div>
                                 </div>
-                                <div class="vis-container">
-                                    <div class="$Extras.metar_id_1-vis">---</div>
+                                <div class="wind-daily-max pt-4 text-center">
+                                    <div>
+                                        <span class="wind-max">---</span>
+                                        <span class="wind-max-time">---</span>
+                                    </div>
+                                    <div>
+                                        <span class="wind-max-label">Highest Wind</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
