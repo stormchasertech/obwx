@@ -133,7 +133,6 @@ function rotateSpd(data) {
     jQuery(".windometer-tickmark-recentHi").css( "transform", "rotate(" + windSpeedometerHi + "deg)" );
 }
 
-#### Stormchaser Kiosk Edit
 // Calcuations and jQueries for animated rain bucket
 function rainBucket(data) {
     let someRain = parseFloat(data).toFixed(2);
@@ -224,7 +223,7 @@ function process_payload ( data ) {
         jQuery('.wind-speed-mph').html( parseFloat(data.windSpeed_mph).toFixed(0) );
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
-        jQuery('.UV').html( parseInt(data.UV) );
+        jQuery('.uv').html( parseInt(data.UV) );
     }
 }
 
@@ -328,12 +327,14 @@ function process_forecast ( data ) {
         function metarColorCode ( loc , time ) {
 
             // Display time of observations
-            jQuery("." + loc + "-id-updated").html( "<div class='metar-id'>" + loc + "</div><div class='metar-update-time'>" + dayjs.unix(time).format("h:mm A") + "</div>" ); 
+            jQuery("." + loc + "-location").html( loc );
+            jQuery("." + loc + "-id-updated").html( dayjs.unix(time).format("h:mm A") );
+
             // New bottom row info
-            if ( loc == "KMEM" ) {
-                jQuery(".airport1-id").html( loc + " " + dayjs.unix(time).format("h:mm A") );
-                jQuery(".airport1-temp").html( "OAT: " + data.observations[0].response[i].ob.tempF );
-            }
+            // if ( loc == "KMEM" ) {
+            //     jQuery(".airport1-id").html( loc + " " + dayjs.unix(time).format("h:mm A") );
+            //     jQuery(".airport1-temp").html( "OAT: " + data.observations[0].response[i].ob.tempF );
+            // }
             // jQuery(".KOLVupdated").html( "OLV Updated: " + dayjs.unix(time).format("h:mm A") );
 
             // Color code station ID based on age of observation
@@ -451,12 +452,11 @@ function process_forecast ( data ) {
         sky ( location , data.observations[0].response[i].raw );
 
         jQuery("." + location + "-wind-direction").html( data.observations[0].response[i].ob.windDir );
-        //jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG + "&deg;" );
         jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
         jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
         jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
-        jQuery("." + location + "-appTemp").html( data.observations[0].response[i].ob.feelslikeF + "&deg;");
-        jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
+        // jQuery("." + location + "-appTemp").html( data.observations[0].response[i].ob.feelslikeF + "&deg;");
+        // jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
 
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
             jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );

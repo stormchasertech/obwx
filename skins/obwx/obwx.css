@@ -75,50 +75,41 @@ min-height: 84px;
 }
 
 /*Airport ID and update time*/
-.airport-id-container {
+/*.airport-id-container {
   line-height: 1.1rem;
-  position: relative;
 }
 
 [class$="-id-updated"] {
-  width: 100%;
   text-align: center;
-  position: absolute;
-  top: 5px;
 }
 
 /*.metar-id {
   font-size: 1rem;
 }*/
-
+/*
 .metar-update-time {
   font-size: 0.875rem;
 }
-
+*/
 /*Flight Rules*/
-.flight-rules-container {
-  position: relative;
+/*.flight-rules-container {
+    
 }
 
 [class$="-rules"] {
   width: 100%;
   font-size: 1.125rem;
   text-align: center;
-  position: absolute;
-  top: 115px;
 }
-
+*/
 /*Visibility and Sky conditions*/
-.vis-container, .sky-container {
-  position: relative;
-  min-height: 80px;
+/*.vis-container, .sky-container {
   font-size: 1.125rem;
   text-align: center;
 }
 
 [class$="-vis"] {
   width: 100%;
-  position: absolute;
   bottom: 0px;
 }
 
@@ -127,7 +118,7 @@ min-height: 84px;
   position: absolute;
   bottom: 0px;
 }
-
+*/
 /*Forecast Row*/
 [class^="forecast-container-p"]{
   min-width: 165px;
@@ -322,10 +313,9 @@ min-height: 84px;
   text-align: center;
 }
 
-[class$="wind-speed-mph"] {
+.wind-speed-mph {
   font-size: 2.063rem;
   padding-top: 30px;
-  /*display: block;*/
 }
 
 .windometer {
