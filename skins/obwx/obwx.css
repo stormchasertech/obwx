@@ -479,3 +479,87 @@ z-index: 99;
   left: 64px; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
   z-index: 98;
 }
+/* ==== Rain Section ==== */
+.kiosk_rainstack {
+  position: relative;
+  left: 15px;
+}
+
+/* -- Animated Rain Gauge -- */
+/* Gauge Container */
+.raingauge-container {
+  width: 100px;
+  height: 100px;
+  margin: 15px auto;
+}
+/* The bucket */
+.raingauge-bucket {
+  position: relative;
+  height: 118px;
+  /* margin-top: 18px; */
+  text-align: center;
+  border-style: solid;
+  border-color: #c8c8c8;
+  border-width: 0px 5px 5px;
+  border-radius: 0px 0px 20px 20px;
+  overflow: hidden;
+}
+/* The rain */
+.raingauge-rain {
+  position: absolute;
+  top: 105px;
+  height: 200px;
+  width: 100px;
+  background-color: #0000cc; /* Blue inner rain*/
+}
+/* Gauge level tics */
+.raingauge-tape-low {
+  position: relative;
+  width: 16px;
+  border-style: solid;
+  border-width: 2px 0px 0px 0px;
+  border-color: #c8c8c8;
+  top: 77px;
+  left: 83px;
+}
+
+.raingauge-tape-mid {
+  position: relative;
+  width: 16px;
+  border-style: solid;
+  border-width: 2px 0px 0px 0px;
+  border-color: #c8c8c8;
+  top: 51px;
+  left: 80px;
+}
+
+.raingauge-tape-hi {
+  position: relative;
+  width: 16px;
+  border-style: solid;
+  border-width: 2px 0px 0px 0px;
+  border-color: #c8c8c8;
+  top: 25px;
+  left: 83px;
+}
+
+.raingauge-tape-full {
+  position: relative;
+  width: 16px;
+  border-style: solid;
+  border-width: 2px 0px 0px 0px;
+  border-color: #c8c8c8;
+  top: 0px;
+  left: 80px;
+}
+
+.raingauge-dayRain {
+  position: relative;
+  font-size: 24px;
+  top: 29px;
+}
+
+.rainrate-row {
+  padding-top: 14px;
+}
+

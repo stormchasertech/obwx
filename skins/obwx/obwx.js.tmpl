@@ -133,6 +133,18 @@ function rotateSpd(data) {
     jQuery(".windometer-tickmark-recentHi").css( "transform", "rotate(" + windSpeedometerHi + "deg)" );
 }
 
+#### Stormchaser Kiosk Edit
+// Calcuations and jQueries for animated rain bucket
+function rainBucket(data) {
+    let someRain = parseFloat(data).toFixed(2);
+    let rainLevel = ((( 1 - someRain ) * 112 ) + 1);
+    if (rainLevel < 1) {
+        rainLevel = 1;
+    }
+    jQuery(".raingauge-dayRain").html( someRain + '"' );
+    jQuery(".raingauge-rain").css({ 'top': rainLevel + 'px' });
+}
+
 /////////////////////
 // Process Live Data
 /////////////////////
@@ -141,7 +153,7 @@ function process_payload ( data ) {
 
     // interval_minute is unique to mqtt archive updates, signaling json data has been updated
     if ( data.hasOwnProperty( 'interval_minute' ) ) {
-        // Get and process forecast after 15 sec delay to allow new json files to be fully updated by weewx
+        // 15 sec delay to allow new json files to be fully updated
         setTimeout( function() {
             get_forecast();
         }, 15000);
@@ -165,6 +177,9 @@ function process_payload ( data ) {
     }
     if ( data.hasOwnProperty('barometer_inHg') ) {
         jQuery('.barometer').html('Barometer: ' + parseFloat( data.barometer_inHg ).toFixed(2) );
+    }
+    if ( data.hasOwnProperty( 'dayRain_in' ) ) {
+        rainBucket( data.dayRain_in );
     }
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
         jQuery('.dewpoint').html('Dewpoint: ' +  parseFloat( data.dewpoint_F ).toFixed(1) + '&deg;' );
@@ -197,7 +212,10 @@ function process_payload ( data ) {
         jQuery('.outTemp').html( parseFloat( data.outTemp_F ).toFixed(1) + '<sup>&deg;</sup>' );
         jQuery('.outTemp').css( 'color', colorizeTemp( data.outTemp_F) );
     }
-    if (data.hasOwnProperty( 'windDir' )) {
+    if ( data.hasOwnProperty( 'rainRate_inch_per_hour') ) {
+        jQuery('.raingauge-rainRate').html( parseFloat(data.rainRate_inch_per_hour).toFixed(2) + '"/hr');
+    }
+    if ( data.hasOwnProperty( 'windDir' )) {
         rotateThis (data.windDir);
         jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
     }
@@ -219,16 +237,23 @@ function get_archive () {
 }
 
 function process_archive ( data ) {
-    // Daily records
+    // Out Temp Hi-Lo
     jQuery(".outTemp-day-high").html( data.today.outTemp.max );
     jQuery(".outTemp-day-low").html( data.today.outTemp.min );
 
-    // Wind records
+    // Wind
     windometerMax = data.today.wind.windGust_lastHr;
     jQuery(".windDir-2hrAvg").html( data.today.wind.windDir_2hrAvg );
     jQuery(".windSpd-2hrAvg").html( data.today.wind.windSpd_2hrAvg );
     jQuery(".wind-max").html( data.today.wind.max );
     jQuery(".wind-max-time").html( data.today.wind.maxtime );
+
+    // Rain 
+    jQuery(".k-dailystatsrainrate").html( parseFloat(data.today.rain.maxRate).toFixed(2) + '"/hr' );
+    jQuery(".k-yesterdaystatsrain").html( parseFloat(data.today.rain.sum.yesterday).toFixed(2) + '"' );
+    jQuery(".k-weekstatsrain").html( parseFloat(data.today.rain.sum.week).toFixed(2) + '"' );
+    jQuery(".k-monthstatsrain").html( parseFloat(data.today.rain.sum.month).toFixed(2) + '"' );
+    jQuery(".k-yearstatsrain").html( parseFloat(data.today.rain.sum.year).toFixed(2) + '"' );
 
     // Alamanac
     const daylightRaw = parseInt(data.almanac.sun.daylight);

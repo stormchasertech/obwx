@@ -28,6 +28,15 @@
             "maxtime": "$day.barometer.maxtime",
             "min": "$day.barometer.min",
             "mintime": "$day.barometer.mintime"
+        },
+        "rain": {
+            "maxRate": "$day.rainRate.max",
+            "sum": {
+                "yesterday": "$day($days_ago=1).rain.sum",
+                "week": "$day($days_ago=1).rain.sum",
+                "month": "$month.rain.sum",
+                "year": "$year.rain.sum"
+            }
         }
     },
     "almanac": {
