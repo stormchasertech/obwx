@@ -19,9 +19,11 @@
         "wind": {
             "max": "$day.wind.max",
             "maxtime": "$day.wind.maxtime",
+            "min": "$day.wind.min",
+            "mintime": "$day.wind.mintime",
             "windGust_lastHr": "$span($hour_delta=1).windGust.max",
-            "windSpd_2hrAvg": "$span($hour_delta=2).windSpeed.avg",
-            "windDir_2hrAvg": "$span($hour_delta=2).windDir.avg.ordinal_compass"
+            "windSpd_1hrAvg": "$span($hour_delta=1).windSpeed.avg",
+            "windDir_1hrAvg": "$span($hour_delta=1).windDir.avg.ordinal_compass"
         },
         "barometer": {
             "max": "$day.barometer.max",

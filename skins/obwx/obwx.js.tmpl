@@ -236,16 +236,31 @@ function get_archive () {
 }
 
 function process_archive ( data ) {
+    function splitTime (time){
+        time = time.split(":");
+        time = parseInt(time[0]) + ":" + time[1];
+        return time;
+    }
     // Out Temp Hi-Lo
-    jQuery(".outTemp-day-high").html( data.today.outTemp.max );
-    jQuery(".outTemp-day-low").html( data.today.outTemp.min );
+    jQuery(".outTemp-max").html( data.today.outTemp.max );
+    jQuery(".outTemp-min").html( data.today.outTemp.min );
+    jQuery(".outTemp-max-time").html( splitTime(data.today.outTemp.maxtime));
+    jQuery(".outTemp-min-time").html( splitTime(data.today.outTemp.mintime));
 
     // Wind
     windometerMax = data.today.wind.windGust_lastHr;
-    jQuery(".windDir-2hrAvg").html( data.today.wind.windDir_2hrAvg );
-    jQuery(".windSpd-2hrAvg").html( data.today.wind.windSpd_2hrAvg );
+    jQuery(".windDir-1hrAvg").html( data.today.wind.windDir_1hrAvg );
+    jQuery(".windSpd-1hrAvg").html( data.today.wind.windSpd_1hrAvg );
     jQuery(".wind-max").html( data.today.wind.max );
-    jQuery(".wind-max-time").html( data.today.wind.maxtime );
+    jQuery(".wind-min").html( data.today.wind.min);
+    jQuery(".wind-max-time").html( splitTime(data.today.wind.maxtime));
+    jQuery(".wind-min-time").html( splitTime(data.today.wind.maxtime));
+
+    // Barometer
+    jQuery(".barometer-max").html( data.today.barometer.max );
+    jQuery(".barometer-min").html( data.today.barometer.min );
+    jQuery(".barometer-max-time").html( splitTime(data.today.barometer.maxtime));
+    jQuery(".barometer-min-time").html( splitTime(data.today.barometer.mintime));
 
     // Rain 
     jQuery(".k-dailystatsrainrate").html( parseFloat(data.today.rain.maxRate).toFixed(2) + '"/hr' );
@@ -427,18 +442,23 @@ function process_forecast ( data ) {
         // Split up raw metar to display reported cloud layers
         function sky ( loc , raw ) {
 
-            let rawSplit = raw.split(" ");
-            let sky_html = "Sky:";
-
+            const rawSplit = raw.split(" ");
+            const layer = [];
+            // Build layer array with layer objects
             for ( let j = 0; j < rawSplit.length; j++ ) {
-                if ( rawSplit[j].slice(0,3) === "FEW" || rawSplit[j].slice(0,3) === "SCT"  || rawSplit[j].slice(0,3) === "BKN" || rawSplit[j].slice(0,3) === "OVC" ) {
-                    sky_html += " " + rawSplit[j];
-                } else if ( rawSplit[j] === "CLR" ) {
-                    sky_html += " Clear";
+                if ( rawSplit[j].slice(0,3) === "FEW" ){
+                    layer.push({"coverage": "Few at ","height": rawSplit[j].slice(3)*100});
+                } else if ( rawSplit[j].slice(0,3) === "SCT" ){
+                    layer.push({"coverage": "Scattered at ","height": rawSplit[j].slice(3)*100});
+                } else if ( rawSplit[j].slice(0,3) === "BKN" ){
+                    layer.push({"coverage": "Broken at ","height": rawSplit[j].slice(3)*100});
+                } else if ( rawSplit[j].slice(0,3) === "OVC" ){
+                    layer.push({"coverage": "Overcast at ","height": rawSplit[j].slice(3)*100});
                 }
             }
-
-            jQuery("." + loc + "-sky").html( sky_html );
+            for ( cl = 0; cl < layer.length; cl++ ) {
+                jQuery('.' + loc + "-cloud-layer" + cl).html(layer[cl].coverage + layer[cl].height);
+            }
         }
 
         // Station location identifier
@@ -451,12 +471,12 @@ function process_forecast ( data ) {
         flightRules ( location, data.observations[0].response[i].ob.flightRule );
         sky ( location , data.observations[0].response[i].raw );
 
+        jQuery("." + location + "-metar-weather").html( data.observations[0].response[i].ob.weatherShort );
+        jQuery("." + location + "-oat").html ( data.observations[0].response[i].ob.tempF + "&deg;" );
         jQuery("." + location + "-wind-direction").html( data.observations[0].response[i].ob.windDir );
         jQuery("." + location + "-wind-speed-mph").html( data.observations[0].response[i].ob.windSpeedMPH );
         jQuery("." + location + "-wind-speed-kts").html( data.observations[0].response[i].ob.windSpeedKTS + " kts" );
-        jQuery("." + location + "-vis").html("Vis:  " + data.observations[0].response[i].ob.visibilityMI + "sm" );
-        // jQuery("." + location + "-appTemp").html( data.observations[0].response[i].ob.feelslikeF + "&deg;");
-        // jQuery("." + location + "-appTemp").css( "color", colorizeTemp ( parseInt( data.observations[0].response[i].ob.feelslikeF ))); 
+        jQuery("." + location + "-vis").html( data.observations[0].response[i].ob.visibilityMI + " sm" );
 
         if ( data.observations[0].response[i].ob.windDirDEG >= 0 ) {
             jQuery("." + location + "-wind-direction-deg").html( data.observations[0].response[i].ob.windDirDEG );

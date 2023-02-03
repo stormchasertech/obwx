@@ -82,7 +82,7 @@
                                 <div class="outHumidity">---</div>
                                 <div class="barometer">---</div>
                                 <div>
-                                    <span>UV: </span>
+                                    <span>UV Index: </span>
                                     <span class="uv">---</span>
                                 </div>
                             </div>
@@ -102,11 +102,11 @@
                                 </div>
                                 <div class="average-wind pt-4 text-center">
                                     <div>
-                                        <span class="windDir-2hrAvg">--</span>
-                                        <span class="windSpd-2hrAvg">--</span>
+                                        <span class="windDir-1hrAvg">--</span>
+                                        <span class="windSpd-1hrAvg">--</span>
                                     </div>
                                     <div>
-                                        <span class="wind-2hrAvg-label">Average Wind</span>
+                                        <span class="wind-1hrAvg-label">Average Wind</span>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="windometer-legend">
                                         <!--span class="windometer-legend-lo">0</span-->
-                                        <span class="$Extras.metar_id_1-windometer-legend-hi">-</span>
+                                        <span class="windometer-legend-hi">-</span>
                                     </div>
                                 </div>
                                 <div class="wind-daily-max pt-4 text-center">
@@ -191,93 +191,186 @@
                     </div>
                 </div>
                 <!--Start of Extras Row-->
-                <div class="row extras-row text-center">
-                    <div class="col-6 col-xl-4 pt-2">
-                        <div>Records</div>
-                        <div class="archive">
-                            <span>High: </span>
-                            <span class="outTemp-day-high">--&deg;</span>
+                <div class="row extras-row justify-content-center text-center">
+                    <div class="col-xl pt-2">
+                        <div class="records-container mx-auto" style="width: 80%;">
+                            <div class="row border-bottom">
+                                <div class="col-3">
+                                    <div class="outTemp-min">--</div>
+                                </div>
+                                <div class="col-6">
+                                    <div>Outside Temp</div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="outTemp-max">--</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="outTemp-min-time">---</div>
+                                </div>
+                                <div class="col-6">
+                                    <div></div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="outTemp-max-time">---</div>
+                                </div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-3">
+                                    <div class="wind-min">--</div>
+                                </div>
+                                <div class="col-6">
+                                    <div>Wind Speed</div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="wind-max">--</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="wind-min-time">---</div>
+                                </div>
+                                <div class="col-6">
+                                    <div></div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="wind-max-time">---</div>
+                                </div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-4">
+                                    <div class="barometer-min">--</div>
+                                </div>
+                                <div class="col-4">
+                                    <div>Barometer</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="barometer-max">--</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="barometer-min-time">---</div>
+                                </div>
+                                <div class="col-4">
+                                    <div></div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="barometer-max-time">---</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="archive">
-                            <span>Low: </span>
-                            <span class="outTemp-day-low">--&deg;</span>
-                        </div>
-                        <div>Extra Sensors</div>
-                        <div class="extraTemp1">--</div>
-                        <div class="extraTemp2">--</div>
-                        <div class="inTemp">--</div>
                     </div>
-                    <div class="col-6 col-xl-4 pt-2">
-                        <div>
-                            <span class="$Extras.metar_id_1-location">---</span>
-                            <span class="$Extras.metar_id_1-id-updated">---</span>
-                            <span class="$Extras.metar_id_1-rules">---</span>
+                    <div class="col-xl pt-2">
+                        <div class="metar-container mx-auto" style="width:200px;">
+                            <div class="row border metar-toprow">
+                                <div class="col-6">
+                                    <span class="$Extras.metar_id_1-location">---</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="$Extras.metar_id_1-id-updated">---</span>
+                                </div>
+                            </div>
+                            <div class="row border border-top-0 metar-secondrow">
+                                <div class="col-6">
+                                    <span class="$Extras.metar_id_1-wind-direction">---</span>
+                                    <span class="$Extras.metar_id_1-wind-direction-deg">---</span>
+                                </div>
+                                <div class="col-6">
+                                    <!--span class="$Extras.metar_id_1-wind-speed-mph">---</span><span> mph </span-->
+                                    <span class="$Extras.metar_id_1-wind-speed-kts">---</span>
+                                </div>
+                            </div>
+                            <div class="row border border-top-0 metar-thirdrow">
+                                <div class="col-4 px-0">
+                                    <span class="$Extras.metar_id_1-rules">---</span>
+                                </div>
+                                <div class="col-4 px-0">
+                                    <span class="$Extras.metar_id_1-oat">---</span>
+                                </div>
+                                <div class="col-4 px-0">
+                                    <span class="$Extras.metar_id_1-vis">---</span>
+                                </div>
+                            </div>
+                            <div class="row border border-top-0 metar-fourthrow">
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-metar-weather">--</span>
+                                </div>
+                            </div>
+                            <div class="row border border-top-0 metar-fifthrow">
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-cloud-layer0"></span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-cloud-layer1"></span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-cloud-layer2"></span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-cloud-layer3"></span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="$Extras.metar_id_1-cloud-layer4"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <span class="$Extras.metar_id_1-wind-direction">---</span>
-                            <span class="$Extras.metar_id_1-wind-direction-deg">---</span>
-                        </div>
-                        <div>
-                            <span class="$Extras.metar_id_1-wind-speed-mph">---</span><span> mph </span>
-                            <span class="$Extras.metar_id_1-wind-speed-kts">---</span>
-                        </div>
-                        <div class="$Extras.metar_id_1-vis">---</div>
-                        <div class="$Extras.metar_id_1-sky">---</div>
                     </div>
-                    <div class="col-6 col-xl-4 pt-2">
-                         <div class="almanac position-relative">
-                             <div class="label-position position-absolute translate-middle-x">
-                                 <div class="row noonrow">
-                                     <div class="col">
-                                         <div class="noon">
-                                             <span class="daylight-label">Daylight: </span>
-                                             <span class="daylight-time">-:--</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row sunrow">
-                                     <div class="col">
-                                         <div class="sunrise pb-2 border-bottom">
-                                             <span class="sunrise-time">-:--</span>
-                                             <br>
-                                             <span class="sunrise-label">Sunrise</span>
-                                         </div>
-                                     </div>
-                                     <div class="col">
-                                         <div class="sunset pb-2 border-bottom">
-                                             <span class="sunset-time">-:--</span>
-                                             <br>
-                                             <span class="sunset-label">Sunset</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row moonrow">
-                                     <div class="col">
-                                         <div class="moonrise">
-                                             <span class="moonrise-label">Moonrise</span>
-                                             <br>
-                                             <span class="moonrise-time">-:--</span>
-                                         </div>
-                                     </div>
-                                     <div class="col">
-                                         <div class="moonset">
-                                             <span class="moonset-label">Moonset</span>
-                                             <br>
-                                             <span class="moonset-time">-:--</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <div class="row phaserow">
-                                     <div class="col">
-                                         <div class="moon-phase">---</div>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="sun-n-moon">
-                                 <canvas id="arcs" height="160" width="160"></canvas>
-                             </div>
-                         </div>
-                     </div>
+                    <div class="col-xl pt-2">
+                        <div class="almanac position-relative">
+                            <div class="label-position position-absolute translate-middle-x">
+                                <div class="row noonrow">
+                                    <div class="col">
+                                        <div class="noon">
+                                            <span class="daylight-label">Daylight: </span>
+                                            <span class="daylight-time">-:--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row sunrow">
+                                    <div class="col">
+                                        <div class="sunrise pb-2 border-bottom">
+                                            <span class="sunrise-time">-:--</span>
+                                            <br>
+                                            <span class="sunrise-label">Sunrise</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="sunset pb-2 border-bottom">
+                                            <span class="sunset-time">-:--</span>
+                                            <br>
+                                            <span class="sunset-label">Sunset</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row moonrow">
+                                    <div class="col">
+                                        <div class="moonrise">
+                                            <span class="moonrise-label">Moonrise</span>
+                                            <br>
+                                            <span class="moonrise-time">-:--</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="moonset">
+                                            <span class="moonset-label">Moonset</span>
+                                            <br>
+                                            <span class="moonset-time">-:--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row phaserow">
+                                    <div class="col">
+                                        <div class="moon-phase">---</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sun-n-moon">
+                                <canvas id="arcs" height="160" width="160"></canvas>
+                            </div>
+                        </div>
+                    </div>
                  </div>
                 <!-- Start of Forecast Row -->
                 <div class="row bottom-row justify-content-center border-top">

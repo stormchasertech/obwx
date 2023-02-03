@@ -54,7 +54,7 @@ main {
 max-width: 1900px;
 }
 
-.border, .border-top {
+.border, .border-top, .border-bottom {
   border-color: #5f5f6b !important;
 }
 
@@ -129,7 +129,6 @@ min-height: 84px;
 }
 
 .extras-row {
-  font-size: 1.25rem;
   min-height: 200px;
 }
 
