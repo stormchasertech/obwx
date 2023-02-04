@@ -12,7 +12,7 @@ OBWX displays weather information using data generated from the weewx weather sy
 
 ### Status
 OBWX is still in development, and will eventually have a release version.
-* Live updates using using mqtt web-sockets is a requirement. It does not update with archive packets, however that functionality is planned.
+* Live updates using mqtt web-sockets is a requirement. It does not update with archive packets, however that functionality is planned.
 
 ### Prerequisites
 * weewx weather software
@@ -29,7 +29,7 @@ Aeris Weather api settings
 Set these to the desired metar Station ID to display. 'KOLV' for example.
 If option 1 is down, option 2 will take over.
 * metar_id_1
-* metar_id_1
+* metar_id_2
 
 
 More to come!!
