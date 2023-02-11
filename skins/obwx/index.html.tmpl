@@ -5,35 +5,29 @@
     <head>
         <title>Stormchaser.tech Weather</title>
 
+        <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="obwx.css?v=#echo int(random.random()*123456789)#">
-        <link rel="manifest" href="manifest.json">
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.6/dayjs.min.js" integrity="sha512-hcV6DX35BKgiTiWYrJgPbu3FxS6CsCjKgmrsPRpUPkXWbvPiKxvSVSdhWX0yXcPctOI2FJ4WP6N1zH+17B/sAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
         <script type="text/javascript" src="obwx.js?v=#echo int(random.random()*123456789)#"></script> 
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <script type="text/javascript">
-            var mqttclient = "obwx" + Math.floor(Math.random() * 123456789);
+            const mqttclient = "obwx" + Math.floor(Math.random() * 123456789);
       
             // Disable AJAX caching
-            jQuery.ajaxSetup({
-                cache: false
-            });
+            jQuery.ajaxSetup( {cache: false} );
 
-            // Wait for page to load, then connect to mqtt data
-            //jQuery(document).ready(function() {
-                // Connect to mqtt broker
-                //connect();
-                // Inital call to populate site with data
-                //get_forecast();
-                //get_archive();
-                //canvas_sunInit();
-             //});
+            // Initalize the app after DOM loaded
+            jQuery(document).ready(function() {
+                drawCompassRose();
+                drawCompassArrow();
+                updateArcCast()
+                mqttconnect()
+            });
 
         </script>
     </head>
@@ -57,8 +51,8 @@
                     </div>
                     <div class="col-xl-3 me-3 my-auto">
                         <div class="row websocket-status">
-                            <div class="col-6 col-xl-12 websocket-date">---</div>
-                            <div class="col-6 col-xl-12 websocket-time">---</div>
+                            <div class="col-6 col-xl-12 updated-date">---</div>
+                            <div class="col-6 col-xl-12 updated-time">---</div>
                         </div>
                     </div>
                 </div>
@@ -74,17 +68,11 @@
                                 <div class="current-outTemp">
                                     <span class="outTemp">--.-<sup>&deg;</sup></span>
                                 </div>
-                                <div>
-                                    <span class="feels-like-label">Feels Like: </span>
-                                    <span class="feels-like">--</span>
-                                </div>
+                                <div class="feels-like">--</div>
                                 <div class="dewpoint">---</div>
                                 <div class="outHumidity">---</div>
                                 <div class="barometer">---</div>
-                                <div>
-                                    <span>UV Index: </span>
-                                    <span class="uv">---</span>
-                                </div>
+                                <div class="uv">---</div>
                             </div>
                         </div>
                     </div>
@@ -123,19 +111,6 @@
                                         <div class="windometer-tickmark-recentHi" style="transform: rotate(90deg);"></div>
                                         <div class="windometer-arrow"></div>
                                     </div>
-                                    <div class="windometer-legend">
-                                        <!--span class="windometer-legend-lo">0</span-->
-                                        <span class="windometer-legend-hi">-</span>
-                                    </div>
-                                </div>
-                                <div class="wind-daily-max pt-4 text-center">
-                                    <div>
-                                        <span class="wind-max">---</span>
-                                        <span class="wind-max-time">---</span>
-                                    </div>
-                                    <div>
-                                        <span class="wind-max-label">Highest Wind</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +133,7 @@
                                     </div> 
                                 </div> 
                                 <div class="col-4"> 
-                                    <div class="rainStats_container"> 
+                                    <div class="rainstats_container"> 
                                         <div>Yesterday</div>  
                                         <div>Week</div> 
                                         <div>Month</div> 
@@ -166,25 +141,25 @@
                                     </div> 
                                 </div> 
                                 <div class="col-3"> 
-                                    <div class="rainStats_container"> 
-                                        <div class="k-yesterdaystatsrain">---</div> 
-                                        <div class="k-weekstatsrain">---</div> 
-                                        <div class="k-monthstatsrain">---</div> 
-                                        <div class="k-yearstatsrain">---</div> 
+                                    <div class="rainstats_container"> 
+                                        <div class="yesterday-rain">---</div> 
+                                        <div class="week-rain">---</div> 
+                                        <div class="month-rain">---</div> 
+                                        <div class="year-rain">---</div> 
                                     </div> 
                                 </div> 
                             </div> 
                             <div class="row row-no-gutters rainrate-row"> 
                                 <div class="col-5 text-center"> 
-                                    <div class="kiosk_rainrate"> 
-                                        <div class="raingauge-rainRate">---</div> 
+                                    <div class="rainrate-container"> 
+                                        <div class="rainrate">---</div> 
                                     </div> 
                                 </div> 
                                 <div class="col-4"> 
                                     <div>Highest Rate</div> 
                                 </div> 
                                 <div class="col-3"> 
-                                    <div class="k-dailystatsrainrate">---</div> 
+                                    <div class="rainrate-max">---</div> 
                                 </div> 
                             </div> 
                         </div> 
@@ -193,7 +168,7 @@
                 <!--Start of Extras Row-->
                 <div class="row extras-row justify-content-center text-center">
                     <div class="col-xl pt-2">
-                        <div class="records-container mx-auto" style="width: 80%;">
+                        <div class="records-container mx-auto" style="width: 95%;">
                             <div class="row border-bottom">
                                 <div class="col-3">
                                     <div class="outTemp-min">--</div>
@@ -263,56 +238,48 @@
                         </div>
                     </div>
                     <div class="col-xl pt-2">
-                        <div class="metar-container mx-auto" style="width:200px;">
-                            <div class="row border metar-toprow">
-                                <div class="col-6">
-                                    <span class="$Extras.metar_id_1-location">---</span>
+                        <div class="metar-container mx-auto" style="width:85%;">
+                            <div class="row border">
+                                <div class="col">
+                                    <div class="row border-bottom">
+                                        <div class="col">
+                                            <div class="metar-location">--</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="metar-updated">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col">
+                                            <div class="metar-wind-direction">--</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="metar-wind-direction-deg">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col">
+                                            <div>
+                                                <span class="metar-wind-speed-kts">--</span>
+                                                <span class="metar-wind-gust-kts"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row border-bottom">
+                                        <div class="col">
+                                            <div class="metar-rules">--</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="metar-oat">--</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="metar-vis">--</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <span class="$Extras.metar_id_1-id-updated">---</span>
-                                </div>
-                            </div>
-                            <div class="row border border-top-0 metar-secondrow">
-                                <div class="col-6">
-                                    <span class="$Extras.metar_id_1-wind-direction">---</span>
-                                    <span class="$Extras.metar_id_1-wind-direction-deg">---</span>
-                                </div>
-                                <div class="col-6">
-                                    <!--span class="$Extras.metar_id_1-wind-speed-mph">---</span><span> mph </span-->
-                                    <span class="$Extras.metar_id_1-wind-speed-kts">---</span>
-                                </div>
-                            </div>
-                            <div class="row border border-top-0 metar-thirdrow">
-                                <div class="col-4 px-0">
-                                    <span class="$Extras.metar_id_1-rules">---</span>
-                                </div>
-                                <div class="col-4 px-0">
-                                    <span class="$Extras.metar_id_1-oat">---</span>
-                                </div>
-                                <div class="col-4 px-0">
-                                    <span class="$Extras.metar_id_1-vis">---</span>
-                                </div>
-                            </div>
-                            <div class="row border border-top-0 metar-fourthrow">
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-metar-weather">--</span>
-                                </div>
-                            </div>
-                            <div class="row border border-top-0 metar-fifthrow">
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-cloud-layer0"></span>
-                                </div>
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-cloud-layer1"></span>
-                                </div>
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-cloud-layer2"></span>
-                                </div>
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-cloud-layer3"></span>
-                                </div>
-                                <div class="col-12">
-                                    <span class="$Extras.metar_id_1-cloud-layer4"></span>
+                                <div class="col">
+                                    <div class="metar-weather border-bottom">--</div>
+                                    <div class="metar-cloud-layer">--</div>
                                 </div>
                             </div>
                         </div>

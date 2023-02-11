@@ -1,8 +1,10 @@
 #encoding UTF-8
+#import datetime
 #errorCatcher Echo
 #set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
 {
     "timestamp": "$current.dateTime.raw",
+    "timestamp_formatted": "#echo datetime.datetime.fromtimestamp($current.dateTime.raw).strftime('%-I:%M %p')#",
     "station": {
         "latitude": "$station.stn_info.latitude_f",
         "longitude": "$station.stn_info.longitude_f",
@@ -12,24 +14,24 @@
     "today": {
         "outTemp": {
             "max": "$day.outTemp.max",
-            "maxtime": "$day.outTemp.maxtime",
+            "maxtime": "#echo datetime.datetime.fromtimestamp($day.outTemp.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.outTemp.min",
-            "mintime": "$day.outTemp.mintime"
+            "mintime": "#echo datetime.datetime.fromtimestamp($day.outTemp.mintime.raw).strftime('%-I:%M %p')#"
         },
         "wind": {
             "max": "$day.wind.max",
-            "maxtime": "$day.wind.maxtime",
+            "maxtime": "#echo datetime.datetime.fromtimestamp($day.wind.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.wind.min",
-            "mintime": "$day.wind.mintime",
+            "mintime": "#echo datetime.datetime.fromtimestamp($day.wind.mintime.raw).strftime('%-I:%M %p')#",
             "windGust_lastHr": "$span($hour_delta=1).windGust.max",
             "windSpd_1hrAvg": "$span($hour_delta=1).windSpeed.avg",
             "windDir_1hrAvg": "$span($hour_delta=1).windDir.avg.ordinal_compass"
         },
         "barometer": {
             "max": "$day.barometer.max",
-            "maxtime": "$day.barometer.maxtime",
+            "maxtime": "#echo datetime.datetime.fromtimestamp($day.barometer.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.barometer.min",
-            "mintime": "$day.barometer.mintime"
+            "mintime": "#echo datetime.datetime.fromtimestamp($day.barometer.mintime.raw).strftime('%-I:%M %p')#"
         },
         "rain": {
             "maxRate": "$day.rainRate.max",
@@ -44,8 +46,10 @@
     "almanac": {
         "sun": {
             "rise": "$almanac.sun.rise.raw",
+            "rise_formatted": "#echo datetime.datetime.fromtimestamp($almanac.sun.rise.raw).strftime('%-I:%M %p')#",
             "transit": "$almanac.sun.transit.raw",
             "set": "$almanac.sun.set.raw",
+            "set_formatted": "#echo datetime.datetime.fromtimestamp($almanac.sun.set.raw).strftime('%-I:%M %p')#",
             "daylight": "$daylight",
             "antitransit": {
                 "previous": "$almanac.sun.previous_antitransit.raw",
@@ -54,7 +58,9 @@
         },
         "moon": {
             "rise": "$almanac.moon.rise.raw",
+            "rise_formatted": "#echo datetime.datetime.fromtimestamp($almanac.moon.rise.raw).strftime('%-I:%M %p')#",
             "set": "$almanac.moon.set.raw",
+            "set_formatted": "#echo datetime.datetime.fromtimestamp($almanac.moon.set.raw).strftime('%-I:%M %p')#",
             "phase": "$almanac.moon_phase",
             "percentfull": "$almanac.moon_fullness",
             "index": "$almanac.moon_index",
