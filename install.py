@@ -1,26 +1,17 @@
 from weecfg.extension import ExtensionInstaller
 
-#-------- extension info -----------
-
-VERSION      = "V.10"
-NAME         = 'OBWX'
-DESCRIPTION  = 'Weather Data Console'
-AUTHOR       = "StormchaserTech"
-AUTHOR_EMAIL = "https://github.com/stormchasertech/obwx"
-
-#-------- main loader -----------
-
 def loader():
-    return ScT_Installer()
+    return OBWX_Installer()
 
-class ScT_Installer(ExtensionInstaller):
+class OBWX_Installer(ExtensionInstaller):
     def __init__(self):
         super(ScT_Installer, self).__init__(
-            version=VERSION,
-            name=NAME,
-            description=DESCRIPTION,
-            author=AUTHOR,
-            author_email=AUTHOR_EMAIL,
+            version='0.30',
+            name='obwx',
+            description='Weather Data Console',
+            author=StormchaserTech,
+            author_email=stormchaserlitofb@gmail.com,
+            data_services='user.obwx.GetAerisForecast'
             config={
                 'StdReport': {
                     'OBWX': {
@@ -33,13 +24,14 @@ class ScT_Installer(ExtensionInstaller):
                             'logo_alt' : 'Site Alt',
                             'api_id' : '',
                             'api_secret' : '',
-                            'api_call_freqency' : '240',
+                            'api_call_frequency' : '240',
                             'websocket_enable' : '',
                             'websocket_host' : '',
                             'websocket_port' : '8080',
                             'websocket_topic' : '',
                             'metar_id_1' : '',
                             'metar_id_2' : '',
+                            'timezone' : None,
                         }
                     }
                 }
