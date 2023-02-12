@@ -43,6 +43,8 @@ class OBWX_Installer(ExtensionInstaller):
                     'skins/obwx/index.html.tmpl',
                     'skins/obwx/obwx.css',
                     'skins/obwx/obwx.js.tmpl',
+                    'skins/obwx/archive.json.tmpl',
+                    'skins/obwx/manifest.json.tmpl',
                     ]
                 ),
                 ('skins/obwx/icons',
