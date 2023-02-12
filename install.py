@@ -5,13 +5,13 @@ def loader():
 
 class OBWX_Installer(ExtensionInstaller):
     def __init__(self):
-        super(ScT_Installer, self).__init__(
+        super(OBWX_Installer, self).__init__(
             version='0.30',
             name='obwx',
             description='Weather Data Console',
             author=StormchaserTech,
             author_email=stormchaserlitofb@gmail.com,
-            data_services='user.obwx.GetAerisForecast'
+            data_services='user.obwx.GetAerisForecast',
             config={
                 'StdReport': {
                     'OBWX': {
@@ -31,7 +31,7 @@ class OBWX_Installer(ExtensionInstaller):
                             'websocket_topic' : '',
                             'metar_id_1' : '',
                             'metar_id_2' : '',
-                            'timezone' : None,
+                            'timezone' : 'undefined',
                         }
                     }
                 }
