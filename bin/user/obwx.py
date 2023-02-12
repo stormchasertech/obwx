@@ -94,4 +94,4 @@ class GetAerisForecast(StdService):
                 log.info('Forecast file NOT updated')
 
         else:
-            log.warning('Forecast file generation skipped')
+            log.info('Forecast file generation skipped')
