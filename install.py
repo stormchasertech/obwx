@@ -9,8 +9,8 @@ class OBWX_Installer(ExtensionInstaller):
             version='0.30',
             name='obwx',
             description='Weather Data Console',
-            author=StormchaserTech,
-            author_email=stormchaserlitofb@gmail.com,
+            author='StormchaserTech',
+            author_email='stormchaserlitofb@gmail.com',
             data_services='user.obwx.GetAerisForecast',
             config={
                 'StdReport': {
