@@ -36,8 +36,8 @@
         "rain": {
             "maxRate": "$day.rainRate.max",
             "sum": {
-                "yesterday": "$day($days_ago=1).rain.sum",
-                "week": "$day($days_ago=1).rain.sum",
+                "yesterday": "$span($day_delta=1).rain.sum",
+                "week": "$span($week_delta=1).rain.sum",
                 "month": "$month.rain.sum",
                 "year": "$year.rain.sum"
             }
