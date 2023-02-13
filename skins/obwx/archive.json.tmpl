@@ -18,19 +18,26 @@
             "min": "$day.outTemp.min",
             "mintime": "#echo datetime.datetime.fromtimestamp($day.outTemp.mintime.raw).strftime('%-I:%M %p')#"
         },
+        "dewpoint": {
+            "max": "$day.dewpoint.max",
+            "maxtime": "#echo datetime.datetime.fromtimestamp($day.dewpoint.maxtime.raw).strftime('%-I:%M %p')#",
+            "min": "$day.dewpoint.min",
+            "mintime": "#echo datetime.datetime.fromtimestamp($day.dewpoint.mintime.raw).strftime('%-I:%M %p')#"
+        },
         "wind": {
-            "max": "$day.wind.max",
+            "max": "$day.wind.max.format(format_string='%.1f',add_label=False)",
             "maxtime": "#echo datetime.datetime.fromtimestamp($day.wind.maxtime.raw).strftime('%-I:%M %p')#",
-            "min": "$day.wind.min",
+            "min": "$day.wind.min.format(add_label=False)",
             "mintime": "#echo datetime.datetime.fromtimestamp($day.wind.mintime.raw).strftime('%-I:%M %p')#",
             "windGust_lastHr": "$span($hour_delta=1).windGust.max",
             "windSpd_1hrAvg": "$span($hour_delta=1).windSpeed.avg",
             "windDir_1hrAvg": "$span($hour_delta=1).windDir.avg.ordinal_compass"
         },
         "barometer": {
-            "max": "$day.barometer.max",
+            "trend":"$trend.barometer.format(format_string='%.2f',add_label=False)",
+            "max": "$day.barometer.max.format(format_string='%.2f',add_label=False)",
             "maxtime": "#echo datetime.datetime.fromtimestamp($day.barometer.maxtime.raw).strftime('%-I:%M %p')#",
-            "min": "$day.barometer.min",
+            "min": "$day.barometer.min.format(format_string='%.2f',add_label=False)",
             "mintime": "#echo datetime.datetime.fromtimestamp($day.barometer.mintime.raw).strftime('%-I:%M %p')#"
         },
         "rain": {

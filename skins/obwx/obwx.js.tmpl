@@ -1,52 +1,52 @@
 #errorCatcher Echo
 
 const appData = {
+    lastWindRotation: undefined,
     windSpdDial: {
         defaultMax: 20,
         currentMax: undefined
     },
-    lastWindRotation: undefined,
+    colorDict: [
+        { 'tempF': 120, 'color': 'rgb(160,0,128)' },
+        { 'tempF': 115, 'color': 'rgb(176,0,112)' },
+        { 'tempF': 110, 'color': 'rgb(192,0,96)' },
+        { 'tempF': 105, 'color': 'rgb(208,0,80)' },
+        { 'tempF': 100, 'color': 'rgb(224,0,60)' },
+        { 'tempF': 95, 'color': 'rgb(225,0,0)' },
+        { 'tempF': 90, 'color': 'rgb(225,86,25)' },
+        { 'tempF': 85, 'color': 'rgb(240,128,50)' },
+        { 'tempF': 80, 'color': 'rgb(240,160,70)' },
+        { 'tempF': 75, 'color': 'rgb(228,196,85)' },
+        { 'tempF': 70, 'color': 'rgb(240,228,85)' },
+        { 'tempF': 65, 'color': 'rgb(212,240,60)' },
+        { 'tempF': 60, 'color': 'rgb(160,240,0)' },
+        { 'tempF': 55, 'color': 'rgb(0,240,0)' },
+        { 'tempF': 50, 'color': 'rgb(0,240,144)' },
+        { 'tempF': 45, 'color': 'rgb(0,224,176)' },
+        { 'tempF': 40, 'color': 'rgb(0,208,208)' },
+        { 'tempF': 35, 'color': 'rgb(32,196,240)' },
+        { 'tempF': 30, 'color': 'rgb(64,160,240)' },
+        { 'tempF': 25, 'color': 'rgb(64,128,240)' },
+        { 'tempF': 20, 'color': 'rgb(64,64,255)' },
+        { 'tempF': 15, 'color': 'rgb(128,0,255)' },
+        { 'tempF': 10, 'color': 'rgb(144,32,224)' },
+        { 'tempF': 5, 'color': 'rgb(160,32,208)' },
+        { 'tempF': 0, 'color': 'rgb(176,32,192)' },
+        { 'tempF': -5, 'color': 'rgb(160,64,176)' },
+        { 'tempF': -10, 'color': 'rgb(144,96,160)' },
+        { 'tempF': -15, 'color': 'rgb(128,112,14)' },
+        { 'tempF': -20, 'color': 'rgb(144,128,160)' },
+        { 'tempF': -25, 'color': 'rgb(160,144,176)' },
+        { 'tempF': -30, 'color': 'rgb(176,160,192)' },
+        { 'tempF': -35, 'color': 'rgb(200,181,200)' },
+        { 'tempF': -40, 'color': 'rgb(219,210,220)' },
+        { 'tempF': -45, 'color': 'rgb(220,220,225)' },
+        { 'tempF': -50, 'color': 'rgb(240,240,240)' }
+    ]
 }
-const colorDict = [
-    { 'tempF': 120, 'color': 'rgb(160,0,128)' },
-    { 'tempF': 115, 'color': 'rgb(176,0,112)' },
-    { 'tempF': 110, 'color': 'rgb(192,0,96)' },
-    { 'tempF': 105, 'color': 'rgb(208,0,80)' },
-    { 'tempF': 100, 'color': 'rgb(224,0,60)' },
-    { 'tempF': 95, 'color': 'rgb(225,0,0)' },
-    { 'tempF': 90, 'color': 'rgb(225,86,25)' },
-    { 'tempF': 85, 'color': 'rgb(240,128,50)' },
-    { 'tempF': 80, 'color': 'rgb(240,160,70)' },
-    { 'tempF': 75, 'color': 'rgb(228,196,85)' },
-    { 'tempF': 70, 'color': 'rgb(240,228,85)' },
-    { 'tempF': 65, 'color': 'rgb(212,240,60)' },
-    { 'tempF': 60, 'color': 'rgb(160,240,0)' },
-    { 'tempF': 55, 'color': 'rgb(0,240,0)' },
-    { 'tempF': 50, 'color': 'rgb(0,240,144)' },
-    { 'tempF': 45, 'color': 'rgb(0,224,176)' },
-    { 'tempF': 40, 'color': 'rgb(0,208,208)' },
-    { 'tempF': 35, 'color': 'rgb(32,196,240)' },
-    { 'tempF': 30, 'color': 'rgb(64,160,240)' },
-    { 'tempF': 25, 'color': 'rgb(64,128,240)' },
-    { 'tempF': 20, 'color': 'rgb(64,64,255)' },
-    { 'tempF': 15, 'color': 'rgb(128,0,255)' },
-    { 'tempF': 10, 'color': 'rgb(144,32,224)' },
-    { 'tempF': 5, 'color': 'rgb(160,32,208)' },
-    { 'tempF': 0, 'color': 'rgb(176,32,192)' },
-    { 'tempF': -5, 'color': 'rgb(160,64,176)' },
-    { 'tempF': -10, 'color': 'rgb(144,96,160)' },
-    { 'tempF': -15, 'color': 'rgb(128,112,14)' },
-    { 'tempF': -20, 'color': 'rgb(144,128,160)' },
-    { 'tempF': -25, 'color': 'rgb(160,144,176)' },
-    { 'tempF': -30, 'color': 'rgb(176,160,192)' },
-    { 'tempF': -35, 'color': 'rgb(200,181,200)' },
-    { 'tempF': -40, 'color': 'rgb(219,210,220)' },
-    { 'tempF': -45, 'color': 'rgb(220,220,225)' },
-    { 'tempF': -50, 'color': 'rgb(240,240,240)' }
-];
 
 function colorizeTemp ( temperature ) {
-    return colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
+    return appData.colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
 }
 
 function localizeDate ( date ) { 
@@ -247,7 +247,14 @@ function processArchive( data ) {
     jQuery('.outTemp-max-time').html( data.today.outTemp.maxtime );
     jQuery('.outTemp-min-time').html( data.today.outTemp.mintime );
 
+    // dewpoint records
+    jQuery('.dewpoint-max').html( data.today.dewpoint.max );
+    jQuery('.dewpoint-min').html( data.today.dewpoint.min );
+    jQuery('.dewpoint-max-time').html( data.today.dewpoint.maxtime );
+    jQuery('.dewpoint-min-time').html( data.today.dewpoint.mintime );
+
     // Barometer records
+    jQuery('.barometer-trend').html( data.today.barometer.trend );
     jQuery('.barometer-max').html( data.today.barometer.max );
     jQuery('.barometer-min').html( data.today.barometer.min );
     jQuery('.barometer-max-time').html( data.today.barometer.maxtime );

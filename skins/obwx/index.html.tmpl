@@ -71,7 +71,10 @@
                                 <div class="feels-like">--</div>
                                 <div class="dewpoint">---</div>
                                 <div class="outHumidity">---</div>
-                                <div class="barometer">---</div>
+                                <div>
+                                    <span class="barometer">---</span>
+                                    <span class="barometer-trend">--</span>
+                                </div>
                                 <div class="uv">---</div>
                             </div>
                         </div>
@@ -168,77 +171,77 @@
                 <!--Start of Extras Row-->
                 <div class="row extras-row justify-content-center text-center">
                     <div class="col-xl pt-2">
-                        <div class="records-container mx-auto" style="width: 95%;">
-                            <div class="row border-bottom">
-                                <div class="col-3">
-                                    <div class="outTemp-min">--</div>
-                                </div>
-                                <div class="col-6">
-                                    <div>Outside Temp</div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="outTemp-max">--</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="outTemp-min-time">---</div>
-                                </div>
-                                <div class="col-6">
-                                    <div></div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="outTemp-max-time">---</div>
+                        <div class="row">
+                            <div class="col record-temp">
+                                <div class="row g-0">
+                                    <div class="col-3 offset-1">
+                                        <div>Temp</div>
+                                        <div>icon</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="outTemp-max">--</div>
+                                        <div class="outTemp-min">--</div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="outTemp-max-time">---</div>
+                                        <div class="outTemp-min-time">---</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row border-bottom">
-                                <div class="col-3">
-                                    <div class="wind-min">--</div>
-                                </div>
-                                <div class="col-6">
-                                    <div>Wind Speed</div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="wind-max">--</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="wind-min-time">---</div>
-                                </div>
-                                <div class="col-6">
-                                    <div></div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="wind-max-time">---</div>
+                            <div class="col record-wind">
+                                <div class="row g-0">
+                                    <div class="col-3 offset-1">
+                                        <div>Wind</div>
+                                        <div>icon</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="wind-max">--</div>
+                                        <div class="wind-min">--</div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="wind-max-time">---</div>
+                                        <div class="wind-min-time">---</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row border-bottom">
-                                <div class="col-4">
-                                    <div class="barometer-min">--</div>
-                                </div>
-                                <div class="col-4">
-                                    <div>Barometer</div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="barometer-max">--</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col record-xxx">
+                                <div class="row g-0">
+                                    <div class="col-3 offset-1">
+                                        <div>Dew</div>
+                                        <div>icon</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="dewpoint-max">--</div>
+                                        <div class="dewpoint-min">--</div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="dewpoint-max-time">---</div>
+                                        <div class="dewpoint-min-time">---</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="barometer-min-time">---</div>
-                                </div>
-                                <div class="col-4">
-                                    <div></div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="barometer-max-time">---</div>
+                            <div class="col record-barometer">
+                                <div class="row g-0">
+                                    <div class="col-3 offset-1">
+                                        <div>Press</div>
+                                        <div>icon</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="barometer-max">--</div>
+                                        <div class="barometer-min">--</div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="barometer-max-time">---</div>
+                                        <div class="barometer-min-time">---</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl pt-2">
-                        <div class="metar-container mx-auto" style="width:85%;">
+                        <div class="metar-container" style="width:100%;">
                             <div class="row border">
                                 <div class="col">
                                     <div class="row border-bottom">
@@ -249,7 +252,7 @@
                                             <div class="metar-updated">--</div>
                                         </div>
                                     </div>
-                                    <div class="row border-bottom">
+                                    <div class="row g-0 border-bottom">
                                         <div class="col">
                                             <div class="metar-wind-direction">--</div>
                                         </div>
@@ -265,7 +268,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row border-bottom">
+                                    <div class="row g-0 border-bottom">
                                         <div class="col">
                                             <div class="metar-rules">--</div>
                                         </div>

@@ -209,7 +209,7 @@ min-height: 84px;
 }
 
 .moonrise, .moonset {
-    width: 45%;
+    width: 75%;
     margin: auto;
 }
 
@@ -234,7 +234,7 @@ min-height: 84px;
 }
 
 .label-position {
-    min-width: 400px;
+    min-width: 550px;
     left: 50%;
     line-height: 1.5rem;
 }
