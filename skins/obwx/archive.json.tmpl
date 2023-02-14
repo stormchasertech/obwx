@@ -3,8 +3,7 @@
 #errorCatcher Echo
 #set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
 {
-    "timestamp": "$current.dateTime.raw",
-    "timestamp_formatted": "#echo datetime.datetime.fromtimestamp($current.dateTime.raw).strftime('%-I:%M %p')#",
+    "timestamp" : #echo $current.dateTime.raw*1000#,
     "station": {
         "latitude": "$station.stn_info.latitude_f",
         "longitude": "$station.stn_info.longitude_f",
@@ -14,21 +13,21 @@
     "today": {
         "outTemp": {
             "max": "$day.outTemp.max",
-            "maxtime": "#echo datetime.datetime.fromtimestamp($day.outTemp.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.outTemp.min",
-            "mintime": "#echo datetime.datetime.fromtimestamp($day.outTemp.mintime.raw).strftime('%-I:%M %p')#"
+            "maxtime": #echo $day.outTemp.maxtime.raw*1000#,
+            "mintime": #echo $day.outTemp.mintime.raw*1000#
         },
         "dewpoint": {
             "max": "$day.dewpoint.max",
-            "maxtime": "#echo datetime.datetime.fromtimestamp($day.dewpoint.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.dewpoint.min",
-            "mintime": "#echo datetime.datetime.fromtimestamp($day.dewpoint.mintime.raw).strftime('%-I:%M %p')#"
+            "maxtime": #echo $day.dewpoint.maxtime.raw*1000#,
+            "mintime": #echo $day.dewpoint.mintime.raw*1000#
         },
         "wind": {
             "max": "$day.wind.max.format(format_string='%.1f',add_label=False)",
-            "maxtime": "#echo datetime.datetime.fromtimestamp($day.wind.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.wind.min.format(add_label=False)",
-            "mintime": "#echo datetime.datetime.fromtimestamp($day.wind.mintime.raw).strftime('%-I:%M %p')#",
+            "maxtime": #echo $day.wind.maxtime.raw*1000#,
+            "mintime": #echo $day.wind.mintime.raw*1000#,
             "windGust_lastHr": "$span($hour_delta=1).windGust.max",
             "windSpd_1hrAvg": "$span($hour_delta=1).windSpeed.avg",
             "windDir_1hrAvg": "$span($hour_delta=1).windDir.avg.ordinal_compass"
@@ -36,9 +35,9 @@
         "barometer": {
             "trend":"$trend.barometer.format(format_string='%.2f',add_label=False)",
             "max": "$day.barometer.max.format(format_string='%.2f',add_label=False)",
-            "maxtime": "#echo datetime.datetime.fromtimestamp($day.barometer.maxtime.raw).strftime('%-I:%M %p')#",
             "min": "$day.barometer.min.format(format_string='%.2f',add_label=False)",
-            "mintime": "#echo datetime.datetime.fromtimestamp($day.barometer.mintime.raw).strftime('%-I:%M %p')#"
+            "maxtime": #echo $day.barometer.maxtime.raw*1000#,
+            "mintime": #echo $day.barometer.mintime.raw*1000#
         },
         "rain": {
             "maxRate": "$day.rainRate.max",
@@ -52,36 +51,32 @@
     },
     "almanac": {
         "sun": {
-            "rise": "$almanac.sun.rise.raw",
-            "rise_formatted": "#echo datetime.datetime.fromtimestamp($almanac.sun.rise.raw).strftime('%-I:%M %p')#",
-            "transit": "$almanac.sun.transit.raw",
-            "set": "$almanac.sun.set.raw",
-            "set_formatted": "#echo datetime.datetime.fromtimestamp($almanac.sun.set.raw).strftime('%-I:%M %p')#",
+            "rise": #echo $almanac.sun.rise.raw*1000#,
+            "transit": #echo $almanac.sun.transit.raw*1000#,
+            "set": #echo $almanac.sun.set.raw*1000#,
             "daylight": "$daylight",
             "antitransit": {
-                "previous": "$almanac.sun.previous_antitransit.raw",
-                "next": "$almanac.sun.next_antitransit.raw"
+                "previous": #echo $almanac.sun.previous_antitransit.raw*1000#,
+                "next": #echo $almanac.sun.next_antitransit.raw*1000#
             }
         },
         "moon": {
-            "rise": "$almanac.moon.rise.raw",
-            "rise_formatted": "#echo datetime.datetime.fromtimestamp($almanac.moon.rise.raw).strftime('%-I:%M %p')#",
-            "set": "$almanac.moon.set.raw",
-            "set_formatted": "#echo datetime.datetime.fromtimestamp($almanac.moon.set.raw).strftime('%-I:%M %p')#",
+            "rise": #echo $almanac.moon.rise.raw*1000#,
+            "set": #echo $almanac.moon.set.raw*1000#,
             "phase": "$almanac.moon_phase",
             "percentfull": "$almanac.moon_fullness",
             "index": "$almanac.moon_index",
             "antitransit": {
-                "previous": "$almanac.moon.previous_antitransit.raw",
-                "next": "$almanac.moon.next_antitransit.raw"
+                "previous": #echo $almanac.moon.previous_antitransit.raw*1000#,
+                "next": #echo $almanac.moon.next_antitransit.raw*1000#
             },
             "new": {
-                "previous": "$almanac.previous_new_moon.raw",
-                "next": "$almanac.next_new_moon.raw"
+                "previous": #echo $almanac.previous_new_moon.raw*1000#,
+                "next": #echo $almanac.next_new_moon.raw*1000#
             },
             "full": {
-                "previous": "$almanac.previous_full_moon.raw",
-                "next": "$almanac.next_full_moon.raw"
+                "previous": #echo $almanac.previous_full_moon.raw*1000#,
+                "next": #echo $almanac.next_full_moon.raw*1000#
             }
         }
     }

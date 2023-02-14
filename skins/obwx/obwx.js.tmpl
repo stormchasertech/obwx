@@ -212,15 +212,15 @@ function processLoop ( data ) {
         jQuery('.windometer-arrow').css('transform', `rotate(\${windSpdToAngle( data.windSpeed_mph, appData.windSpdDial.currentMax )}deg)`);
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
-        jQuery('.uv').html( `UV Index: \${parseInt(data.UV)}` );
+        jQuery('.uv').html( `UV Index: \${parseFloat(data.UV).toFixed(1)}` );
     }
     // Other rain loop data items = hourRain_in , rain24_in, rain_in, rain_total
 }
 
 function processArchive( data ) {
-
     // Current and recent wind speed data and widgit settings
     const lastHourHigh = parseFloat(data.today.wind.windGust_lastHr);
+
     function setWindSpdDial( oneHourSpeed ) {
         if ( oneHourSpeed > appData.windSpdDial.defaultMax ) {
             appData.windSpdDial.currentMax = onHourSpeed;
@@ -238,27 +238,27 @@ function processArchive( data ) {
     jQuery('.windSpd-1hrAvg').html( data.today.wind.windSpd_1hrAvg );
     jQuery('.wind-max').html( data.today.wind.max );
     jQuery('.wind-min').html( data.today.wind.min);
-    jQuery('.wind-max-time').html( data.today.wind.maxtime );
-    jQuery('.wind-min-time').html( data.today.wind.maxtime );
+    jQuery('.wind-max-time').html( `\${localizeDate(data.today.wind.maxtime).t} \${localizeDate(data.today.wind.maxtime).p.toLowerCase()}` );
+    jQuery('.wind-min-time').html( `\${localizeDate(data.today.wind.mintime).t} \${localizeDate(data.today.wind.mintime).p.toLowerCase()}` );
 
     // outTemp records
     jQuery('.outTemp-max').html( data.today.outTemp.max );
     jQuery('.outTemp-min').html( data.today.outTemp.min );
-    jQuery('.outTemp-max-time').html( data.today.outTemp.maxtime );
-    jQuery('.outTemp-min-time').html( data.today.outTemp.mintime );
+    jQuery('.outTemp-max-time').html( `\${localizeDate(data.today.outTemp.maxtime).t} \${localizeDate(data.today.outTemp.maxtime).p.toLowerCase()}` );
+    jQuery('.outTemp-min-time').html( `\${localizeDate(data.today.outTemp.mintime).t} \${localizeDate(data.today.outTemp.mintime).p.toLowerCase()}` );
 
-    // dewpoint records
+    // Dewpoint records
     jQuery('.dewpoint-max').html( data.today.dewpoint.max );
     jQuery('.dewpoint-min').html( data.today.dewpoint.min );
-    jQuery('.dewpoint-max-time').html( data.today.dewpoint.maxtime );
-    jQuery('.dewpoint-min-time').html( data.today.dewpoint.mintime );
+    jQuery('.dewpoint-max-time').html( `\${localizeDate(data.today.dewpoint.maxtime).t} \${localizeDate(data.today.dewpoint.maxtime).p.toLowerCase()}` );
+    jQuery('.dewpoint-min-time').html( `\${localizeDate(data.today.dewpoint.mintime).t} \${localizeDate(data.today.dewpoint.mintime).p.toLowerCase()}` );
 
     // Barometer records
     jQuery('.barometer-trend').html( data.today.barometer.trend );
     jQuery('.barometer-max').html( data.today.barometer.max );
     jQuery('.barometer-min').html( data.today.barometer.min );
-    jQuery('.barometer-max-time').html( data.today.barometer.maxtime );
-    jQuery('.barometer-min-time').html( data.today.barometer.mintime );
+    jQuery('.barometer-max-time').html( `\${localizeDate(data.today.barometer.maxtime).t} \${localizeDate( data.today.barometer.maxtime).p.toLowerCase()}` );
+    jQuery('.barometer-min-time').html( `\${localizeDate(data.today.barometer.mintime).t} \${localizeDate( data.today.barometer.mintime).p.toLowerCase()}` );
 
     // Rain records
     jQuery('.rainrate-max').html( parseFloat(data.today.rain.maxRate).toFixed(2) + '"/hr' );
@@ -274,10 +274,10 @@ function processArchive( data ) {
         mins: parseInt( daylightRaw / 3600 % 1 * 60 ),
     }
     jQuery('.daylight-time').html( `\${daylight.hrs}hrs \${daylight.mins}mins`);
-    jQuery('.sunrise-time').html( data.almanac.sun.rise_formatted.split(' ')[0] );
-    jQuery('.sunset-time').html( data.almanac.sun.set_formatted.split(' ')[0] );
-    jQuery('.moonrise-time').html( data.almanac.moon.rise_formatted );
-    jQuery('.moonset-time').html( data.almanac.moon.set_formatted );
+    jQuery('.sunrise-time').html( localizeDate(data.almanac.sun.rise).t );
+    jQuery('.sunset-time').html( localizeDate(data.almanac.sun.set).t );
+    jQuery('.moonrise-time').html( localizeDate(data.almanac.moon.rise).t );
+    jQuery('.moonset-time').html( localizeDate(data.almanac.moon.set).t );
     // Expand Full/New moon label
     if ( data.almanac.moon.phase == 'New' || data.almanac.moon.phase == 'Full' ) {
         jQuery('.moon-phase').html( `\${data.almanac.moon.phase} Moon`);
@@ -306,12 +306,8 @@ function processForecast( data ) {
                      name: response[i].details.name,
                      color: response[i].details.color,
                      begins: `\${tdB.a} \${tdB.t} \${tdB.p}`,
-                     ends: `\${tdE.a} \${tdE.t} \${tdE.p}`,
+                     ends: `\${tdE.a} \${tdE.t} \${tdE.p} \${tdE.tz}`,
                  }
-                 // alertObj.name = response[i].details.name;
-                 // alertObj.color = response[i].details.color;
-                 // alertObj.begins = `\${tdB.a} \${tdB.t} \${tdB.p}`;
-                 // alertObj.ends = `\${tdE.a} \${tdE.t} \${tdE.p}`;
                  wxAlerts.push(alertObj);
              }
         }
@@ -750,7 +746,7 @@ function drawAlmanac ( data ) {
         const percentfull = parseInt( data.almanac.moon.percentfull );
         const phaseTimes = {
             timestamp: parseInt( data.timestamp ),
-            timelimit: 864000,
+            timelimit: 864000000,
             newmoon: {
                 previous: parseInt( data.almanac.moon.new.previous ),
                 next: parseInt ( data.almanac.moon.new.next )
