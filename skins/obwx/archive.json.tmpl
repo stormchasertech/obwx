@@ -28,7 +28,7 @@
             "min": "$day.wind.min.format(add_label=False)",
             "maxtime": #echo $day.wind.maxtime.raw*1000#,
             "mintime": #echo $day.wind.mintime.raw*1000#,
-            "windGust_lastHr": "$span($hour_delta=1).windGust.max",
+            "windGust_lastHr": $span($hour_delta=1).windGust.max.format(add_label=False),
             "windSpd_1hrAvg": "$span($hour_delta=1).windSpeed.avg",
             "windDir_1hrAvg": "$span($hour_delta=1).windDir.avg.ordinal_compass"
         },
@@ -54,7 +54,7 @@
             "rise": #echo $almanac.sun.rise.raw*1000#,
             "transit": #echo $almanac.sun.transit.raw*1000#,
             "set": #echo $almanac.sun.set.raw*1000#,
-            "daylight": "$daylight",
+            "daylight": $daylight,
             "antitransit": {
                 "previous": #echo $almanac.sun.previous_antitransit.raw*1000#,
                 "next": #echo $almanac.sun.next_antitransit.raw*1000#

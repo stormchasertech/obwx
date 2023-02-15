@@ -1,103 +1,107 @@
 #errorCatcher Echo
-
-const appData = {
-    lastWindRotation: undefined,
-    windSpdDial: {
-        defaultMax: 20,
-        currentMax: undefined
+// OBWX 
+const obwx = { 
+    windRotation: 0,
+    windScaleMaxCurrent: undefined,
+    windScaleMaxDefault: 20, // Will need a fix for metric units
+    // All dates on the site will be localized through this method
+    localizeDate ( date ) {   
+        const dateObj = new Date(date); 
+        const settings = {   
+            dateStyle: 'full', 
+            timeStyle: 'long',  
+            timeZone: '$Extras.timezone', 
+            hour12: true 
+        }         
+        const dateArr = new Intl.DateTimeFormat(undefined,settings).format(dateObj).replace(/,/g,'').split(' '); 
+        return { 
+            A: dateArr[0], //Monday 
+            a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
+            M: dateArr[1], //January 
+            m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
+            d: dateArr[2], //Day '8,9,10,11' 
+            Y: dateArr[3], //Year 2023
+            T: dateArr[5], //HH:MM:SS 
+            t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
+            p: dateArr[6], //AM/PM 
+            tz: dateArr[7], // timezone CST 
+        };   
+    }, 
+    // Colorize based on temperature
+    colorizeTemp ( temperature ) { 
+        const colorDict = [ 
+            { 'tempF': 120, 'color': 'rgb(160,0,128)' },
+            { 'tempF': 115, 'color': 'rgb(176,0,112)' },
+            { 'tempF': 110, 'color': 'rgb(192,0,96)' },
+            { 'tempF': 105, 'color': 'rgb(208,0,80)' },
+            { 'tempF': 100, 'color': 'rgb(224,0,60)' },
+            { 'tempF': 95, 'color': 'rgb(225,0,0)' },
+            { 'tempF': 90, 'color': 'rgb(225,86,25)' },
+            { 'tempF': 85, 'color': 'rgb(240,128,50)' },
+            { 'tempF': 80, 'color': 'rgb(240,160,70)' },
+            { 'tempF': 75, 'color': 'rgb(228,196,85)' },
+            { 'tempF': 70, 'color': 'rgb(240,228,85)' },
+            { 'tempF': 65, 'color': 'rgb(212,240,60)' },
+            { 'tempF': 60, 'color': 'rgb(160,240,0)' },
+            { 'tempF': 55, 'color': 'rgb(0,240,0)' },
+            { 'tempF': 50, 'color': 'rgb(0,240,144)' },
+            { 'tempF': 45, 'color': 'rgb(0,224,176)' },
+            { 'tempF': 40, 'color': 'rgb(0,208,208)' },
+            { 'tempF': 35, 'color': 'rgb(32,196,240)' },
+            { 'tempF': 30, 'color': 'rgb(64,160,240)' },
+            { 'tempF': 25, 'color': 'rgb(64,128,240)' },
+            { 'tempF': 20, 'color': 'rgb(64,64,255)' },
+            { 'tempF': 15, 'color': 'rgb(128,0,255)' },
+            { 'tempF': 10, 'color': 'rgb(144,32,224)' },
+            { 'tempF': 5, 'color': 'rgb(160,32,208)' },
+            { 'tempF': 0, 'color': 'rgb(176,32,192)' },
+            { 'tempF': -5, 'color': 'rgb(160,64,176)' },
+            { 'tempF': -10, 'color': 'rgb(144,96,160)' },
+            { 'tempF': -15, 'color': 'rgb(128,112,14)' },
+            { 'tempF': -20, 'color': 'rgb(144,128,160)' },
+            { 'tempF': -25, 'color': 'rgb(160,144,176)' },
+            { 'tempF': -30, 'color': 'rgb(176,160,192)' },
+            { 'tempF': -35, 'color': 'rgb(200,181,200)' },
+            { 'tempF': -40, 'color': 'rgb(219,210,220)' },
+            { 'tempF': -45, 'color': 'rgb(220,220,225)' },
+            { 'tempF': -50, 'color': 'rgb(240,240,240)' }
+        ]
+        return colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
     },
-    colorDict: [
-        { 'tempF': 120, 'color': 'rgb(160,0,128)' },
-        { 'tempF': 115, 'color': 'rgb(176,0,112)' },
-        { 'tempF': 110, 'color': 'rgb(192,0,96)' },
-        { 'tempF': 105, 'color': 'rgb(208,0,80)' },
-        { 'tempF': 100, 'color': 'rgb(224,0,60)' },
-        { 'tempF': 95, 'color': 'rgb(225,0,0)' },
-        { 'tempF': 90, 'color': 'rgb(225,86,25)' },
-        { 'tempF': 85, 'color': 'rgb(240,128,50)' },
-        { 'tempF': 80, 'color': 'rgb(240,160,70)' },
-        { 'tempF': 75, 'color': 'rgb(228,196,85)' },
-        { 'tempF': 70, 'color': 'rgb(240,228,85)' },
-        { 'tempF': 65, 'color': 'rgb(212,240,60)' },
-        { 'tempF': 60, 'color': 'rgb(160,240,0)' },
-        { 'tempF': 55, 'color': 'rgb(0,240,0)' },
-        { 'tempF': 50, 'color': 'rgb(0,240,144)' },
-        { 'tempF': 45, 'color': 'rgb(0,224,176)' },
-        { 'tempF': 40, 'color': 'rgb(0,208,208)' },
-        { 'tempF': 35, 'color': 'rgb(32,196,240)' },
-        { 'tempF': 30, 'color': 'rgb(64,160,240)' },
-        { 'tempF': 25, 'color': 'rgb(64,128,240)' },
-        { 'tempF': 20, 'color': 'rgb(64,64,255)' },
-        { 'tempF': 15, 'color': 'rgb(128,0,255)' },
-        { 'tempF': 10, 'color': 'rgb(144,32,224)' },
-        { 'tempF': 5, 'color': 'rgb(160,32,208)' },
-        { 'tempF': 0, 'color': 'rgb(176,32,192)' },
-        { 'tempF': -5, 'color': 'rgb(160,64,176)' },
-        { 'tempF': -10, 'color': 'rgb(144,96,160)' },
-        { 'tempF': -15, 'color': 'rgb(128,112,14)' },
-        { 'tempF': -20, 'color': 'rgb(144,128,160)' },
-        { 'tempF': -25, 'color': 'rgb(160,144,176)' },
-        { 'tempF': -30, 'color': 'rgb(176,160,192)' },
-        { 'tempF': -35, 'color': 'rgb(200,181,200)' },
-        { 'tempF': -40, 'color': 'rgb(219,210,220)' },
-        { 'tempF': -45, 'color': 'rgb(220,220,225)' },
-        { 'tempF': -50, 'color': 'rgb(240,240,240)' }
-    ]
-}
-
-function colorizeTemp ( temperature ) {
-    return appData.colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
-}
-
-function localizeDate ( date ) { 
-    const dateObj = new Date(date);
-    const settings = { 
-        dateStyle: 'full',
-        timeStyle: 'long', 
-        timeZone: '$Extras.timezone',
-        hour12: true
-    }   
-    const dateArr = new Intl.DateTimeFormat(undefined,settings).format(dateObj).replace(/,/g,'').split(' ');
-    return {
-        A: dateArr[0],
-        a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj),
-        M: dateArr[1],
-        m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj),
-        d: dateArr[2],
-        Y: dateArr[3],
-        T: dateArr[5],
-        t: dateArr[5].substr(0,dateArr[5].length-3),
-        p: dateArr[6],
-        tz: dateArr[7],
-    };  
-};
-
-function rotateWindDir ( direction, lastRotation ) {
-    if ( direction != 'N/A' ) { 
-        let finalRotation = lastRotation || 0;
-        let currentRotation = finalRotation % 360;
-
-        if ( currentRotation < 0 ) { currentRotation += 360; }
-        if ( currentRotation <  180 && direction > (currentRotation + 180) ) { finalRotation -= 360; }
-        if ( currentRotation >= 180 && direction <= (currentRotation - 180) ) { finalRotation += 360; }
-
-        finalRotation += ( direction - currentRotation );
-        appData.lastWindRotation = finalRotation;
-        return finalRotation;
-
-    } else { 
-        console.log(`Check rotateWindDir function: \${direction}`); 
-        return;
-    }
-}
-
-function windSpdToAngle ( windSpeed, scaleMax ) {
-    if ( scaleMax != undefined ){
-        const angle = (windSpeed / scaleMax * 180) - 90;
-        // Prevent overshoot by returning 90 if over 90 deg
-        return angle > 90 ? 90 : angle;
-    } else {
-        return -90;
+    // Rotate the wind direction indicator
+    rotateWindDir ( direction ) {
+        let finalRotation = this.windRotation;
+        if (direction != "N/A") {
+            function rotateThis(newRotation) {
+                finalRotation = finalRotation || 0; // if finalRotation undefined or 0, make 0, else finalRotation
+                let currentRotation = finalRotation % 360;
+                if (currentRotation < 0) {currentRotation += 360;}
+                if (currentRotation < 180 && (newRotation > (currentRotation + 180))) {finalRotation -= 360;}
+                if (currentRotation >= 180 && (newRotation <= (currentRotation - 180))) {finalRotation += 360;}
+                finalRotation += (newRotation - currentRotation);
+                return finalRotation;
+            }
+            return this.windRotation = rotateThis(direction);
+        }
+    },
+    // Wind speed dial's maximum is dynamic based on the highest wind in the past hour
+    setWindSpdDial ( oneHourSpeedMax ) {
+        if ( oneHourSpeedMax > this.windScaleMaxDefault ) {
+            this.windScaleMaxCurrent = oneHourSpeedMax;
+        } else {
+            this.windScaleMaxCurrent = this.windScaleMaxDefault;
+        }
+    },
+    // Rotate the wind speed indicator
+    windSpdToAngle ( windSpeed ) {
+        if ( this.windScaleMaxCurrent != undefined ){
+            const angle = (windSpeed / this.windScaleMaxCurrent * 180) - 90;
+            // Prevent overshoot by returning 90 if over 90 deg
+            return angle > 90 ? 90 : angle;
+        } else {
+            // overshoot the minimum to indicate error
+            return -95;
+        }
     }
 }
 
@@ -142,11 +146,10 @@ function updateArcCast() {
     jQuery.getJSON( 'forecast.json', processForecast );
 }
 
-//////////////////////////
-// Process and update with new data 
-//////////////////////////
+////////////////////////////////////////////
+// Process loop, archive, and forecast data 
+////////////////////////////////////////////
 function processLoop ( data ) {
-
     if ( data.hasOwnProperty( 'altimeter_inHg' ) ) {
         jQuery('.altimeter').html( `Altimeter: \${data.altimeter_inHg}` );
     }
@@ -157,7 +160,7 @@ function processLoop ( data ) {
         jQuery('.barometer').html(`Barometer: \${parseFloat( data.barometer_inHg ).toFixed(2)}` );
     }
     if ( data.hasOwnProperty( 'dateTime' ) ) {
-        const td = localizeDate(parseFloat(data.dateTime)*1000);
+        const td = obwx.localizeDate(parseFloat(data.dateTime)*1000);
         jQuery('.updated-date').html( `\${td.A}, \${td.m} \${td.d}` );
         jQuery('.updated-time').html( `\${td.T} \${td.p} \${td.tz}` );
     }
@@ -198,18 +201,18 @@ function processLoop ( data ) {
     }
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
         jQuery('.outTemp').html( `\${parseFloat( data.outTemp_F ).toFixed(1)}<sup>&deg;</sup>` );
-        jQuery('.outTemp').css( 'color', colorizeTemp( data.outTemp_F) );
+        jQuery('.outTemp').css( 'color', obwx.colorizeTemp( data.outTemp_F) );
     }
     if ( data.hasOwnProperty( 'rainRate_inch_per_hour') ) {
         jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
     }
     if ( data.hasOwnProperty( 'windDir' )) {
-        jQuery('.arrow').css( 'transform', `rotate(\${rotateWindDir( data.windDir, appData.lastWindRotation )}deg` );
+        jQuery('.arrow').css( 'transform', `rotate(\${obwx.rotateWindDir( data.windDir )}deg` );
         jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
     }
     if ( data.hasOwnProperty('windSpeed_mph') ) {
         jQuery('.wind-speed-mph').html( parseFloat(data.windSpeed_mph).toFixed(0) );
-        jQuery('.windometer-arrow').css('transform', `rotate(\${windSpdToAngle( data.windSpeed_mph, appData.windSpdDial.currentMax )}deg)`);
+        jQuery('.windometer-arrow').css('transform', `rotate(\${obwx.windSpdToAngle( data.windSpeed_mph )}deg)`);
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
         jQuery('.uv').html( `UV Index: \${parseFloat(data.UV).toFixed(1)}` );
@@ -218,90 +221,86 @@ function processLoop ( data ) {
 }
 
 function processArchive( data ) {
-    // Current and recent wind speed data and widgit settings
-    const lastHourHigh = parseFloat(data.today.wind.windGust_lastHr);
-
-    function setWindSpdDial( oneHourSpeed ) {
-        if ( oneHourSpeed > appData.windSpdDial.defaultMax ) {
-            appData.windSpdDial.currentMax = onHourSpeed;
-        } else {
-            appData.windSpdDial.currentMax = appData.windSpdDial.defaultMax;
-        }
-    }
-    setWindSpdDial( lastHourHigh );
-    
-    jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${windSpdToAngle( lastHourHigh, appData.windSpdDial.currentMax )}deg)`);
-    jQuery('.windometer-legend-hi').html ( appData.windSpdDial.currentMax );
-
-    // More wind records
-    jQuery('.windDir-1hrAvg').html( data.today.wind.windDir_1hrAvg );
-    jQuery('.windSpd-1hrAvg').html( data.today.wind.windSpd_1hrAvg );
-    jQuery('.wind-max').html( data.today.wind.max );
-    jQuery('.wind-min').html( data.today.wind.min);
-    jQuery('.wind-max-time').html( `\${localizeDate(data.today.wind.maxtime).t} \${localizeDate(data.today.wind.maxtime).p.toLowerCase()}` );
-    jQuery('.wind-min-time').html( `\${localizeDate(data.today.wind.mintime).t} \${localizeDate(data.today.wind.mintime).p.toLowerCase()}` );
-
-    // outTemp records
-    jQuery('.outTemp-max').html( data.today.outTemp.max );
-    jQuery('.outTemp-min').html( data.today.outTemp.min );
-    jQuery('.outTemp-max-time').html( `\${localizeDate(data.today.outTemp.maxtime).t} \${localizeDate(data.today.outTemp.maxtime).p.toLowerCase()}` );
-    jQuery('.outTemp-min-time').html( `\${localizeDate(data.today.outTemp.mintime).t} \${localizeDate(data.today.outTemp.mintime).p.toLowerCase()}` );
-
-    // Dewpoint records
-    jQuery('.dewpoint-max').html( data.today.dewpoint.max );
-    jQuery('.dewpoint-min').html( data.today.dewpoint.min );
-    jQuery('.dewpoint-max-time').html( `\${localizeDate(data.today.dewpoint.maxtime).t} \${localizeDate(data.today.dewpoint.maxtime).p.toLowerCase()}` );
-    jQuery('.dewpoint-min-time').html( `\${localizeDate(data.today.dewpoint.mintime).t} \${localizeDate(data.today.dewpoint.mintime).p.toLowerCase()}` );
-
-    // Barometer records
-    jQuery('.barometer-trend').html( data.today.barometer.trend );
-    jQuery('.barometer-max').html( data.today.barometer.max );
-    jQuery('.barometer-min').html( data.today.barometer.min );
-    jQuery('.barometer-max-time').html( `\${localizeDate(data.today.barometer.maxtime).t} \${localizeDate( data.today.barometer.maxtime).p.toLowerCase()}` );
-    jQuery('.barometer-min-time').html( `\${localizeDate(data.today.barometer.mintime).t} \${localizeDate( data.today.barometer.mintime).p.toLowerCase()}` );
-
-    // Rain records
-    jQuery('.rainrate-max').html( parseFloat(data.today.rain.maxRate).toFixed(2) + '"/hr' );
-    jQuery('.yesterday-rain').html( parseFloat(data.today.rain.sum.yesterday).toFixed(2) + '"' );
-    jQuery('.week-rain').html( parseFloat(data.today.rain.sum.week).toFixed(2) + '"' );
-    jQuery('.month-rain').html( parseFloat(data.today.rain.sum.month).toFixed(2) + '"' );
-    jQuery('.year-rain').html( parseFloat(data.today.rain.sum.year).toFixed(2) + '"' );
-
     // Almanac data
-    const daylightRaw = parseInt(data.almanac.sun.daylight);
-    const daylight = {
-        hrs: parseInt( daylightRaw / 3600 ),
-        mins: parseInt( daylightRaw / 3600 % 1 * 60 ),
-    }
-    jQuery('.daylight-time').html( `\${daylight.hrs}hrs \${daylight.mins}mins`);
-    jQuery('.sunrise-time').html( localizeDate(data.almanac.sun.rise).t );
-    jQuery('.sunset-time').html( localizeDate(data.almanac.sun.set).t );
-    jQuery('.moonrise-time').html( localizeDate(data.almanac.moon.rise).t );
-    jQuery('.moonset-time').html( localizeDate(data.almanac.moon.set).t );
-    // Expand Full/New moon label
-    if ( data.almanac.moon.phase == 'New' || data.almanac.moon.phase == 'Full' ) {
-        jQuery('.moon-phase').html( `\${data.almanac.moon.phase} Moon`);
-    } else {
-        jQuery('.moon-phase').html( data.almanac.moon.phase );
-    }
-    // Draw sun and moon widget
-    drawAlmanac( data );
+    (function almanac (){
+        const daylight = {
+            raw: data.almanac.sun.daylight,
+            hrs(){ return Math.floor( this.raw / 3600 ) },
+            mins(){ return Math.floor( this.raw / 3600 % 1 * 60 ) },
+        }
+        jQuery('.daylight-time').html( `\${daylight.hrs()}hrs \${daylight.mins()}mins`);
+        jQuery('.sunrise-time').html( obwx.localizeDate(data.almanac.sun.rise).t );
+        jQuery('.sunset-time').html( obwx.localizeDate(data.almanac.sun.set).t );
+        jQuery('.moonrise-time').html( obwx.localizeDate(data.almanac.moon.rise).t );
+        jQuery('.moonset-time').html( obwx.localizeDate(data.almanac.moon.set).t );
+        // Expand Full/New moon label
+        if ( data.almanac.moon.phase == 'New' || data.almanac.moon.phase == 'Full' ) {
+            jQuery('.moon-phase').html( `\${data.almanac.moon.phase} Moon`);
+        } else {
+            jQuery('.moon-phase').html( data.almanac.moon.phase );
+        }
+        // Draw sun and moon widget
+        drawAlmanac( data );
+    })();
+
+    // Daily Records
+    (function dayRecords (){
+        // Set the wind speed scale maximum value
+        obwx.setWindSpdDial( parseFloat(data.today.wind.windGust_lastHr) );
+        jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( data.today.wind.windGust_lastHr )}deg)`);
+        jQuery('.windometer-legend-hi').html ( obwx.windScaleMaxCurrent );
+
+        // More wind records
+        jQuery('.windDir-1hrAvg').html( data.today.wind.windDir_1hrAvg );
+        jQuery('.windSpd-1hrAvg').html( data.today.wind.windSpd_1hrAvg );
+        jQuery('.wind-max').html( data.today.wind.max );
+        jQuery('.wind-min').html( data.today.wind.min);
+        jQuery('.wind-max-time').html( `\${obwx.localizeDate(data.today.wind.maxtime).t} \${obwx.localizeDate(data.today.wind.maxtime).p.toLowerCase()}` );
+        jQuery('.wind-min-time').html( `\${obwx.localizeDate(data.today.wind.mintime).t} \${obwx.localizeDate(data.today.wind.mintime).p.toLowerCase()}` );
+
+        // outTemp records
+        jQuery('.outTemp-max').html( data.today.outTemp.max );
+        jQuery('.outTemp-min').html( data.today.outTemp.min );
+        jQuery('.outTemp-max-time').html( `\${obwx.localizeDate(data.today.outTemp.maxtime).t} \${obwx.localizeDate(data.today.outTemp.maxtime).p.toLowerCase()}` );
+        jQuery('.outTemp-min-time').html( `\${obwx.localizeDate(data.today.outTemp.mintime).t} \${obwx.localizeDate(data.today.outTemp.mintime).p.toLowerCase()}` );
+
+        // Dewpoint records
+        jQuery('.dewpoint-max').html( data.today.dewpoint.max );
+        jQuery('.dewpoint-min').html( data.today.dewpoint.min );
+        jQuery('.dewpoint-max-time').html( `\${obwx.localizeDate(data.today.dewpoint.maxtime).t} \${obwx.localizeDate(data.today.dewpoint.maxtime).p.toLowerCase()}` );
+        jQuery('.dewpoint-min-time').html( `\${obwx.localizeDate(data.today.dewpoint.mintime).t} \${obwx.localizeDate(data.today.dewpoint.mintime).p.toLowerCase()}` );
+
+        // Barometer records
+        jQuery('.barometer-trend').html( data.today.barometer.trend );
+        jQuery('.barometer-max').html( data.today.barometer.max );
+        jQuery('.barometer-min').html( data.today.barometer.min );
+        jQuery('.barometer-max-time').html( `\${obwx.localizeDate(data.today.barometer.maxtime).t} \${obwx.localizeDate( data.today.barometer.maxtime).p.toLowerCase()}` );
+        jQuery('.barometer-min-time').html( `\${obwx.localizeDate(data.today.barometer.mintime).t} \${obwx.localizeDate( data.today.barometer.mintime).p.toLowerCase()}` );
+
+        // Rain records
+        jQuery('.rainrate-max').html( parseFloat(data.today.rain.maxRate).toFixed(2) + '"/hr' );
+        jQuery('.yesterday-rain').html( parseFloat(data.today.rain.sum.yesterday).toFixed(2) + '"' );
+        jQuery('.week-rain').html( parseFloat(data.today.rain.sum.week).toFixed(2) + '"' );
+        jQuery('.month-rain').html( parseFloat(data.today.rain.sum.month).toFixed(2) + '"' );
+        jQuery('.year-rain').html( parseFloat(data.today.rain.sum.year).toFixed(2) + '"' );
+    })();
 }
 
 function processForecast( data ) {
-    function currentWx () {
+    (function currentWx () {
         const icon = (data.current[0].response[0].periods[0].icon).split('.');
         jQuery('.current-wx-icon').html(`<img src="./icons/\${icon[0]}@2x.png">`);
         jQuery('.current-wx-text').html( data.current[0].response[0].periods[0].weatherPrimary );
-    }
-    function weatherAlerts () {
+    })();
+
+    (function weatherAlerts () {
         const response = data.alerts[0].response;
         const wxAlerts = [];
 
         if ( data.alerts[0].success && data.alerts[0].error === null ) {
              for ( let i = 0; i < response.length; i++ ) {
-                 const tdB = localizeDate(response[i].timestamps.beginsISO);
-                 const tdE = localizeDate(response[i].timestamps.expiresISO);
+                 const tdB = obwx.localizeDate(response[i].timestamps.beginsISO);
+                 const tdE = obwx.localizeDate(response[i].timestamps.expiresISO);
                  const alertObj = {
                      name: response[i].details.name,
                      color: response[i].details.color,
@@ -314,10 +313,10 @@ function processForecast( data ) {
         jQuery('.weather-alerts').html(wxAlerts.map(function (a) {
             return `<div class="wx-alert" style="color:\#\${a.color};">\${a.name} - \${a.begins} until \${a.ends}</div>`
         }).join(''));
-    }
-    function forecast () {
-        const response = data.daynight[0].response[0];
+    })();
 
+    (function forecast () {
+        const response = data.daynight[0].response[0];
         // Loop through each day-night forecast period and build forecast section HTML
         for (let i = 0; i < response.periods.length; i++) {
 
@@ -325,25 +324,25 @@ function processForecast( data ) {
                 if (i === 0) {
                     jQuery(`.forecast-p\${i}-date`).html('Today');
                 } else {
-                    const td = localizeDate( response.periods[i].dateTimeISO );
+                    const td = obwx.localizeDate( response.periods[i].dateTimeISO );
                     jQuery(`.forecast-p\${i}-date`).html( td.A );
                 }
                 const temp =  parseFloat( response.periods[i].maxTempF ).toFixed(0);
                 jQuery(`.forecast-p\${i}-hilo-txt`).html( 'High: ' );
                 jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
-                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', colorizeTemp( temp ) );
+                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', obwx.colorizeTemp( temp ) );
 
             } else {
                 if (i === 0 || i === 1) {
                     jQuery(`.forecast-p\${i}-date`).html('Tonight');
                 } else {
-                    const td = localizeDate( response.periods[i].dateTimeISO );
+                    const td = obwx.localizeDate( response.periods[i].dateTimeISO );
                     jQuery(`.forecast-p\${i}-date`).html( `\${td.a} Night` );
                 }
                 const temp = parseFloat(response.periods[i].minTempF).toFixed(0);
                 jQuery(`.forecast-p\${i}-hilo-txt`).html( 'Low: ' );
                 jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
-                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', colorizeTemp( temp ) );
+                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', obwx.colorizeTemp( temp ) );
             }
 
             if (response.periods[i].windSpeedMinMPH === response.periods[i].windSpeedMaxMPH ){
@@ -358,10 +357,9 @@ function processForecast( data ) {
             jQuery(`.forecast-p\${i}-pop`).html(response.periods[i].pop + '%');
             jQuery(`.forecast-p\${i}-precip`).html(response.periods[i].precipIN + '"');
         }
-    }
+    })();
 
-    function metarObservations () {
-
+    (function metarObservations () {
         function colorizeTime ( timeUpdated ) {
             const timeDiff = (Date.now()/1000) - timeUpdated;
             if ( timeDiff < 1200 ) {
@@ -412,7 +410,7 @@ function processForecast( data ) {
 
         function processMetar (index) {
             const response = data.observations[0].response[index];
-            const td = localizeDate(response.ob.dateTimeISO);
+            const td = obwx.localizeDate(response.ob.dateTimeISO);
 
             jQuery('.metar-location').html(response.id);
             jQuery('.metar-updated').html(`\${td.t} \${td.p}`);
@@ -439,10 +437,7 @@ function processForecast( data ) {
         }
         //  Process the metar using prefered station, use nearest if no prefered stations are present 
         stationIndex.length > 0 ? processMetar(stationIndex[0]) : processMetar(0); 
-    }
-
-    // Evoke the functions
-    currentWx(); weatherAlerts(); forecast(); metarObservations();
+    })();
 }
 
 //////////////////////////
@@ -578,7 +573,7 @@ function drawAlmanac ( data ) {
 
     // The circular path which the sun, moon, and markings travel upon
     // changing radius here will scale entire drawing
-    sunPath = {
+    const sunPath = {
         cx: canvasSunPath.width / 2,
         cy: canvasSunPath.height / 2,
         radius: 60,
@@ -599,12 +594,6 @@ function drawAlmanac ( data ) {
     // optional 'radius' parameter defaults to a point along the sunPath.radius circle 
     function Point ( time_angle , radius ) {
 
-        if ( time_angle > 3600 ){
-            angle = timeToAngle( time_angle );
-        } else {
-            angle = time_angle;
-        }
-
         // return an angle from the percent of time passed in the midnight to midnight 24hr time period
         function timeToAngle (time) {
             //const dayStart = new Date().setHours(0,0,0,0) / 1000;
@@ -614,9 +603,14 @@ function drawAlmanac ( data ) {
             return ( ( time - dayStart ) / ( dayEnd - dayStart ) * 360 ) ;
         } 
 
+        if ( time_angle > 3600 ){
+            this.degrees = timeToAngle( time_angle );
+        } else {
+            this.degrees = time_angle;
+        }
+
         // build the Point object
-        this.degrees = ( angle );
-        this.radians = ( angle + 90 ) * Math.PI / 180;
+        this.radians = ( this.degrees + 90 ) * Math.PI / 180;
         this.radius = radius === undefined ? sunPath.radius : radius;
         this.x = sunPath.cx + ( this.radius * Math.cos( this.radians ) );
         this.y = sunPath.cy + ( this.radius * Math.sin( this.radians ) );
