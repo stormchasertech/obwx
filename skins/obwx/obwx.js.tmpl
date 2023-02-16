@@ -1,109 +1,108 @@
 #errorCatcher Echo
 // OBWX 
 const obwx = { 
-    windRotation: 0,
+    windDirNeedle: 0,
     windScaleMaxCurrent: undefined,
     windScaleMaxDefault: 20, // Will need a fix for metric units, maybe add to skin.conf
-    // All dates on the site will be localized through this method
-    localizeDate ( date ) {   
-        const dateObj = new Date(date); 
-        const settings = {   
-            dateStyle: 'full', 
-            timeStyle: 'long',  
-            timeZone: '$Extras.timezone', 
-            hour12: true 
-        }         
-        const dateArr = new Intl.DateTimeFormat(undefined,settings).format(dateObj).replace(/,/g,'').split(' '); 
-        return { 
-            A: dateArr[0], //Monday 
-            a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
-            M: dateArr[1], //January 
-            m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
-            d: dateArr[2], //Day '8,9,10,11' 
-            Y: dateArr[3], //Year 2023
-            T: dateArr[5], //HH:MM:SS 
-            t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
-            p: dateArr[6], //AM/PM 
-            tz: dateArr[7], // timezone CST 
-        };   
-    }, 
-    // Colorize based on temperature
-    colorizeTemp ( temperature ) { 
-        const colorDict = [ 
-            { 'tempF': 120, 'color': 'rgb(160,0,128)' },
-            { 'tempF': 115, 'color': 'rgb(176,0,112)' },
-            { 'tempF': 110, 'color': 'rgb(192,0,96)' },
-            { 'tempF': 105, 'color': 'rgb(208,0,80)' },
-            { 'tempF': 100, 'color': 'rgb(224,0,60)' },
-            { 'tempF': 95, 'color': 'rgb(225,0,0)' },
-            { 'tempF': 90, 'color': 'rgb(225,86,25)' },
-            { 'tempF': 85, 'color': 'rgb(240,128,50)' },
-            { 'tempF': 80, 'color': 'rgb(240,160,70)' },
-            { 'tempF': 75, 'color': 'rgb(228,196,85)' },
-            { 'tempF': 70, 'color': 'rgb(240,228,85)' },
-            { 'tempF': 65, 'color': 'rgb(212,240,60)' },
-            { 'tempF': 60, 'color': 'rgb(160,240,0)' },
-            { 'tempF': 55, 'color': 'rgb(0,240,0)' },
-            { 'tempF': 50, 'color': 'rgb(0,240,144)' },
-            { 'tempF': 45, 'color': 'rgb(0,224,176)' },
-            { 'tempF': 40, 'color': 'rgb(0,208,208)' },
-            { 'tempF': 35, 'color': 'rgb(32,196,240)' },
-            { 'tempF': 30, 'color': 'rgb(64,160,240)' },
-            { 'tempF': 25, 'color': 'rgb(64,128,240)' },
-            { 'tempF': 20, 'color': 'rgb(64,64,255)' },
-            { 'tempF': 15, 'color': 'rgb(128,0,255)' },
-            { 'tempF': 10, 'color': 'rgb(144,32,224)' },
-            { 'tempF': 5, 'color': 'rgb(160,32,208)' },
-            { 'tempF': 0, 'color': 'rgb(176,32,192)' },
-            { 'tempF': -5, 'color': 'rgb(160,64,176)' },
-            { 'tempF': -10, 'color': 'rgb(144,96,160)' },
-            { 'tempF': -15, 'color': 'rgb(128,112,14)' },
-            { 'tempF': -20, 'color': 'rgb(144,128,160)' },
-            { 'tempF': -25, 'color': 'rgb(160,144,176)' },
-            { 'tempF': -30, 'color': 'rgb(176,160,192)' },
-            { 'tempF': -35, 'color': 'rgb(200,181,200)' },
-            { 'tempF': -40, 'color': 'rgb(219,210,220)' },
-            { 'tempF': -45, 'color': 'rgb(220,220,225)' },
-            { 'tempF': -50, 'color': 'rgb(240,240,240)' }
-        ]
-        return colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
-    },
-    // Rotate the wind direction indicator
-    rotateWindDir ( direction ) {
-        let finalRotation = this.windRotation;
-        if (direction != "N/A") {
-            function rotateThis(newRotation) {
-                finalRotation = finalRotation || 0; // if finalRotation undefined or 0, make 0, else finalRotation
-                let currentRotation = finalRotation % 360;
-                if (currentRotation < 0) {currentRotation += 360;}
-                if (currentRotation < 180 && (newRotation > (currentRotation + 180))) {finalRotation -= 360;}
-                if (currentRotation >= 180 && (newRotation <= (currentRotation - 180))) {finalRotation += 360;}
-                finalRotation += (newRotation - currentRotation);
-                return finalRotation;
-            }
-            return this.windRotation = rotateThis(direction);
-        }
-    },
-    // Wind speed dial's maximum is dynamic based on the highest wind in the past hour
-    setWindSpdDial ( oneHourSpeedMax ) {
-        if ( oneHourSpeedMax > this.windScaleMaxDefault ) {
-            this.windScaleMaxCurrent = oneHourSpeedMax;
-        } else {
-            this.windScaleMaxCurrent = this.windScaleMaxDefault;
-        }
-    },
-    // Rotate the wind speed indicator
-    windSpdToAngle ( windSpeed ) {
-        if ( this.windScaleMaxCurrent != undefined ){
-            const angle = (windSpeed / this.windScaleMaxCurrent * 180) - 90;
-            // Prevent overshoot by returning 90 if over 90 deg
-            return angle > 90 ? 90 : angle;
-        } else {
-            // overshoot the minimum to indicate error
-            return -95;
-        }
+}
+// All dates on the site will be localized through this method
+obwx.localizeDate = function ( date ) {   
+    const dateObj = new Date(date); 
+    const settings = {   
+        dateStyle: 'full', 
+        timeStyle: 'long',  
+        timeZone: '$Extras.timezone', 
+        hour12: true 
+    }         
+    const dateArr = new Intl.DateTimeFormat(undefined,settings).format(dateObj).replace(/,/g,'').split(' '); 
+    return { 
+        A: dateArr[0], //Monday 
+        a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
+        M: dateArr[1], //January 
+        m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
+        d: dateArr[2], //Day '8,9,10,11' 
+        Y: dateArr[3], //Year 2023
+        T: dateArr[5], //HH:MM:SS 
+        t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
+        p: dateArr[6], //AM/PM 
+        tz: dateArr[7], // timezone CST 
+    };   
+} 
+
+// Colorize based on temperature
+obwx.colorizeTemp = function ( temperature ) { 
+    const colorDict = [ 
+        { 'tempF': 120, 'color': 'rgb(160,0,128)' },
+        { 'tempF': 115, 'color': 'rgb(176,0,112)' },
+        { 'tempF': 110, 'color': 'rgb(192,0,96)' },
+        { 'tempF': 105, 'color': 'rgb(208,0,80)' },
+        { 'tempF': 100, 'color': 'rgb(224,0,60)' },
+        { 'tempF': 95, 'color': 'rgb(225,0,0)' },
+        { 'tempF': 90, 'color': 'rgb(225,86,25)' },
+        { 'tempF': 85, 'color': 'rgb(240,128,50)' },
+        { 'tempF': 80, 'color': 'rgb(240,160,70)' },
+        { 'tempF': 75, 'color': 'rgb(228,196,85)' },
+        { 'tempF': 70, 'color': 'rgb(240,228,85)' },
+        { 'tempF': 65, 'color': 'rgb(212,240,60)' },
+        { 'tempF': 60, 'color': 'rgb(160,240,0)' },
+        { 'tempF': 55, 'color': 'rgb(0,240,0)' },
+        { 'tempF': 50, 'color': 'rgb(0,240,144)' },
+        { 'tempF': 45, 'color': 'rgb(0,224,176)' },
+        { 'tempF': 40, 'color': 'rgb(0,208,208)' },
+        { 'tempF': 35, 'color': 'rgb(32,196,240)' },
+        { 'tempF': 30, 'color': 'rgb(64,160,240)' },
+        { 'tempF': 25, 'color': 'rgb(64,128,240)' },
+        { 'tempF': 20, 'color': 'rgb(64,64,255)' },
+        { 'tempF': 15, 'color': 'rgb(128,0,255)' },
+        { 'tempF': 10, 'color': 'rgb(144,32,224)' },
+        { 'tempF': 5, 'color': 'rgb(160,32,208)' },
+        { 'tempF': 0, 'color': 'rgb(176,32,192)' },
+        { 'tempF': -5, 'color': 'rgb(160,64,176)' },
+        { 'tempF': -10, 'color': 'rgb(144,96,160)' },
+        { 'tempF': -15, 'color': 'rgb(128,112,14)' },
+        { 'tempF': -20, 'color': 'rgb(144,128,160)' },
+        { 'tempF': -25, 'color': 'rgb(160,144,176)' },
+        { 'tempF': -30, 'color': 'rgb(176,160,192)' },
+        { 'tempF': -35, 'color': 'rgb(200,181,200)' },
+        { 'tempF': -40, 'color': 'rgb(219,210,220)' },
+        { 'tempF': -45, 'color': 'rgb(220,220,225)' },
+        { 'tempF': -50, 'color': 'rgb(240,240,240)' }
+    ]
+    return colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
+}
+
+// Rotate the wind direction indicator
+obwx.rotateWindDirNeedle = function ( currentWindDir ) {
+    let finalRotation = this.windDirNeedle || 0;
+    let modRotation = finalRotation % 360;
+
+    if ( modRotation < 0 ) { modRotation += 360; }
+    if ( modRotation < 180 && ( currentWindDir > ( modRotation + 180 ))) { finalRotation -= 360; }
+    if ( modRotation >= 180 && ( currentWindDir <= ( modRotation - 180 ))) { finalRotation += 360; }
+
+    return this.windDirNeedle = finalRotation += ( currentWindDir - modRotation );
+}
+
+// Wind speed dial's maximum is dynamic based on the highest wind in the past hour
+obwx.setWindSpdDial = function ( oneHourSpeedMax ) {
+    if ( oneHourSpeedMax > this.windScaleMaxDefault ) {
+        this.windScaleMaxCurrent = oneHourSpeedMax;
+    } else {
+        this.windScaleMaxCurrent = this.windScaleMaxDefault;
     }
 }
+// Rotate the wind speed indicator
+obwx.windSpdToAngle = function ( windSpeed ) {
+    if ( this.windScaleMaxCurrent != undefined ){
+        const angle = (windSpeed / this.windScaleMaxCurrent * 180) - 90;
+        // Prevent overshoot by returning 90 if over 90 deg
+        return angle > 90 ? 90 : angle;
+    } else {
+        // overshoot the minimum to indicate error
+        return -95;
+    }
+}
+
 
 /////////////////////////
 // Connect to mqtt server
@@ -207,7 +206,7 @@ const processLoop = function ( data ) {
         jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
     }
     if ( data.hasOwnProperty( 'windDir' )) {
-        jQuery('.arrow').css( 'transform', `rotate(\${obwx.rotateWindDir( data.windDir )}deg` );
+        jQuery('.arrow').css( 'transform', `rotate(\${obwx.rotateWindDirNeedle( data.windDir )}deg` );
         jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
     }
     if ( data.hasOwnProperty('windSpeed_mph') ) {
