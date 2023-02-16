@@ -91,6 +91,7 @@ obwx.setWindSpdDial = function ( oneHourSpeedMax ) {
         this.windScaleMaxCurrent = this.windScaleMaxDefault;
     }
 }
+
 // Rotate the wind speed indicator
 obwx.windSpdToAngle = function ( windSpeed ) {
     if ( this.windScaleMaxCurrent != undefined ){
@@ -102,7 +103,6 @@ obwx.windSpdToAngle = function ( windSpeed ) {
         return -95;
     }
 }
-
 
 /////////////////////////
 // Connect to mqtt server
@@ -128,10 +128,11 @@ const mqttconnect = function() {
         }
     }   
     function onMessageArrived ( message ) { 
-        const loopData = jQuery.parseJSON(message.payloadString);  
-        processLoop(loopData);
+        const mqttData = jQuery.parseJSON(message.payloadString);  
+        processObservations( mqttData );
+
         // interval_minute signals that archive and forecast data has been updated
-        if ( loopData.hasOwnProperty('interval_minute') ) {
+        if ( mqttData.hasOwnProperty('interval_minute') ) {
             setTimeout( updateArcCast, 15000 );
         }
     }
@@ -148,7 +149,7 @@ const updateArcCast = function () {
 ////////////////////////////////////////////
 // Process loop, archive, and forecast data 
 ////////////////////////////////////////////
-const processLoop = function ( data ) {
+const processObservations = function ( data ) {
     if ( data.hasOwnProperty( 'altimeter_inHg' ) ) {
         jQuery('.altimeter').html( `Altimeter: \${data.altimeter_inHg}` );
     }
