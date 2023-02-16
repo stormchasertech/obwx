@@ -3,7 +3,7 @@
 const obwx = { 
     windRotation: 0,
     windScaleMaxCurrent: undefined,
-    windScaleMaxDefault: 20, // Will need a fix for metric units
+    windScaleMaxDefault: 20, // Will need a fix for metric units, maybe add to skin.conf
     // All dates on the site will be localized through this method
     localizeDate ( date ) {   
         const dateObj = new Date(date); 
@@ -108,7 +108,7 @@ const obwx = {
 /////////////////////////
 // Connect to mqtt server
 /////////////////////////
-function mqttconnect() {
+const mqttconnect = function() {
     const client = new Paho.Client('$Extras.websocket_host', $Extras.websocket_port, mqttclient);
     const mqtt_options = { 
         useSSL: true,
@@ -141,7 +141,7 @@ function mqttconnect() {
     client.onConnectionLost = onConnectionLost;
 }
 
-function updateArcCast() {
+const updateArcCast = function () {
     jQuery.getJSON( 'archive.json', processArchive );
     jQuery.getJSON( 'forecast.json', processForecast );
 }
@@ -149,7 +149,7 @@ function updateArcCast() {
 ////////////////////////////////////////////
 // Process loop, archive, and forecast data 
 ////////////////////////////////////////////
-function processLoop ( data ) {
+const processLoop = function ( data ) {
     if ( data.hasOwnProperty( 'altimeter_inHg' ) ) {
         jQuery('.altimeter').html( `Altimeter: \${data.altimeter_inHg}` );
     }
@@ -220,9 +220,9 @@ function processLoop ( data ) {
     // Other rain loop data items = hourRain_in , rain24_in, rain_in, rain_total
 }
 
-function processArchive( data ) {
+const processArchive = function ( data ) {
     // Almanac data
-    (function almanac (){
+    function almanac () {
         const daylight = {
             raw: data.almanac.sun.daylight,
             hrs(){ return Math.floor( this.raw / 3600 ) },
@@ -233,24 +233,26 @@ function processArchive( data ) {
         jQuery('.sunset-time').html( obwx.localizeDate(data.almanac.sun.set).t );
         jQuery('.moonrise-time').html( obwx.localizeDate(data.almanac.moon.rise).t );
         jQuery('.moonset-time').html( obwx.localizeDate(data.almanac.moon.set).t );
-        // Expand Full/New moon label
+
+        // Alternate Full/New moon labels
         if ( data.almanac.moon.phase == 'New' || data.almanac.moon.phase == 'Full' ) {
             jQuery('.moon-phase').html( `\${data.almanac.moon.phase} Moon`);
         } else {
             jQuery('.moon-phase').html( data.almanac.moon.phase );
         }
+
         // Draw sun and moon widget
         drawAlmanac( data );
-    })();
+    }
+    almanac();
 
-    // Daily Records
-    (function dayRecords (){
-        // Set the wind speed scale maximum value
+    function dailyRecords () {
+        // Recent wind stats
         obwx.setWindSpdDial( parseFloat(data.today.wind.windGust_lastHr) );
         jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( data.today.wind.windGust_lastHr )}deg)`);
         jQuery('.windometer-legend-hi').html ( obwx.windScaleMaxCurrent );
 
-        // More wind records
+        // Daily wind records
         jQuery('.windDir-1hrAvg').html( data.today.wind.windDir_1hrAvg );
         jQuery('.windSpd-1hrAvg').html( data.today.wind.windSpd_1hrAvg );
         jQuery('.wind-max').html( data.today.wind.max );
@@ -258,19 +260,19 @@ function processArchive( data ) {
         jQuery('.wind-max-time').html( `\${obwx.localizeDate(data.today.wind.maxtime).t} \${obwx.localizeDate(data.today.wind.maxtime).p.toLowerCase()}` );
         jQuery('.wind-min-time').html( `\${obwx.localizeDate(data.today.wind.mintime).t} \${obwx.localizeDate(data.today.wind.mintime).p.toLowerCase()}` );
 
-        // outTemp records
+        // Daily outTemp records
         jQuery('.outTemp-max').html( data.today.outTemp.max );
         jQuery('.outTemp-min').html( data.today.outTemp.min );
         jQuery('.outTemp-max-time').html( `\${obwx.localizeDate(data.today.outTemp.maxtime).t} \${obwx.localizeDate(data.today.outTemp.maxtime).p.toLowerCase()}` );
         jQuery('.outTemp-min-time').html( `\${obwx.localizeDate(data.today.outTemp.mintime).t} \${obwx.localizeDate(data.today.outTemp.mintime).p.toLowerCase()}` );
 
-        // Dewpoint records
+        // Daily dewpoint records
         jQuery('.dewpoint-max').html( data.today.dewpoint.max );
         jQuery('.dewpoint-min').html( data.today.dewpoint.min );
         jQuery('.dewpoint-max-time').html( `\${obwx.localizeDate(data.today.dewpoint.maxtime).t} \${obwx.localizeDate(data.today.dewpoint.maxtime).p.toLowerCase()}` );
         jQuery('.dewpoint-min-time').html( `\${obwx.localizeDate(data.today.dewpoint.mintime).t} \${obwx.localizeDate(data.today.dewpoint.mintime).p.toLowerCase()}` );
 
-        // Barometer records
+        // Daily barometer records
         jQuery('.barometer-trend').html( data.today.barometer.trend );
         jQuery('.barometer-max').html( data.today.barometer.max );
         jQuery('.barometer-min').html( data.today.barometer.min );
@@ -283,39 +285,42 @@ function processArchive( data ) {
         jQuery('.week-rain').html( parseFloat(data.today.rain.sum.week).toFixed(2) + '"' );
         jQuery('.month-rain').html( parseFloat(data.today.rain.sum.month).toFixed(2) + '"' );
         jQuery('.year-rain').html( parseFloat(data.today.rain.sum.year).toFixed(2) + '"' );
-    })();
+    }
+    dailyRecords();
 }
 
-function processForecast( data ) {
-    (function currentWx () {
+const processForecast = function ( data ) {
+    function currentWx () {
         const icon = (data.current[0].response[0].periods[0].icon).split('.');
         jQuery('.current-wx-icon').html(`<img src="./icons/\${icon[0]}@2x.png">`);
         jQuery('.current-wx-text').html( data.current[0].response[0].periods[0].weatherPrimary );
-    })();
+    }
+    currentWx();
 
-    (function weatherAlerts () {
+    function weatherAlerts () {
         const response = data.alerts[0].response;
         const wxAlerts = [];
 
         if ( data.alerts[0].success && data.alerts[0].error === null ) {
-             for ( let i = 0; i < response.length; i++ ) {
-                 const tdB = obwx.localizeDate(response[i].timestamps.beginsISO);
-                 const tdE = obwx.localizeDate(response[i].timestamps.expiresISO);
-                 const alertObj = {
-                     name: response[i].details.name,
-                     color: response[i].details.color,
-                     begins: `\${tdB.a} \${tdB.t} \${tdB.p}`,
-                     ends: `\${tdE.a} \${tdE.t} \${tdE.p} \${tdE.tz}`,
-                 }
-                 wxAlerts.push(alertObj);
-             }
+            for ( let i = 0; i < response.length; i++ ) {
+                const tdB = obwx.localizeDate(response[i].timestamps.beginsISO);
+                const tdE = obwx.localizeDate(response[i].timestamps.expiresISO);
+                const alertObj = {
+                    name: response[i].details.name,
+                    color: response[i].details.color,
+                    begins: `\${tdB.a} \${tdB.t} \${tdB.p}`,
+                    ends: `\${tdE.a} \${tdE.t} \${tdE.p} \${tdE.tz}`,
+                }
+                wxAlerts.push(alertObj);
+            }
         }
         jQuery('.weather-alerts').html(wxAlerts.map(function (a) {
             return `<div class="wx-alert" style="color:\#\${a.color};">\${a.name} - \${a.begins} until \${a.ends}</div>`
         }).join(''));
-    })();
+    }
+    weatherAlerts();
 
-    (function forecast () {
+    function forecast () {
         const response = data.daynight[0].response[0];
         // Loop through each day-night forecast period and build forecast section HTML
         for (let i = 0; i < response.periods.length; i++) {
@@ -357,36 +362,23 @@ function processForecast( data ) {
             jQuery(`.forecast-p\${i}-pop`).html(response.periods[i].pop + '%');
             jQuery(`.forecast-p\${i}-precip`).html(response.periods[i].precipIN + '"');
         }
-    })();
+    }
+    forecast();
 
-    (function metarObservations () {
+    function metarObservations () {
         function colorizeTime ( timeUpdated ) {
             const timeDiff = (Date.now()/1000) - timeUpdated;
-            if ( timeDiff < 1200 ) {
-                // Fresh data, less than 20 minutes old
-                jQuery('.metar-updated').css( 'color', 'rgb(90, 170, 90)' );
-            } else if ( timeDiff > 1200 && timeDiff < 2400 ) {
-                // Semistale data - between 20 and 40 minutes old
-                jQuery('.metar-updated').css( 'color', 'rgb(244, 198, 113)' );
-            } else if ( timeDiff > 2400 && timeDiff < 3600 ) {
-                // Stale data - between 40 and 60 minutes old
-                jQuery('.metar-updated').css( 'color', 'rgb(220, 120, 120)' );
-            } else {
-                // Old data - older than an hour
-                jQuery('.metar-updated').css( 'color', 'rgb(160, 90, 90)' );
-            }
-        }
+            return timeDiff < 1200 ? 'rgb(90, 170, 90)'
+                :  timeDiff >= 1200 && timeDiff < 2400 ? 'rgb(244, 198, 113)'
+                :  timeDiff >= 2400 && timeDiff < 3600 ? 'rgb(220, 120, 120)'
+                :  'rgb(160, 90, 90)';
+        } 
 
         function colorizeRules ( rule ) {
-            if ( rule === 'MVFR' ) {
-                jQuery('.metar-rules').css( 'color', 'rgb(102, 102, 255)' );
-            } else if ( rule === 'IFR' ) {
-                jQuery('.metar-rules').css( 'color', 'red' );
-            } else if ( rule === 'LIFR' ) {
-                jQuery('.metar-rules').css( 'color', 'rgb(204, 0, 204)' );
-            } else if ( rule === 'VFR' ) {
-                jQuery('.metar-rules').css( 'color', 'rgba(0,0,0,0)' );
-            }
+            return rule === 'MVFR' ? 'rgb(102, 102, 255)'
+                :  rule === 'IFR' ? 'red'
+                :  rule === 'LIFR' ? 'rgb(204, 0, 204)'
+                :  'rgb(200,200,200)';
         }
 
         function cloudLayers ( raw ) {
@@ -405,39 +397,42 @@ function processForecast( data ) {
                 }
             }
             layers.sort(( a,b )=> b.height - a.height );
-            jQuery('.metar-cloud-layer').html(layers.map((layer) => `<div>\${layer.coverage}\${layer.height}</div>`).join(''));
+            return layers.map((layer) => `<div>\${layer.coverage}\${layer.height}</div>`).join('');
         }
 
         function processMetar (index) {
             const response = data.observations[0].response[index];
-            const td = obwx.localizeDate(response.ob.dateTimeISO);
+            const td = obwx.localizeDate( response.ob.dateTimeISO );
 
-            jQuery('.metar-location').html(response.id);
-            jQuery('.metar-updated').html(`\${td.t} \${td.p}`);
-            colorizeTime(response.ob.timestamp);
-            jQuery('.metar-weather').html(response.ob.weatherShort);
-            jQuery('.metar-oat').html(`\${response.ob.tempF}&deg;F`);
-            jQuery('.metar-vis').html(`\${response.ob.visibilityMI} sm`);
-            jQuery('.metar-rules').html(response.ob.flightRule);
-            colorizeRules(response.ob.flightRule);
-            jQuery('.metar-wind-direction').html(response.ob.windDir);
-            jQuery('.metar-wind-direction-deg').html(response.ob.windDirDEG);
-            jQuery('.metar-wind-speed-kts').html(`\${response.ob.windSpeedKTS} kts`);
-            jQuery('.metar-wind-speed-mph').html(response.ob.windSpeedMPH);
+            jQuery('.metar-location').html( response.id );
+            jQuery('.metar-updated').html( `\${td.t} \${td.p}` );
+            jQuery('.metar-updated').css( 'color', colorizeTime(response.ob.timestamp) );
+            jQuery('.metar-weather').html( response.ob.weatherShort );
+            jQuery('.metar-oat').html( `\${response.ob.tempF}&deg;F` );
+            jQuery('.metar-vis').html( `\${response.ob.visibilityMI} sm` );
+            jQuery('.metar-rules').html( response.ob.flightRule );
+            jQuery('.metar-rules').css( 'color', colorizeRules(response.ob.flightRule) );
+            jQuery('.metar-wind-direction').html( response.ob.windDir );
+            jQuery('.metar-wind-direction-deg').html( response.ob.windDirDEG );
+            jQuery('.metar-wind-speed-kts').html( `\${response.ob.windSpeedKTS} kts` );
+            jQuery('.metar-wind-speed-mph').html( response.ob.windSpeedMPH );
+            jQuery('.metar-cloud-layer').html( cloudLayers( response.raw ) );
+
+            // Wind gusts are null if not gusting, show gusts otherwise
             response.ob.windGustKTS ? jQuery('.metar-wind-gust-kts').html(` G\${response.ob.windGustKTS}`) : '';
             response.ob.windGustMPH ? jQuery('.metar-wind-gust-mph').html(` G\${response.ob.windGustMPH}`) : '';
-            cloudLayers( response.raw );
         }
 
         // Find and index our prefered stations 
         const prefered = ['$Extras.metar_id_1','$Extras.metar_id_2'];
         const stationIndex = [];
         for ( let i=0; i < prefered.length; i++ ) {
-           stationIndex.push(data.observations[0].response.findIndex((station) => station.id === prefered[i]));
+            stationIndex.push(data.observations[0].response.findIndex((station) => station.id === prefered[i]));
         }
         //  Process the metar using prefered station, use nearest if no prefered stations are present 
         stationIndex.length > 0 ? processMetar(stationIndex[0]) : processMetar(0); 
-    })();
+    }
+    metarObservations();
 }
 
 //////////////////////////
