@@ -1,37 +1,15 @@
 #errorCatcher Echo
 // OBWX 
 const obwx = { 
+    lastUpdate: undefined,
     windDirNeedle: 0,
     windScaleMaxCurrent: undefined,
     windScaleMaxDefault: 20, // Will need a fix for metric units, maybe add to skin.conf
-}
-// All dates on the site will be localized through this method
-obwx.localizeDate = function ( date ) {   
-    const dateObj = new Date(date); 
-    const settings = {   
-        dateStyle: 'full', 
-        timeStyle: 'long',  
+    dateTimeSettings: {
         timeZone: '$Extras.timezone', 
         hour12: true 
-    }         
-    const dateArr = new Intl.DateTimeFormat(undefined,settings).format(dateObj).replace(/,/g,'').split(' '); 
-    return { 
-        A: dateArr[0], //Monday 
-        a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
-        M: dateArr[1], //January 
-        m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
-        d: dateArr[2], //Day '8,9,10,11' 
-        Y: dateArr[3], //Year 2023
-        T: dateArr[5], //HH:MM:SS 
-        t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
-        p: dateArr[6], //AM/PM 
-        tz: dateArr[7], // timezone CST 
-    };   
-} 
-
-// Colorize based on temperature
-obwx.colorizeTemp = function ( temperature ) { 
-    const colorDict = [ 
+    },         
+    colorDict: [ 
         { 'tempF': 120, 'color': 'rgb(160,0,128)' },
         { 'tempF': 115, 'color': 'rgb(176,0,112)' },
         { 'tempF': 110, 'color': 'rgb(192,0,96)' },
@@ -67,43 +45,81 @@ obwx.colorizeTemp = function ( temperature ) {
         { 'tempF': -40, 'color': 'rgb(219,210,220)' },
         { 'tempF': -45, 'color': 'rgb(220,220,225)' },
         { 'tempF': -50, 'color': 'rgb(240,240,240)' }
-    ]
-    return colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
-}
+    ],
+    // All dates on the site will be localized through this method
+    localizeDate ( date ) {   
+        const dateObj = new Date(date); 
+        const settings = this.settings;
+        //const dateArr = new Intl.DateTimeFormat(undefined,this.dateTimeSettings).format(dateObj).replace(/,/g,'').split(' '); 
+        function set ( newSetting ) { 
+            const keyName = Object.keys(newSetting)[0];
+            const value = Object.values(newSetting)[0];
+            const newSet = { [keyName]: value };
+            //log('Return value is: ',newSet);
+            return {...newSet,...settings};
+        }
+        return {
+            A: new Intl.DateTimeFormat(undefined,set({weekday:'long'})).format(dateObj),
+            a: new Intl.DateTimeFormat(undefined,set({weekday:'short'})).format(dateObj),
+            M: new Intl.DateTimeFormat(undefined,set({month:'long'})).format(dateObj),
+            m: new Intl.DateTimeFormat(undefined,set({month:'short'})).format(dateObj),
+            d: new Intl.DateTimeFormat(undefined,set({day:'numeric'})).format(dateObj),
+            Y: new Intl.DateTimeFormat(undefined,set({year:'numeric'})).format(dateObj),
+            T: new Intl.DateTimeFormat(undefined,set({timeStyle:'long'})).format(dateObj),
+            t: new Intl.DateTimeFormat(undefined,set({timeStyle:'short'})).format(dateObj).split(' ')[0],
+            p: new Intl.DateTimeFormat(undefined,set({timeStyle:'long'})).format(dateObj).split(' ')[1],
+            tz: new Intl.DateTimeFormat(undefined,set({timeStyle:'long'})).format(dateObj).split(' ')[2],
+        }
+        //return { 
+        //    A: dateArr[0], //Monday 
+        //    a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
+        //    test: new Intl.DateTimeFormat(undefined,set({weekday:'short'})).format(dateObj),
+        //    test2: new Intl.DateTimeFormat(undefined,set({month:'long'})).format(dateObj),
+        //    M: dateArr[1], //January 
+        //    m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
+        //    d: dateArr[2], //Day '8,9,10,11' 
+        //    Y: dateArr[3], //Year 2023
+        //    T: dateArr[5], //HH:MM:SS 
+        //    t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
+        //    p: dateArr[6], //AM/PM 
+        //    tz: dateArr[7], // timezone CST 
+        //};   
+    }, 
+    // Colorize based on temperature
+    colorizeTemp ( temperature ) { 
+        return this.colorDict.find( (dictObj) => dictObj.tempF <= temperature ).color;
+    },
+    // Rotate the wind direction indicator
+    rotateWindDirNeedle ( currentWindDir ) {
+        let finalRotation = this.windDirNeedle || 0;
+        let modRotation = finalRotation % 360;
 
-// Rotate the wind direction indicator
-obwx.rotateWindDirNeedle = function ( currentWindDir ) {
-    let finalRotation = this.windDirNeedle || 0;
-    let modRotation = finalRotation % 360;
+        if ( modRotation < 0 ) { modRotation += 360; }
+        if ( modRotation < 180 && ( currentWindDir > ( modRotation + 180 ))) { finalRotation -= 360; }
+        if ( modRotation >= 180 && ( currentWindDir <= ( modRotation - 180 ))) { finalRotation += 360; }
 
-    if ( modRotation < 0 ) { modRotation += 360; }
-    if ( modRotation < 180 && ( currentWindDir > ( modRotation + 180 ))) { finalRotation -= 360; }
-    if ( modRotation >= 180 && ( currentWindDir <= ( modRotation - 180 ))) { finalRotation += 360; }
-
-    return this.windDirNeedle = finalRotation += ( currentWindDir - modRotation );
-}
-
-// Wind speed dial's maximum is dynamic based on the highest wind in the past hour
-obwx.setWindSpdDial = function ( oneHourSpeedMax ) {
-    if ( oneHourSpeedMax > this.windScaleMaxDefault ) {
-        this.windScaleMaxCurrent = oneHourSpeedMax;
-    } else {
-        this.windScaleMaxCurrent = this.windScaleMaxDefault;
+        return this.windDirNeedle = finalRotation += ( currentWindDir - modRotation );
+    },
+    // Wind speed dial's maximum is dynamic based on the highest wind in the past hour
+    setWindSpdDial ( oneHourSpeedMax ) {
+        if ( oneHourSpeedMax > this.windScaleMaxDefault ) {
+            this.windScaleMaxCurrent = oneHourSpeedMax;
+        } else {
+            this.windScaleMaxCurrent = this.windScaleMaxDefault;
+        }
+    },
+    // Rotate the wind speed indicator
+    windSpdToAngle ( windSpeed ) {
+        if ( this.windScaleMaxCurrent != undefined ){
+            const angle = (windSpeed / this.windScaleMaxCurrent * 180) - 90;
+            // Prevent overshoot by returning 90 if over 90 deg
+            return angle > 90 ? 90 : angle;
+        } else {
+            // overshoot the minimum to indicate error
+            return -95;
+        }
     }
 }
-
-// Rotate the wind speed indicator
-obwx.windSpdToAngle = function ( windSpeed ) {
-    if ( this.windScaleMaxCurrent != undefined ){
-        const angle = (windSpeed / this.windScaleMaxCurrent * 180) - 90;
-        // Prevent overshoot by returning 90 if over 90 deg
-        return angle > 90 ? 90 : angle;
-    } else {
-        // overshoot the minimum to indicate error
-        return -95;
-    }
-}
-
 /////////////////////////
 // Connect to mqtt server
 /////////////////////////
@@ -133,7 +149,7 @@ const mqttconnect = function() {
 
         // interval_minute signals that archive and forecast data has been updated
         if ( mqttData.hasOwnProperty('interval_minute') ) {
-            setTimeout( updateArcCast, 15000 );
+            setTimeout( updateArcCast, 15000, mqttData.dateTime );
         }
     }
     client.connect( mqtt_options );
@@ -141,18 +157,16 @@ const mqttconnect = function() {
     client.onConnectionLost = onConnectionLost;
 }
 
-const updateArcCast = function () {
+const updateArcCast = function ( updated ) {
     jQuery.getJSON( 'archive.json', processArchive );
     jQuery.getJSON( 'forecast.json', processForecast );
+    obwx.lastUpdate = parseFloat(updated)*1000;
 }
 
 ////////////////////////////////////////////
 // Process loop, archive, and forecast data 
 ////////////////////////////////////////////
 const processObservations = function ( data ) {
-    if ( data.hasOwnProperty( 'altimeter_inHg' ) ) {
-        jQuery('.altimeter').html( `Altimeter: \${data.altimeter_inHg}` );
-    }
     if ( data.hasOwnProperty( 'appTemp_F' ) ) {
         jQuery('.feels-like').html( `Feels Like: \${parseFloat(data.appTemp_F).toFixed(1)}&deg;` );
     }
@@ -162,7 +176,7 @@ const processObservations = function ( data ) {
     if ( data.hasOwnProperty( 'dateTime' ) ) {
         const td = obwx.localizeDate(parseFloat(data.dateTime)*1000);
         jQuery('.updated-date').html( `\${td.A}, \${td.m} \${td.d}` );
-        jQuery('.updated-time').html( `\${td.T} \${td.p} \${td.tz}` );
+        jQuery('.updated-time').html( td.T );
     }
     if ( data.hasOwnProperty( 'dayRain_in' ) ) {
         const dayRain = parseFloat(data.dayRain_in).toFixed(2);
@@ -174,21 +188,6 @@ const processObservations = function ( data ) {
     }
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
         jQuery('.dewpoint').html(`Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;` );
-    }
-    if ( data.hasOwnProperty( 'extraHumid1' ) ) {
-        jQuery('.extraHumid1').html(`Extra Humid1: \${parseFloat( data.extraHumid1 ).toFixed(0)}` );
-    }
-    if ( data.hasOwnProperty( 'extraHumid2' ) ) {
-        jQuery('.extraHumid2').html(`Extra Humid2: \${parseFloat( data.extraHumid2 ).toFixed(0)}` );
-    }
-    if ( data.hasOwnProperty( 'extraTemp1_F' ) ) {
-        jQuery('.extraTemp1').html(`Extra Temp1: \${parseFloat( data.extraTemp1_F ).toFixed(1)}` );
-    }
-    if ( data.hasOwnProperty( 'extraTemp2_F' ) ) {
-        jQuery('.extraTemp2').html(`Extra Temp2: \${parseFloat( data.extraTemp2_F ).toFixed(1)}` );
-    }
-    if ( data.hasOwnProperty( 'inDewpoint_F' ) ) {
-        jQuery('.inDewpoint').html(`inDewpoint: \${parseFloat( data.inDewpoint_F ).toFixed(1)}` );
     }
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
         jQuery('.inHumidity').html(`Inside Humidity: \${parseFloat( data.inHumidity ).toFixed(0)}` );
@@ -222,7 +221,7 @@ const processObservations = function ( data ) {
 
 const processArchive = function ( data ) {
     // Almanac data
-    function almanac () {
+    (function almanac () {
         const daylight = {
             raw: data.almanac.sun.daylight,
             hrs(){ return Math.floor( this.raw / 3600 ) },
@@ -243,10 +242,9 @@ const processArchive = function ( data ) {
 
         // Draw sun and moon widget
         drawAlmanac( data );
-    }
-    almanac();
+    })();
 
-    function dailyRecords () {
+    (function dailyRecords () {
         // Recent wind stats
         obwx.setWindSpdDial( parseFloat(data.today.wind.windGust_lastHr) );
         jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( data.today.wind.windGust_lastHr )}deg)`);
@@ -285,19 +283,17 @@ const processArchive = function ( data ) {
         jQuery('.week-rain').html( parseFloat(data.today.rain.sum.week).toFixed(2) + '"' );
         jQuery('.month-rain').html( parseFloat(data.today.rain.sum.month).toFixed(2) + '"' );
         jQuery('.year-rain').html( parseFloat(data.today.rain.sum.year).toFixed(2) + '"' );
-    }
-    dailyRecords();
+    })();
 }
 
 const processForecast = function ( data ) {
-    function currentWx () {
+    (function currentWx () {
         const icon = (data.current[0].response[0].periods[0].icon).split('.');
         jQuery('.current-wx-icon').html(`<img src="./icons/\${icon[0]}@2x.png">`);
         jQuery('.current-wx-text').html( data.current[0].response[0].periods[0].weatherPrimary );
-    }
-    currentWx();
+    })();
 
-    function weatherAlerts () {
+    (function weatherAlerts () {
         const response = data.alerts[0].response;
         const wxAlerts = [];
 
@@ -317,10 +313,9 @@ const processForecast = function ( data ) {
         jQuery('.weather-alerts').html(wxAlerts.map(function (a) {
             return `<div class="wx-alert" style="color:\#\${a.color};">\${a.name} - \${a.begins} until \${a.ends}</div>`
         }).join(''));
-    }
-    weatherAlerts();
+    })();
 
-    function forecast () {
+    (function forecast () {
         const response = data.daynight[0].response[0];
         // Loop through each day-night forecast period and build forecast section HTML
         for (let i = 0; i < response.periods.length; i++) {
@@ -362,47 +357,58 @@ const processForecast = function ( data ) {
             jQuery(`.forecast-p\${i}-pop`).html(response.periods[i].pop + '%');
             jQuery(`.forecast-p\${i}-precip`).html(response.periods[i].precipIN + '"');
         }
-    }
-    forecast();
+    })();
 
-    function metarObservations () {
-        function colorizeTime ( timeUpdated ) {
-            const timeDiff = (Date.now()/1000) - timeUpdated;
-            return timeDiff < 1200 ? 'rgb(90, 170, 90)'
-                :  timeDiff >= 1200 && timeDiff < 2400 ? 'rgb(244, 198, 113)'
-                :  timeDiff >= 2400 && timeDiff < 3600 ? 'rgb(220, 120, 120)'
-                :  'rgb(160, 90, 90)';
-        } 
-
-        function colorizeRules ( rule ) {
-            return rule === 'MVFR' ? 'rgb(102, 102, 255)'
-                :  rule === 'IFR' ? 'red'
-                :  rule === 'LIFR' ? 'rgb(204, 0, 204)'
-                :  'rgb(200,200,200)';
+    (function metarObservations () {
+        // Find and index our prefered stations 
+        const prefered = ['$Extras.metar_id_1','$Extras.metar_id_2'];
+        const stationIndex = [];
+        for ( let i=0; i < prefered.length; i++ ) {
+            let sid = data.observations[0].response.findIndex((station) => station.id === prefered[i]);
+            if ( sid != -1 ) { stationIndex.push(sid); }
         }
-
-        function cloudLayers ( raw ) {
-            const rawSplit = raw.split(' ');
-            const layers = [];
-            // Build layer array with layer objects
-            for ( let j = 0; j < rawSplit.length; j++ ) {
-                if ( rawSplit[j].slice(0,3) === 'FEW' ){
-                    layers.push({'coverage': 'Few at ','height': rawSplit[j].slice(3)*100});
-                } else if ( rawSplit[j].slice(0,3) === 'SCT' ){
-                    layers.push({'coverage': 'Scattered at ','height': rawSplit[j].slice(3)*100});
-                } else if ( rawSplit[j].slice(0,3) === 'BKN' ){
-                    layers.push({'coverage': 'Broken at ','height': rawSplit[j].slice(3)*100});
-                } else if ( rawSplit[j].slice(0,3) === 'OVC' ){
-                    layers.push({'coverage': 'Overcast at ','height': rawSplit[j].slice(3)*100});
-                }
-            }
-            layers.sort(( a,b )=> b.height - a.height );
-            return layers.map((layer) => `<div>\${layer.coverage}\${layer.height}</div>`).join('');
-        }
+        console.log(stationIndex);
+        //  Process the metar using prefered station, use nearest if no prefered stations are present 
+        stationIndex.length > 0 ? processMetar(stationIndex[0]) : processMetar(0); 
 
         function processMetar (index) {
             const response = data.observations[0].response[index];
             const td = obwx.localizeDate( response.ob.dateTimeISO );
+
+            function colorizeTime ( timeUpdated ) {
+                const timeDiff = (Date.now()/1000) - timeUpdated;
+                return timeDiff < 1200 ? 'rgb(90, 170, 90)'
+                    :  timeDiff >= 1200 && timeDiff < 2400 ? 'rgb(244, 198, 113)'
+                    :  timeDiff >= 2400 && timeDiff < 3600 ? 'rgb(220, 120, 120)'
+                    :  'rgb(160, 90, 90)';
+            } 
+
+            function colorizeRules ( rule ) {
+                return rule === 'MVFR' ? 'rgb(102, 102, 255)'
+                    :  rule === 'IFR' ? 'red'
+                    :  rule === 'LIFR' ? 'rgb(204, 0, 204)'
+                    :  'rgb(200,200,200)';
+            }
+
+            function cloudLayers ( raw ) {
+                let rawSplit = raw.split('RMK');
+                rawSplit = rawSplit[0].split(' ');
+                const layers = [];
+                // Build layer array with layer objects
+                for ( let j = 0; j < rawSplit.length; j++ ) {
+                    if ( rawSplit[j].slice(0,3) === 'FEW' ){
+                        layers.push({'coverage': 'Few at ','height': rawSplit[j].slice(3,6)*100});
+                    } else if ( rawSplit[j].slice(0,3) === 'SCT' ){
+                        layers.push({'coverage': 'Scattered at ','height': rawSplit[j].slice(3,6)*100});
+                    } else if ( rawSplit[j].slice(0,3) === 'BKN' ){
+                        layers.push({'coverage': 'Broken at ','height': rawSplit[j].slice(3,6)*100});
+                    } else if ( rawSplit[j].slice(0,3) === 'OVC' ){
+                        layers.push({'coverage': 'Overcast at ','height': rawSplit[j].slice(3,6)*100});
+                    }
+                }
+                layers.sort(( a,b )=> b.height - a.height );
+                return layers.map((layer) => `<div>\${layer.coverage}\${layer.height}</div>`).join('');
+            }
 
             jQuery('.metar-location').html( response.id );
             jQuery('.metar-updated').html( `\${td.t} \${td.p}` );
@@ -422,17 +428,7 @@ const processForecast = function ( data ) {
             response.ob.windGustKTS ? jQuery('.metar-wind-gust-kts').html(` G\${response.ob.windGustKTS}`) : '';
             response.ob.windGustMPH ? jQuery('.metar-wind-gust-mph').html(` G\${response.ob.windGustMPH}`) : '';
         }
-
-        // Find and index our prefered stations 
-        const prefered = ['$Extras.metar_id_1','$Extras.metar_id_2'];
-        const stationIndex = [];
-        for ( let i=0; i < prefered.length; i++ ) {
-            stationIndex.push(data.observations[0].response.findIndex((station) => station.id === prefered[i]));
-        }
-        //  Process the metar using prefered station, use nearest if no prefered stations are present 
-        stationIndex.length > 0 ? processMetar(stationIndex[0]) : processMetar(0); 
-    }
-    metarObservations();
+    })();
 }
 
 //////////////////////////
