@@ -7,7 +7,7 @@
 OBWX displays weather information using data generated from the weewx weather system and Aeris Weather's API. It is designed to be an alternate weather console using a web browser's full-screen option and displayed on a standard 16:9 panel (monitor or TV). Think of a laptop screen or portable monitor. 
 
 
- ![Capture](https://user-images.githubusercontent.com/116417003/222553391-8f729d2c-4d13-42ea-9a1a-9961103cff51.PNG)
+![Capture](https://user-images.githubusercontent.com/116417003/222556565-7beb0513-def3-4818-a713-f74a556e21eb.PNG)
 
 
 ### Status
