@@ -125,12 +125,21 @@ const obwx = {
 /////////////////////////
 const mqttconnect = function() {
     const client = new Paho.Client('$Extras.websocket_host', $Extras.websocket_port, mqttclient);
-    const mqtt_options = { 
-        useSSL: true,
-        reconnect: true,
-        onSuccess: onConnect,
-        onFailure: onFailure
-    }   
+    const mqtt_options = {};
+
+    function setOptions () {
+        mqtt_options.useSSL = true;
+        mqtt_options.reconnect = true;
+        mqtt_options.onSuccess = onConnect;
+        mqtt_options.onFailure = onFailure;
+        console.log('$Extras.websocketHasPassword');
+        if ( $Extras.websocketHasPassword ) {
+            const user = prompt('Websocket username:');
+            const passwd = prompt('Websocket password:');
+            mqtt_options.userName = user;
+            mqtt_options.password = passwd;
+        }
+    }
     function onConnect () {
         client.subscribe( '$Extras.websocket_topic' );
         console.warn('Successfully connected to mqtt server');
@@ -152,6 +161,7 @@ const mqttconnect = function() {
             setTimeout( updateArcCast, 15000, mqttData.dateTime );
         }
     }
+    setOptions();
     client.connect( mqtt_options );
     client.onMessageArrived = onMessageArrived;
     client.onConnectionLost = onConnectionLost;
@@ -367,7 +377,6 @@ const processForecast = function ( data ) {
             let sid = data.observations[0].response.findIndex((station) => station.id === prefered[i]);
             if ( sid != -1 ) { stationIndex.push(sid); }
         }
-        console.log(stationIndex);
         //  Process the metar using prefered station, use nearest if no prefered stations are present 
         stationIndex.length > 0 ? processMetar(stationIndex[0]) : processMetar(0); 
 
