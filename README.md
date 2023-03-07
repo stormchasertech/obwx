@@ -38,7 +38,7 @@ If option 1 is down, option 2 will take over.
 
 All times are converted to this timezone. If it is left undefined, 
 the web browser will make timezone decisions based on browser location data. 
-This seems to be a [up-to-date listing](https://github.com/vvo/tzdb/blob/main/time-zones-names.json) of valid timezone names
+Valid timezones are in timezones.html
 * timezone (Example: timezone = America/Chicago)
 
 
