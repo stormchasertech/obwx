@@ -19,6 +19,7 @@ class OBWX_Installer(ExtensionInstaller):
                         'HTML_ROOT' : 'obwx',
                         'enable': True,
                         'Extras' : {
+                            'html_title': 'obwx',
                             'logo_img' : 'logo.png',
                             'logo_title' : 'Site Title',
                             'logo_alt' : 'Site Alt',
