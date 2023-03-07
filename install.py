@@ -6,7 +6,7 @@ def loader():
 class OBWX_Installer(ExtensionInstaller):
     def __init__(self):
         super(OBWX_Installer, self).__init__(
-            version='0.30',
+            version='0.31',
             name='obwx',
             description='Weather Data Console',
             author='StormchaserTech',
