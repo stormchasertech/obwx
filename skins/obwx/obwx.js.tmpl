@@ -132,7 +132,6 @@ const mqttconnect = function() {
         mqtt_options.reconnect = true;
         mqtt_options.onSuccess = onConnect;
         mqtt_options.onFailure = onFailure;
-        console.log('$Extras.websocketHasPassword');
         if ( $Extras.websocketHasPassword ) {
             const user = prompt('Websocket username:');
             const passwd = prompt('Websocket password:');
@@ -216,7 +215,7 @@ const processObservations = function ( data ) {
         jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
     }
     if ( data.hasOwnProperty( 'windDir' )) {
-        jQuery('.arrow').css( 'transform', `rotate(\${obwx.rotateWindDirNeedle( data.windDir )}deg` );
+        jQuery('.rose-arrow').css( 'transform', `rotate(\${obwx.rotateWindDirNeedle( data.windDir )}deg` );
         jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
     }
     if ( data.hasOwnProperty('windSpeed_mph') ) {
@@ -237,7 +236,7 @@ const processArchive = function ( data ) {
             hrs(){ return Math.floor( this.raw / 3600 ) },
             mins(){ return Math.floor( this.raw / 3600 % 1 * 60 ) },
         }
-        jQuery('.daylight-time').html( `\${daylight.hrs()}hrs \${daylight.mins()}mins`);
+        jQuery('.daylight-time').html( `\${daylight.hrs()}h \${daylight.mins()}m`);
         jQuery('.sunrise-time').html( obwx.localizeDate(data.almanac.sun.rise).t );
         jQuery('.sunset-time').html( obwx.localizeDate(data.almanac.sun.set).t );
         jQuery('.moonrise-time').html( obwx.localizeDate(data.almanac.moon.rise).t );
