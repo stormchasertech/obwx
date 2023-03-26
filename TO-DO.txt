@@ -1,0 +1,40 @@
+Problem: My "semi-newbie to bootstrap and CSS" misteps and errors have caught up and 
+    making issues finishing up the site's overall structure.
+
+Solution: I've shored up my bootstrap and css skills and its time to implement 
+    some cleaner/more optimized html/boostrap with a complete css rewrite (which is a mess).
+
+-----------------------------------------------------------------------------------------------
+
+Re-bootstrap all sections (Complete)
+  -- Using moblie first thinking, remove the three row sturcture and use wrapping columns instead
+  -- A section can contain one column if it contains a large feature (sun-moon section)
+  -- Or a section can contain multiple columns for smaller separate features (forecast section)     
+
+Re-write CSS (On-Going)
+  -- Start from scratch
+  -- Copy paste most 'css art', some can be optimized with less repeated code
+  -- Use variables for common text-sizes
+
+Re-class
+  -- Remove un-used classes (Complete)
+
+-----------------------------------------------------------------------------------------------
+
+After major restructuing, place section items in their 'close to final' positions:
+
+Checklist:
+___ Header Section
+___ Temp Section
+___ Wind Section
+___ Rain section
+___ Records section
+___ Metar section
+_I_ Sun-moon section
+_C_ Forecast section
+
+
+-----------------------------------------------------------------------------------------------
+
+Need to track changes. Boost github knowledge with respect to branches/merging/etc. (On-Going)
+Upload this branch (incomplete)
