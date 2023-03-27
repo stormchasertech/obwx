@@ -78,16 +78,20 @@
                     </div>
                 </div>
                 <!-- Wind Direction -->
-                <div class='col-6 col-lg-2'>
-                    <div class='position-relative'>
-                        <canvas class='rose' id='rose' width='150' height='150'></canvas>
-                        <canvas class='rose-arrow' id='rose-arrow' width='150' height='150'></canvas>
+                <div class='col-6 col-lg-2' style='border: 1px dashed chartreuse;'>
+                    <div class='position-relative mt-3'>
+                        <div class='rose-compass'>
+                            <canvas id='rose' width='150' height='150'></canvas>
+                        </div>
+                        <div class='rose-arrow'>
+                            <canvas id='rose-arrow' width='150' height='150'></canvas>
+                        </div>
                         <div class='rose-text wind-direction-deg'>--</div>
                     </div>
                 </div>
                 <!-- Wind Speed -->
                 <div class='col-6 col-lg-2' style='border: 1px dashed blue;'>
-                    <div class='position-relative'>
+                    <div class='position-relative mt-3'>
                         <div class='wind-meter mx-auto'></div>
                         <div class='wind-speed-mph'>---</div>
                         <div class='windometer-tickmark' style='transform: rotate(-45deg);'></div>
@@ -96,7 +100,10 @@
                         <div class='windometer-tickmark-recentHi' style='transform: rotate(90deg);'></div>
                         <div class='windometer-arrow'></div>
                     </div>
-                    <div class='pt-4'>
+                    <div>
+                        <span class='windometer-legend-hi'>--</span>
+                    </div>
+                    <div class='pt-3'>
                         <span class='windDir-1hrAvg'>--</span>
                         <span class='windSpd-1hrAvg'>--</span>
                     </div>

@@ -43,16 +43,15 @@ main {
 }
 
 /* Wind direction section */
-[class^="rose"] {
+[class^="rose-"] {
     position: absolute;
-    translate: -50%;
+    width: 100%;
+}
+.wind-direction-deg {
+    top: 61px;
 }
 .rose-arrow {
     transition: transform 2s ease-in-out;
-}
-.wind-direction-deg {
-    display: unset;
-    top: 61px;
 }
 
 /* Wind speed section */
@@ -61,6 +60,11 @@ main {
     position: absolute;
     bottom: 0px;
     font-size: var(--text-vlarge);
+}
+.windometer-legend-hi {
+    width: 155px;
+    text-align: right;
+    display: inline-block;
 }
 .wind-meter {
     width: 140px;
