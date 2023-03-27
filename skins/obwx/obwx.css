@@ -216,8 +216,16 @@ main {
     position: relative;
 }
 .daylight {
-    top: 6px;
+    top: .5rem; 
 }
 .phase {
-    top: -6px;
+    top: -1rem;
+}
+.sunrise, .sunset {
+    height: 80px;
+}
+.moonrise, .moonset {
+    height: 80px;
+    display: grid;
+    align-content: end;
 }
