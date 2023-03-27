@@ -162,6 +162,10 @@ main {
     top: 34px;
     font-size: var(--text-large);
 }
+.rain-records {
+    line-height: 1.75;
+    font-size: var(--text-medium);
+}
 .rain-title {
     text-align: right;
     padding-right: .5rem;
