@@ -35,7 +35,7 @@
         <main>
             <div class='row g-0 text-center'>
                 <!--SiteLogo-->
-                <div class='col-12 col-lg-3'>
+                <div class='col-12 col-lg-3 py-1 my-auto'>
                     <div class='logo'>
                         #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
                         <img src='$Extras.logo_img' title='$Extras.logo_title' alt='$Extras.logo_alt'>
@@ -45,13 +45,13 @@
                     </div>
                 </div>
                 <!-- Alerts -->
-                <div class='col-12 col-lg-6'>
+                <div class='col-12 col-lg-6 py-lg-1'>
                     <div class='weather-alerts'></div>
                 </div>
                 <!-- Datetime -->
-                <div class='col-12 col-lg-3'>
-                    <div class='updated-date float-lg-none'>---</div>
-                    <div class='updated-time float-lg-none'>---</div>
+                <div class='col-12 col-lg-3 d-flex flex-lg-column py-1 my-auto'>
+                    <div class='w-100 updated-date'>---</div>
+                    <div class='w-100 updated-time'>---</div>
                 </div>
                 <!-- Current Wx -->
                 <div class='col-12 col-lg-4' style='border: 1px dashed fuchsia;'>

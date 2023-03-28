@@ -27,13 +27,6 @@ main {
 /* Update time and date section */
 .updated-date,.updated-time {
     font-size: var(--text-large);
-    min-width: 200px;
-}
-.updated-date {
-    float: left;
-}
-.updated-time {
-    float: right;
 }
 
 /* Current weather section */
