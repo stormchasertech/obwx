@@ -1,11 +1,13 @@
 /* OBWX Styles */
 :root {
-    --text-small: 1rem;
-    --text-normal: 1.125rem;
-    --text-medium: 1.375rem;
-    --text-large: 1.5rem;
-    --text-vlarge: 2rem;
-    --text-xlarge: 4rem;
+    --text-small: 0.875rem; /*14*/
+    --text-normal: 1rem; /*16*/
+    --text-medium: 1.125rem; /*18*/
+    --text-large: 1.25rem; /*20*/
+    --text-larger: 1.375rem; /*22*/
+    --text-xlarge: 1.5rem; /*24*/
+    --text-vlarge: 2rem; /*32*/
+    --text-outTemp: 4rem; /*64*/
 }
 
 html {
@@ -19,12 +21,12 @@ body {
 
 main {
     max-width: 1900px;
-    font-size: var(--text-normal);
+    font-size: var(--text-medium);
 }
 
 /* Update time and date section */
 .updated-date,.updated-time {
-    font-size: var(--text-medium);
+    font-size: var(--text-large);
     min-width: 200px;
 }
 .updated-date {
@@ -36,10 +38,10 @@ main {
 
 /* Current weather section */
 .current-wx-text {
-    font-size: var(--text-medium);
+    font-size: var(--text-large);
 }
 .outTemp {
-    font-size: var(--text-xlarge);
+    font-size: var(--text-outTemp);
 }
 
 /* Wind direction section */
@@ -164,11 +166,11 @@ main {
 .raingauge-text {
     position: relative;
     top: 34px;
-    font-size: var(--text-large);
+    font-size: var(--text-xlarge);
 }
 .rain-records {
     line-height: 1.75;
-    font-size: var(--text-medium);
+    font-size: var(--text-large);
 }
 .rain-title {
     text-align: right;
@@ -220,7 +222,7 @@ main {
 }
 .daylight,
 .phase {
-    font-size: var(--text-small);
+    font-size: var(--text-normal);
     position: relative;
 }
 .daylight {
@@ -237,3 +239,7 @@ main {
     display: grid;
     align-content: end;
 }
+[class$="rise-time"], [class$="set-time"] {
+    font-size: var(--text-larger);
+}
+
