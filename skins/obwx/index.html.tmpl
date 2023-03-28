@@ -173,25 +173,38 @@
                 </div>
                 <!-- Metar -->
                 <div class='col-12 col-lg-4' style='border: 1px dashed yellow;'>
-                    <div class="row g-0">
-                        <div class="col-3">
-                            <div class="metar-location">--</div>
-                            <div class="metar-oat">--</div>
-                            <canvas id="metar" height="76" width="76" class="d-block mx-auto"></canvas>
+                    <div class='row g-0 mt-2' style='border: 1px dashed white;'>
+                        <div class='col' style='height: 2.5rem;'></div>
+                        <div class='col my-auto'>
+                            <div class='inside-label'>Inside: </div>
                         </div>
-                        <div class="col-4">
-                            <div class="metar-updated">--</div>
-                            <div class="metar-vis">--</div>
-                            <div class="d-flex justify-content-evenly">
-                                <div class="metar-wind-direction">--</div>
-                                <div class="metar-wind-direction-deg">---</div>
+                        <div class='col my-auto'>
+                            <div class='inTemp' style=''>--</div>
+                        </div>
+                        <div class='col my-auto'>
+                            <div class='inHumidity' style='border: 1px dashed red;'>--</div>
+                        </div>
+                        <div class='col'></div>
+                    </div>
+                    <div class='row g-0 mt-2' style='border-top: 1px dashed green;'>
+                        <div class='col-3'>
+                            <div class='metar-location'>--</div>
+                            <div class='metar-oat'>--</div>
+                            <canvas id='metar' height='76' width='76' class='d-block mx-auto'></canvas>
+                        </div>
+                        <div class='col-4'>
+                            <div class='metar-updated'>--</div>
+                            <div class='metar-vis'>--</div>
+                            <div class='d-flex justify-content-evenly'>
+                                <div class='metar-wind-direction'>--</div>
+                                <div class='metar-wind-direction-deg'>---</div>
                             </div>
-                            <div class="metar-wind-speed-kts">--</div>
-                            <div class="metar-rules">--</div>
+                            <div class='metar-wind-speed-kts'>--</div>
+                            <div class='metar-rules'>--</div>
                         </div>
-                        <div class="col-5">
-                            <div class="metar-weather">--</div>
-                            <div class="metar-cloud-layer">--</div>
+                        <div class='col-5'>
+                            <div class='metar-weather'>--</div>
+                            <div class='metar-cloud-layer'>--</div>
                         </div>
                     </div>
                 </div>

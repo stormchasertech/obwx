@@ -199,10 +199,10 @@ const processObservations = function ( data ) {
         jQuery('.dewpoint').html(`Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;` );
     }
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
-        jQuery('.inHumidity').html(`Inside Humidity: \${parseFloat( data.inHumidity ).toFixed(0)}` );
+        jQuery('.inHumidity').html(`\${parseFloat( data.inHumidity ).toFixed(0)} &percnt;` );
     }
     if ( data.hasOwnProperty( 'inTemp_F' ) ) {
-        jQuery('.inTemp').html(`Inside Temp: \${parseFloat( data.inTemp_F ).toFixed(1)}` );
+        jQuery('.inTemp').html(`\${parseFloat( data.inTemp_F ).toFixed(1)}&deg;` );
     }
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
         jQuery('.outHumidity').html(`Humidity: \${parseFloat( data.outHumidity ).toFixed(1)} &percnt;`);
