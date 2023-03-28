@@ -69,11 +69,6 @@
                             <div class='feels-like'>--</div>
                             <div class='dewpoint'>---</div>
                             <div class='outHumidity'>---</div>
-                            <div>
-                                <span class='barometer'>---</span>
-                                <span class='barometer-trend'>--</span>
-                            </div>
-                            <div class='uv'>---</div>
                         </div>
                     </div>
                 </div>
@@ -143,25 +138,41 @@
                     </div>
                 </div>
                 <!-- Temp Records -->
-                <div class='col-6 col-lg-2' style="border: 1px dashed darkred;">
-                    <div class="records mx-auto">
-                        <div class="records-title">Today's High</div>
-                        <div class="records-icon records-high">I</div>
-                        <div class="outTemp-max">--</div>
-                        <div class="records-time outTemp-max-time">--</div>
-                    </div>
-                </div>
-                <!-- Other Records -->
-                <div class='col-6 col-lg-2'>
-                    <div class="records mx-auto">
-                        <div class="records-title">Today's Low</div>
-                        <div class="records-icon records-low">I</div>
-                        <div class="outTemp-min">--</div>
-                        <div class="records-time outTemp-min-time">--</div>
+                <div class='col-12 col-lg-4' style='border: 1px dashed darkred;'>
+                    <div class='row g-0'>
+                        <div class='col d-grid gap-4 mt-3'>
+                            <div class='records mx-auto'>
+                                <div class='uv'>---</div>
+                                <div class='uv-label'>UV Index</div>
+                            </div>
+                            <div class='records mx-auto'>
+                                <div class='records-title'>Today's High</div>
+                                <div class='records-icon records-high'>I</div>
+                                <div class='outTemp-max'>--</div>
+                                <div class='records-time outTemp-max-time'>--</div>
+                            </div>
+                        </div>
+                        <div class='col d-grid gap-4 mt-3'>
+                            <div class='records mx-auto'>
+                                <div>
+                                    <span class='barometer'>---</span>
+                                    <span class='barometer-trend'>--</span>
+                                </div>
+                                <div>
+                                    <div class='barometer-label'>Barometer</div>
+                                </div>
+                            </div>
+                            <div class='records mx-auto'>
+                                <div class='records-title'>Today's Low</div>
+                                <div class='records-icon records-low'>I</div>
+                                <div class='outTemp-min'>--</div>
+                                <div class='records-time outTemp-min-time'>--</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Metar -->
-                <div class='col-6 col-lg-4' style='border: 1px dashed yellow;'>
+                <div class='col-12 col-lg-4' style='border: 1px dashed yellow;'>
                     <div class="row g-0">
                         <div class="col-3">
                             <div class="metar-location">--</div>

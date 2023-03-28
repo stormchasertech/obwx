@@ -180,7 +180,7 @@ const processObservations = function ( data ) {
         jQuery('.feels-like').html( `Feels Like: \${parseFloat(data.appTemp_F).toFixed(1)}&deg;` );
     }
     if ( data.hasOwnProperty('barometer_inHg') ) {
-        jQuery('.barometer').html(`Barometer: \${parseFloat( data.barometer_inHg ).toFixed(2)}` );
+        jQuery('.barometer').html(`\${parseFloat( data.barometer_inHg ).toFixed(2)}` );
     }
     if ( data.hasOwnProperty( 'dateTime' ) ) {
         const td = obwx.localizeDate(parseFloat(data.dateTime)*1000);
@@ -223,7 +223,7 @@ const processObservations = function ( data ) {
         jQuery('.windometer-arrow').css('transform', `rotate(\${obwx.windSpdToAngle( data.windSpeed_mph )}deg)`);
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
-        jQuery('.uv').html( `UV Index: \${parseFloat(data.UV).toFixed(1)}` );
+        jQuery('.uv').html( `\${parseFloat(data.UV).toFixed(1)}` );
     }
     // Other rain loop data items = hourRain_in , rain24_in, rain_in, rain_total
 }
