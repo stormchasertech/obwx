@@ -1,5 +1,7 @@
+#errorCatcher Echo
 /* OBWX Styles */
 :root {
+    /* Text Variables*/
     --text-small: 0.875rem; /*14*/
     --text-normal: 1rem; /*16*/
     --text-medium: 1.125rem; /*18*/
@@ -8,6 +10,10 @@
     --text-xlarge: 1.5rem; /*24*/
     --text-vlarge: 2rem; /*32*/
     --text-outTemp: 4rem; /*64*/
+    /* Theme Variables*/
+    --obwx-color: $Extras.color;
+    --obwx-background-color: $Extras.background_color;
+    --obwx-border-color: $Extras.border_color;
 }
 
 html {
@@ -15,13 +21,26 @@ html {
 }
 
 body {
-    background: #000000;
-    color: #f2f2f2;
+    color: var(--obwx-color);
+    background-color: var(--obwx-background-color);
 }
 
 main {
     max-width: 1900px;
     font-size: var(--text-medium);
+}
+
+/* Responsive Borders */
+.bt { border-top: 1px solid var(--obwx-border-color); }
+.bb { border-bottom: 1px solid var(--obwx-border-color); }
+.bs { border-left: 1px solid var(--obwx-border-color); }
+.be { border-right: 1px solid var(--obwx-border-color); }
+
+@media screen and (min-width: 992px) {
+.bt-lg { border-top: 1px solid var(--obwx-border-color); }
+.bb-lg { border-bottom: 1px solid var(--obwx-border-color); }
+.bs-lg { border-left: 1px solid var(--obwx-border-color); }
+.be-lg { border-right: 1px solid var(--obwx-border-color); }
 }
 
 /* Update time and date section */
@@ -65,7 +84,7 @@ main {
     width: 140px;
     height: 70px;
     border-style: solid;
-    border-color: #808080;
+    border-color: \#808080;
     border-width: 5px 5px 0px 5px;
     border-top-left-radius: 70px;
     border-top-right-radius: 70px;
@@ -84,7 +103,7 @@ main {
     height: 0;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
-    border-top: 25px solid #c50a1d;
+    border-top: 25px solid \#c50a1d;
     position: absolute;
     top: 0px; /*Moves the arrow away or towards center of circle*/
     left: 48%; /*Centers the arrow on the box edge (use 0 degree rotation) */
@@ -100,9 +119,9 @@ main {
   content: "";
   width: 0;
   height: 0;
-  border-left: 3px solid #808080; /*2px solid transparent*/
-  border-right: 3px solid #808080; /*2px solid transparent*/
-  border-top: 7px solid #808080;
+  border-left: 3px solid \#808080; /*2px solid transparent*/
+  border-right: 3px solid \#808080; /*2px solid transparent*/
+  border-top: 7px solid \#808080;
   position: absolute;
   top: 2px; /*Moves the arrow away or towards center of circle*/
   left: 50%; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
@@ -120,7 +139,7 @@ main {
   height: 0;
   border-left: 2px solid transparent;
   border-right: 2px solid transparent;
-  border-top: 15px solid #00c8c8;
+  border-top: 15px solid \#00c8c8;
   position: absolute;
   top: 0px; /*Moves the arrow away or towards center of circle*/
   left: 50%; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
@@ -134,7 +153,7 @@ main {
 .raingauge-bucket {
   height: 118px;
   width: 100px;
-  border: 5px solid #c8c8c8;
+  border: 5px solid \#c8c8c8;
   border-top: none;
   border-radius: 0px 0px 20px 20px;
   position: relative;
@@ -145,14 +164,14 @@ main {
   top: 105px;
   height: 120px;
   width: 100%;
-  background-color: #0000cc; /* Blue inner rain*/
+  background-color: \#0000cc; /* Blue inner rain*/
 }
 .raingauge-tape {
   position: absolute;
   width: 16px;
   border-style: solid;
   border-width: 2px 0px 0px 0px;
-  border-color: #c8c8c8;
+  border-color: \#c8c8c8;
   top: 90%;
   left: 79px;
 }
@@ -232,7 +251,7 @@ main {
     display: grid;
     align-content: end;
 }
-[class$="rise-time"], [class$="set-time"] {
+[class\$="rise-time"], [class\$="set-time"] {
     font-size: var(--text-larger);
 }
 

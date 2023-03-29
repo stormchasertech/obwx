@@ -54,7 +54,7 @@
                     <div class='w-100 updated-time'>---</div>
                 </div>
                 <!-- Current Wx -->
-                <div class='col-12 col-lg-4' style='border: 1px dashed fuchsia;'>
+                <div class='col-12 col-lg-4 bt'>
                     <div class='row g-0'>
                         <!-- Weather -->
                         <div class='col-6'>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <!-- Wind Direction -->
-                <div class='col-6 col-lg-2' style='border: 1px dashed chartreuse;'>
+                <div class='col-6 col-lg-2 bt bs-lg'>
                     <div class='position-relative mt-3'>
                         <div class='rose-compass'>
                             <canvas id='rose' width='150' height='150'></canvas>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <!-- Wind Speed -->
-                <div class='col-6 col-lg-2' style='border: 1px dashed blue;'>
+                <div class='col-6 col-lg-2 bt be-lg'>
                     <div class='position-relative mt-3'>
                         <div class='wind-meter mx-auto'></div>
                         <div class='wind-speed-mph'>---</div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <!-- Rain Bucket -->
-                <div class='col-6 col-lg-2 my-auto'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class='position-relative w-100'>
                         <div class='raingauge-bucket mx-auto'> 
                             <div class='raingauge-rain'></div> 
@@ -121,7 +121,7 @@
                     <div class='pt-3 rainrate'>---</div> 
                 </div>
                 <!-- Rain Records -->
-                <div class='col-6 col-lg-2 pb-4 my-auto'>
+                <div class='col-6 col-lg-2 pb-4 bt'>
                     <div class='row g-0 rain-records'>
                         <div class='col'>
                             <div class='rain-title'>Yesterday</div>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <!-- Temp Records -->
-                <div class='col-12 col-lg-4' style='border: 1px dashed darkred;'>
+                <div class='col-12 col-lg-4'>
                     <div class='row g-0'>
                         <div class='col d-grid gap-4 mt-3'>
                             <div class='records mx-auto'>
@@ -172,8 +172,8 @@
                     </div>
                 </div>
                 <!-- Metar -->
-                <div class='col-12 col-lg-4' style='border: 1px dashed yellow;'>
-                    <div class='row g-0 mt-2' style='border: 1px dashed white;'>
+                <div class='col-12 col-lg-4 bt bs-lg be-lg'>
+                    <div class='row g-0 mt-2'>
                         <div class='col' style='height: 2.5rem;'></div>
                         <div class='col my-auto'>
                             <div class='inside-label'>Inside: </div>
@@ -182,11 +182,11 @@
                             <div class='inTemp' style=''>--</div>
                         </div>
                         <div class='col my-auto'>
-                            <div class='inHumidity' style='border: 1px dashed red;'>--</div>
+                            <div class='inHumidity'>--</div>
                         </div>
                         <div class='col'></div>
                     </div>
-                    <div class='row g-0 mt-2' style='border-top: 1px dashed green;'>
+                    <div class='row g-0 mt-2 bt'>
                         <div class='col-3'>
                             <div class='metar-location'>--</div>
                             <div class='metar-oat'>--</div>
@@ -202,14 +202,14 @@
                             <div class='metar-wind-speed-kts'>--</div>
                             <div class='metar-rules'>--</div>
                         </div>
-                        <div class='col-5'>
+                        <div class='col-5 bs'>
                             <div class='metar-weather'>--</div>
                             <div class='metar-cloud-layer'>--</div>
                         </div>
                     </div>
                 </div>
                 <!-- Almanac -->
-                <div class='col-12 col-lg-4' style='border: 1px dashed cyan;'>
+                <div class='col-12 col-lg-4 bt'>
                     <div class='row g-0'>
                         <div class='col'></div>
                         <div class='pt-4 alm-outer-left'>
@@ -246,7 +246,7 @@
                     </div>
                 </div>
                 <!-- Forecast 0 -->
-                <div class='col-6 col-lg-2'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p0-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
@@ -272,7 +272,7 @@
                     </div>
                 </div>
                 <!-- Forecast 1 -->
-                <div class='col-6 col-lg-2' style='border: 1px dashed green;'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p1-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
@@ -298,7 +298,7 @@
                     </div>
                 </div>
                 <!-- Forecast 2 -->
-                <div class='col-6 col-lg-2'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p2-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
@@ -324,7 +324,7 @@
                     </div>
                 </div>
                 <!-- Forecast 3 -->
-                <div class='col-6 col-lg-2'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p3-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
@@ -350,7 +350,7 @@
                     </div>
                 </div>
                 <!-- Forecast 4 -->
-                <div class='col-6 col-lg-2'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p4-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
@@ -376,7 +376,7 @@
                     </div>
                 </div>
                 <!-- Forecast 5 -->
-                <div class='col-6 col-lg-2'>
+                <div class='col-6 col-lg-2 bt'>
                     <div class="forecast-p5-date">--</div>
                     <div class="row g-0">
                         <div class="col-4">
