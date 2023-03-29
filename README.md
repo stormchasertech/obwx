@@ -41,5 +41,11 @@ the web browser will make timezone decisions based on browser location data.
 Valid timezones are in timezones.html
 * timezone (Example: timezone = America/Chicago)
 
+Themes!! Set your own theme using these options. Takes #hex, rgb, rgba, etc.
+These listed are examples with the current default colors.
+* color = "rgb(230,230,230)"
+* background_color = "rgb(0,0,0)"
+* border_color = "rgb(76,76,76)"
+
 
 More to come!!
