@@ -35,7 +35,7 @@
         <main>
             <div class='row g-0 text-center'>
                 <!--SiteLogo-->
-                <div class='col-12 col-lg-3 py-1 my-auto'>
+                <div class='col-12 col-lg-3 flex-center section-header my-auto py-1'>
                     <div class='logo'>
                         #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
                         <img src='$Extras.logo_img' title='$Extras.logo_title' alt='$Extras.logo_alt'>
@@ -49,9 +49,9 @@
                     <div class='weather-alerts'></div>
                 </div>
                 <!-- Datetime -->
-                <div class='col-12 col-lg-3 d-flex flex-lg-column py-1 my-auto'>
-                    <div class='w-100 updated-date'>---</div>
-                    <div class='w-100 updated-time'>---</div>
+                <div class='col-12 col-lg-3 d-flex flex-lg-column my-auto py-1'>
+                    <div class='w-100 updated-date updated-date-lg'>---</div>
+                    <div class='w-100 updated-time updated-time-lg'>---</div>
                 </div>
                 <!-- Current Wx -->
                 <div class='col-12 col-lg-4 bt'>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <!-- Metar -->
-                <div class='col-12 col-lg-4 bt bs-lg be-lg'>
+                <div class='col-12 col-lg-4 bt'>
                     <div class='row g-0 mt-2'>
                         <div class='col' style='height: 2.5rem;'></div>
                         <div class='col my-auto'>
@@ -186,7 +186,7 @@
                         </div>
                         <div class='col'></div>
                     </div>
-                    <div class='row g-0 mt-2 bt'>
+                    <div class='row g-0 mt-2 bt bs-lg be-lg'>
                         <div class='col-3'>
                             <div class='metar-location'>--</div>
                             <div class='metar-oat'>--</div>
@@ -212,12 +212,12 @@
                 <div class='col-12 col-lg-4 py-1 bt'>
                     <div class='row g-0'>
                         <div class='col'></div>
-                        <div class='pt-4 alm-outer-left'>
+                        <div class='d-flex flex-column text-start alm-outer'>
                             <div class='sunrise'>
                                 <div class='sunrise-title'>Sunrise</div>
                                 <div class='sunrise-time'>--</div>
                             </div>
-                            <div class='moonrise'>
+                            <div class='mt-auto moonrise'>
                                 <div class='moonrise-time'>--</div>
                                 <div class='moonrise-title'>MoonRise</div>
                             </div>
@@ -227,17 +227,17 @@
                                 <span class='daylight-label'>Daylight: </span>
                                 <span class='daylight-time'></span>
                             </div>
-                            <div style="border: 0px dashed chocolate;">
-                                <canvas id="arcs" height="160" width="160"></canvas>
+                            <div>
+                                <canvas id='arcs' height='160' width='160'></canvas>
                             </div>
-                            <div class='phase'>First Quarter</div>
+                            <div class='moon-phase'>----</div>
                         </div>
-                        <div class='pt-4 alm-outer-right'>
+                        <div class='d-flex flex-column text-end alm-outer'>
                             <div class='sunset'>
                                 <div class='sunset-title'>Sunset</div>
                                 <div class='sunset-time'>--</div>
                             </div>
-                            <div class='moonset'>
+                            <div class='mt-auto moonset'>
                                 <div class='moonset-time'>--</div>
                                 <div class='moonset-title'>MoonSet</div>
                             </div>

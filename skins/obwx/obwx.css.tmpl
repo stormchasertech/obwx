@@ -16,20 +16,25 @@
     --obwx-border-color: $Extras.border_color;
 }
 
+/* Remove Scrollbars */
 html {
     scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
 
 body {
     color: var(--obwx-color);
     background-color: var(--obwx-background-color);
 }
-
 main {
     max-width: 1900px;
     font-size: var(--text-medium);
 }
 
+/* Flex Utilities */
 .flex-center {
     display: flex;
     flex-direction: column;
@@ -49,9 +54,19 @@ main {
 .be-lg { border-right: 1px solid var(--obwx-border-color); }
 }
 
+/* Logo Section */
+.section-header {
+    min-height: calc(var(--text-large) * var(--bs-body-line-height) * 3);
+}
+
 /* Update time and date section */
 .updated-date,.updated-time {
-    font-size: var(--text-large);
+    font-size: var(--text-medium);
+}
+@media screen and (min-width: 992px) {
+    .updated-date-lg,.updated-time-lg {
+        font-size: var(--text-large);
+    }
 }
 
 /* Current weather section */
@@ -227,16 +242,12 @@ main {
 
 
 /* Almanac */
-.alm-outer-left {
-    text-align: left;
-    width: 85px;
-}
-.alm-outer-right {
-    text-align: right;
-    width: 85px;
+.alm-outer {
+    flex-basis: 80px;
+    padding: calc(var(--bs-body-line-height) * var(--text-medium)) 0;
 }
 .alm-inner {
-    width: 162px;
+    flex-basis: 160px;
 }
 .daylight,
 .phase {
@@ -244,18 +255,10 @@ main {
     position: relative;
 }
 .daylight {
-    top: .5rem; 
+    top: 0.25rem; 
 }
 .phase {
-    top: -1rem;
-}
-.sunrise, .sunset {
-    height: 80px;
-}
-.moonrise, .moonset {
-    height: 80px;
-    display: grid;
-    align-content: end;
+    top: -0.5rem;
 }
 [class\$="rise-time"], [class\$="set-time"] {
     font-size: var(--text-larger);
