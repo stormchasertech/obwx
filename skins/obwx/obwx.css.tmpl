@@ -70,7 +70,13 @@ main {
 }
 
 /* Current weather section */
-.current-wx-text {
+.current-wx {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: calc(3 * var(--bs-body-line-height) * var(--text-large));
+}
+.current-wx-text, .feels-like{
     font-size: var(--text-large);
 }
 .outTemp {
