@@ -74,7 +74,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    min-height: calc(3 * var(--bs-body-line-height) * var(--text-large));
+    min-height: calc(4 * var(--bs-body-line-height) * var(--text-large));
 }
 .current-wx-text, .feels-like{
     font-size: var(--text-large);
@@ -84,15 +84,16 @@ main {
 }
 
 /* Wind direction section */
-[class^="rose-"] {
+/*[class^="rose-"] {
     position: absolute;
     width: 100%;
-}
+}*/
 .wind-direction-deg {
     top: 61px;
 }
 .rose-arrow {
     transition: transform 2s ease-in-out;
+    top: -4px;
 }
 
 /* Wind speed section */
@@ -221,18 +222,8 @@ main {
 }
 
 /* Records and Extras */
-.records {
-    width: 70%;
-    border: 1px solid gray;
-}
 .records-title {
     font-size: var(--text-small);
-    border-bottom: 1px solid gray;
-}
-.records-icon {
-    height: 3rem;
-    width: 3rem;
-    float: left;
 }
 .records-time {
     font-size: var(--text-small);

@@ -41,8 +41,10 @@
         },
         "rain": {
             "maxRate": "$day.rainRate.max",
+            "maxRateTime": #echo $day.rainRate.maxtime.raw*1000#,
             "sum": {
-                "yesterday": "$span($day_delta=1).rain.sum",
+                "today": "$day.rain.sum",
+                "yesterday": "$yesterday.rain.sum",
                 "week": "$span($week_delta=1).rain.sum",
                 "month": "$month.rain.sum",
                 "year": "$year.rain.sum"

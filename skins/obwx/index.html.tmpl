@@ -77,19 +77,19 @@
                     </div>
                 </div>
                 <!-- Wind Direction -->
-                <div class='col-6 col-lg-2 bt bs-lg'>
-                    <div class='position-relative mt-3'>
-                        <div class='rose-compass'>
+                <div class='col-6 col-lg-2 d-flex justify-content-center bt bs-lg'>
+                    <div class='position-relative mt-3' style='flex-basis: 150px;'>
+                        <div class='position-absolute'>
                             <canvas id='rose' width='150' height='150'></canvas>
                         </div>
-                        <div class='rose-arrow'>
+                        <div class='position-absolute rose-arrow'>
                             <canvas id='rose-arrow' width='150' height='150'></canvas>
                         </div>
-                        <div class='rose-text wind-direction-deg'>--</div>
+                        <div class='position-absolute w-100 wind-direction-deg'>--</div>
                     </div>
                 </div>
                 <!-- Wind Speed -->
-                <div class='col-6 col-lg-2 bt be-lg'>
+                <div class='col-6 col-lg-2 bt bb be-lg' style='min-height: 235px;'>
                     <div class='position-relative mt-3'>
                         <div class='wind-meter mx-auto'></div>
                         <div class='wind-speed-mph'>---</div>
@@ -102,13 +102,13 @@
                     <div>
                         <span class='windometer-legend-hi'>--</span>
                     </div>
-                    <div class='pt-3'>
+                    <!--div class='pt-3'>
                         <span class='windDir-1hrAvg'>--</span>
                         <span class='windSpd-1hrAvg'>--</span>
                     </div>
                     <div>
                         <span class='wind-1hrAvg-label'>Average Wind</span>
-                    </div>
+                    </div-->
                 </div>
                 <!-- Rain Bucket -->
                 <div class='col-6 col-lg-2 flex-center pt-3 bt'>
@@ -141,74 +141,88 @@
                         </div>
                     </div>
                 </div>
-                <!-- Temp Records -->
+                <!-- Weather Extras and Records -->
                 <div class='col-12 col-lg-4 bt'>
-                    <div class='row g-0'>
-                        <div class='col d-grid gap-4 mt-3'>
-                            <div class='records mx-auto'>
-                                <div class='uv'>---</div>
-                                <div class='uv-label'>UV Index</div>
+                    <!-- Observations -->
+                    <div class='row g-0 my-3'>
+                        <div class='col'>
+                            <div class='uv'>---</div>
+                            <div class='uv-label'>UV Index</div>
+                        </div>
+                        <div class='col'>
+                            <div>
+                                <span class='barometer'>---</span>
+                                <span class='barometer-trend'>--</span>
                             </div>
-                            <div class='records mx-auto'>
+                            <div>
+                                <div class='barometer-label'>Barometer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Records -->
+                    <div class='row g-0 my-3'>
+                        <div class='col'>
+                            <div class=''>
+                                <div class='float-start records-high'>I</div>
                                 <div class='records-title'>Today's High</div>
-                                <div class='records-icon records-high'>I</div>
                                 <div class='outTemp-max'>--</div>
                                 <div class='records-time outTemp-max-time'>--</div>
                             </div>
                         </div>
-                        <div class='col d-grid gap-4 mt-3'>
-                            <div class='records mx-auto'>
-                                <div>
-                                    <span class='barometer'>---</span>
-                                    <span class='barometer-trend'>--</span>
-                                </div>
-                                <div>
-                                    <div class='barometer-label'>Barometer</div>
-                                </div>
-                            </div>
-                            <div class='records mx-auto'>
+                        <div class='col'>
+                            <div class=''>
+                                <div class='float-end records-low'>I</div>
                                 <div class='records-title'>Today's Low</div>
-                                <div class='records-icon records-low'>I</div>
                                 <div class='outTemp-min'>--</div>
                                 <div class='records-time outTemp-min-time'>--</div>
                             </div>
                         </div>
                     </div>
+                    <!-- Inside -->
+                    <div class='row g-0 my-3'>
+                        <div class='col d-flex justify-content-center'>
+                            <div class='mx-2 inside-label'>Inside: </div>
+                            <div class='mx-2 inTemp'>--</div>
+                            <div class='mx-2 inHumidity'>--</div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Metar -->
-                <div class='col-12 col-lg-4 bt'>
-                    <div class='row g-0 mt-2'>
-                        <div class='col' style='height: 2.5rem;'></div>
-                        <div class='col my-auto'>
-                            <div class='inside-label'>Inside: </div>
+                <div class='col-12 col-lg-4 bt bs-lg be-lg'>
+                    <div class='row'>
+                        <div class='col'>
+                            <div class=''>
+                                <span class='windDir-1hrAvg'>--</span>
+                                <span class='windSpd-1hrAvg'>--</span>
+                            </div>
+                            <div class=''> Average Wind </div>
                         </div>
-                        <div class='col my-auto'>
-                            <div class='inTemp' style=''>--</div>
+                        <div class='col'>
+                            <div class='wind-max'> --- </div>
+                            <div class='wind-max-title'> Highest Wind </div>
                         </div>
-                        <div class='col my-auto'>
-                            <div class='inHumidity'>--</div>
-                        </div>
-                        <div class='col'></div>
                     </div>
                     <div class='row g-0 mt-2 bt bs-lg be-lg'>
-                        <div class='col-3'>
+                        <div class='col'>
                             <div class='metar-location'>--</div>
-                            <div class='metar-oat'>--</div>
-                            <canvas id='metar' height='76' width='76' class='d-block mx-auto'></canvas>
-                        </div>
-                        <div class='col-4'>
                             <div class='metar-updated'>--</div>
-                            <div class='metar-vis'>--</div>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class='metar-wind-direction'>--</div>
-                                <div class='metar-wind-direction-deg'>---</div>
-                            </div>
-                            <div class='metar-wind-speed-kts'>--</div>
+                            <div class='metar-oat'>--</div>
                             <div class='metar-rules'>--</div>
                         </div>
-                        <div class='col-5 bs'>
-                            <div class='metar-weather'>--</div>
-                            <div class='metar-cloud-layer'>--</div>
+                        <div class='col bs be'>
+                            <div class='metar-vis'>--</div>
+                            <div>
+                                <div class='d-inline-block metar-wind-direction'>--</div>
+                                <div class='d-inline-block metar-wind-direction-deg'>---</div>
+                            </div>
+                            <div>
+                                <div class='d-inline-block metar-wind-speed-kts'>--</div>
+                                <div class='d-inline-block metar-wind-gust-kts'>--</div>
+                            </div>
+                        </div>
+                        <div class='col'>
+                            <div class='py-1 bb metar-weather'>--</div>
+                            <div class='metar-cloud-layer' style='font-size: var(--text-normal);'>--</div>
                         </div>
                     </div>
                 </div>
