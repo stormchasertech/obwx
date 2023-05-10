@@ -190,7 +190,7 @@ const processObservations = function ( data ) {
     if ( data.hasOwnProperty( 'dayRain_in' ) ) {
         const dayRain = parseFloat(data.dayRain_in).toFixed(2);
         // Move rain level in the gauge (percent of one inch)
-        const rainLevel = (( 1 - dayRain ) * 112 ) + 1;
+        let rainLevel = (( 1 - dayRain ) * 112 ) + 1;
         rainLevel < 1 ? rainLevel = 1 : rainLevel;
         jQuery('.raingauge-rain').css( `top`,`\${rainLevel}px` );
         jQuery('.raingauge-dayRain').html( `\${dayRain}"` );
