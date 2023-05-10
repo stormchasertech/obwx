@@ -5,6 +5,12 @@
     <head>
         <title>$Extras.html_title</title>
 
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 
+          https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css
+          https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js 
+          https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js
+          https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js 
+        "/>
         <link rel='manifest' href='manifest.json'>
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'>
         <link rel='stylesheet' type='text/css' href='obwx.css?v=#echo int(random.random()*123456789)#'>
@@ -76,39 +82,49 @@
                         </div>
                     </div>
                 </div>
-                <!-- Wind Direction -->
-                <div class='col-6 col-lg-2 d-flex justify-content-center bt bs-lg'>
-                    <div class='position-relative mt-3' style='flex-basis: 150px;'>
-                        <div class='position-absolute'>
-                            <canvas id='rose' width='150' height='150'></canvas>
+                <!-- Wind Section -->
+                <div class='col-12 col-lg-4 bt bs-lg' style='min-height: 235px;'>
+                    <div class='row g-0 py-2'>
+                        <div class='col d-flex justify-content-center'>
+                            <div class='position-relative' style='flex-basis: 150px; min-height: 150px;'>
+                                <div class='position-absolute'>
+                                    <canvas id='rose' width='150' height='150'></canvas>
+                                </div>
+                                <div class='position-absolute rose-arrow'>
+                                    <canvas id='rose-arrow' width='150' height='150'></canvas>
+                                </div>
+                                <div class='position-absolute w-100 wind-direction-deg'>--</div>
+                            </div>
                         </div>
-                        <div class='position-absolute rose-arrow'>
-                            <canvas id='rose-arrow' width='150' height='150'></canvas>
+                        <div class='col g-0 py-2'>
+                            <div class='position-relative'>
+                                <div class='wind-meter mx-auto'></div>
+                                <div class='wind-speed-mph'>---</div>
+                                <div class='windometer-tickmark' style='transform: rotate(-45deg);'></div>
+                                <div class='windometer-tickmark' style='transform: rotate(0deg);'></div>
+                                <div class='windometer-tickmark' style='transform: rotate(45deg);'></div>
+                                <div class='windometer-tickmark-recentHi' style='transform: rotate(90deg);'></div>
+                                <div class='windometer-arrow'></div>
+                            </div>
+                            <div>
+                                <span class='windometer-legend-hi'>--</span>
+                            </div>
+                            <div>Gusting 23 mph</div>
                         </div>
-                        <div class='position-absolute w-100 wind-direction-deg'>--</div>
                     </div>
-                </div>
-                <!-- Wind Speed -->
-                <div class='col-6 col-lg-2 bt bb be-lg' style='min-height: 235px;'>
-                    <div class='position-relative mt-3'>
-                        <div class='wind-meter mx-auto'></div>
-                        <div class='wind-speed-mph'>---</div>
-                        <div class='windometer-tickmark' style='transform: rotate(-45deg);'></div>
-                        <div class='windometer-tickmark' style='transform: rotate(0deg);'></div>
-                        <div class='windometer-tickmark' style='transform: rotate(45deg);'></div>
-                        <div class='windometer-tickmark-recentHi' style='transform: rotate(90deg);'></div>
-                        <div class='windometer-arrow'></div>
+                    <div class='row'>
+                        <div class='col'>
+                            <div class=''>
+                                <span class='windDir-1hrAvg'>--</span>
+                                <span class='windSpd-1hrAvg'>--</span>
+                            </div>
+                            <div class=''> Average Wind </div>
+                        </div>
+                        <div class='col'>
+                            <div class='wind-max'> --- </div>
+                            <div class='wind-max-title'> Highest Wind </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class='windometer-legend-hi'>--</span>
-                    </div>
-                    <!--div class='pt-3'>
-                        <span class='windDir-1hrAvg'>--</span>
-                        <span class='windSpd-1hrAvg'>--</span>
-                    </div>
-                    <div>
-                        <span class='wind-1hrAvg-label'>Average Wind</span>
-                    </div-->
                 </div>
                 <!-- Rain Bucket -->
                 <div class='col-6 col-lg-2 flex-center pt-3 bt'>
@@ -189,19 +205,6 @@
                 </div>
                 <!-- Metar -->
                 <div class='col-12 col-lg-4 bt bs-lg be-lg'>
-                    <div class='row'>
-                        <div class='col'>
-                            <div class=''>
-                                <span class='windDir-1hrAvg'>--</span>
-                                <span class='windSpd-1hrAvg'>--</span>
-                            </div>
-                            <div class=''> Average Wind </div>
-                        </div>
-                        <div class='col'>
-                            <div class='wind-max'> --- </div>
-                            <div class='wind-max-title'> Highest Wind </div>
-                        </div>
-                    </div>
                     <div class='row g-0 mt-2 bt bs-lg be-lg'>
                         <div class='col'>
                             <div class='metar-location'>--</div>
