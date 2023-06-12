@@ -24,13 +24,13 @@ Re-class
 After major restructuing, place section items in their 'close to final' positions:
 
 Checklist:
-___ Header Section
-___ Temp Section
-___ Wind Section
-___ Rain section
-___ Records section
-___ Metar section
-_I_ Sun-moon section
+_C_ Header Section
+_C_ Temp Section
+_C_ Wind Section
+_C_ Rain section
+_I_ Records section
+_I_ Metar section
+_C_ Sun-moon section
 _C_ Forecast section
 
 
@@ -38,3 +38,13 @@ _C_ Forecast section
 
 Need to track changes. Boost github knowledge with respect to branches/merging/etc. (On-Going)
 Upload this branch (Complete)
+
+-----------------------------------------------------------------------------------------------
+
+Features and Changes:
+___ Allow "inside temp/humid" section data and labels to be changed in skin.conf
+___ Change font size, or capitalization of warning/watches ... currently line wraps on STstormWatch/Warnings
+
+
+-----------------------------------------------------------------------------------------------
+
