@@ -198,6 +198,12 @@ const processObservations = function ( data ) {
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
         jQuery('.dewpoint').html(`Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;` );
     }
+    if ( data.hasOwnProperty( 'extraTemp1_F' ) ) {
+        jQuery('.extraTemp1').html(`\${parseFloat( data.extraTemp1_F ).toFixed(1)}&deg;` );
+    }
+    if ( data.hasOwnProperty( 'extraHumid1' ) ) {
+        jQuery('.extraHumid1').html(`\${parseFloat( data.extraHumid1 ).toFixed(0)}&percnt;` );
+    }
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
         jQuery('.inHumidity').html(`\${parseFloat( data.inHumidity ).toFixed(0)} &percnt;` );
     }
