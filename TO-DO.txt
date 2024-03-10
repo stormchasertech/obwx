@@ -36,14 +36,14 @@ _C_ Forecast section
 
 -----------------------------------------------------------------------------------------------
 
-Need to track changes. Boost github knowledge with respect to branches/merging/etc. (On-Going)
-Upload this branch (Complete)
+_I_ Need to track changes. Boost github knowledge with respect to branches/merging/etc. (On-Going)
+_C_ Upload this branch (Complete)
 
 -----------------------------------------------------------------------------------------------
 
 Features and Changes:
-___ Allow "inside temp/humid" section data and labels to be changed in skin.conf
-___ Change font size, or capitalization of warning/watches ... currently line wraps on STstormWatch/Warnings
+_N_ Allow "inside temp/humid" section data and labels to be changed in skin.conf
+_I_ Change font size, or capitalization of warning/watches ... currently line wraps on STstormWatch/Warnings
 
 
 -----------------------------------------------------------------------------------------------
