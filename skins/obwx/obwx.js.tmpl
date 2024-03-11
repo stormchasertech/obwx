@@ -264,14 +264,15 @@ const processArchive = function ( data ) {
 
     (function dailyRecords () {
         // Recent wind stats
-        obwx.setWindSpdDial( parseFloat(data.today.wind.windGust_lastHr) );
-        jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( data.today.wind.windGust_lastHr )}deg)`);
+        obwx.setWindSpdDial( parseFloat(data.today.wind.windSpd_20minMax) );
+        jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( data.today.wind.windSpd_20minMax )}deg)`);
         jQuery('.windometer-legend-hi').html ( obwx.windScaleMaxCurrent );
 
         // Daily wind records
-        jQuery('.windDir-1hrAvg').html( data.today.wind.windDir_1hrAvg );
-        jQuery('.windSpd-1hrAvg').html( data.today.wind.windSpd_1hrAvg );
-        jQuery('.wind-max').html( data.today.wind.max );
+        jQuery('.windSpd-20minMax').html( `Gusting: \${data.today.wind.windSpd_20minMax} $unit.label.windSpeed` );
+        jQuery('.windDir-20minAvg').html( data.today.wind.windDir_20minAvg );
+        jQuery('.windSpd-20minAvg').html( data.today.wind.windSpd_20minAvg );
+        jQuery('.wind-max').html( `\${parseFloat(data.today.wind.max).toFixed(0)} $unit.label.windSpeed` );
         jQuery('.wind-min').html( data.today.wind.min);
         jQuery('.wind-max-time').html( `\${obwx.localizeDate(data.today.wind.maxtime).t} \${obwx.localizeDate(data.today.wind.maxtime).p.toLowerCase()}` );
         jQuery('.wind-min-time').html( `\${obwx.localizeDate(data.today.wind.mintime).t} \${obwx.localizeDate(data.today.wind.mintime).p.toLowerCase()}` );
