@@ -1,0 +1,8 @@
+
+<div class='logo'>
+    #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
+    <img src='$Extras.logo_img' title='$Extras.logo_title' alt='$Extras.logo_alt'>
+    #else
+    <div>$html_title</div>
+    #end if
+</div>

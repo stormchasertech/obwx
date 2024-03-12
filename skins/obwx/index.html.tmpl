@@ -36,22 +36,15 @@
             <div class='row g-0 text-center'>
                 <!--SiteLogo-->
                 <div class='col-12 col-lg-3 flex-center section-header my-auto py-1'>
-                    <div class='logo'>
-                        #if $Extras.has_key("logo_img") and $Extras.logo_img != ''
-                        <img src='$Extras.logo_img' title='$Extras.logo_title' alt='$Extras.logo_alt'>
-                        #else
-                        <div>$html_title</div>
-                        #end if
-                    </div>
+                    #include "r1c1-logo.html.tmpl"
                 </div>
                 <!-- Alerts -->
                 <div class='col-12 col-lg-6 py-lg-1'>
-                    <div class='weather-alerts'></div>
+                    #include "r1c2-alerts.html.tmpl"
                 </div>
                 <!-- Datetime -->
                 <div class='col-12 col-lg-3 d-flex flex-lg-column my-auto py-1'>
-                    <div class='w-100 updated-date updated-date-lg'>---</div>
-                    <div class='w-100 updated-time updated-time-lg'>---</div>
+                    #include "r1c3-datetime.html.tmpl"
                 </div>
                 <!-- Current Wx -->
                 <div class='col-12 col-lg-4 pt-1 bt'>
