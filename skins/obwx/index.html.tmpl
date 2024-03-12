@@ -1,420 +1,74 @@
 #errorCatcher Echo
-#import random
 <!DOCTYPE html>
 <html lang='en'>
     <head>
-        <title>$Extras.html_title</title>
-
-        <link rel='manifest' href='manifest.json'>
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'>
-        <link rel='stylesheet' type='text/css' href='obwx.css?v=#echo int(random.random()*123456789)#'>
-        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js' integrity='sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk' crossorigin='anonymous'></script>
-        <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js'></script>
-        <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js'></script>
-        <script type='text/javascript' src='obwx.js?v=#echo int(random.random()*123456789)#'></script> 
-
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-        <script type='text/javascript'>
-            const mqttclient = 'obwx' + Math.floor(Math.random() * 123456789);
-
-            // Disable AJAX caching
-            jQuery.ajaxSetup( {cache: false} );
-
-            // Initalize the app after DOM loaded
-            jQuery(document).ready(function() {
-                drawCompassRose();
-                drawCompassArrow();
-                updateArcCast()
-                mqttconnect()
-            });
-
-        </script>
+        #include "include/head.html.tmpl"
     </head>
     <body>
         <main>
             <div class='row g-0 text-center'>
                 <!--SiteLogo-->
                 <div class='col-12 col-lg-3 flex-center section-header my-auto py-1'>
-                    #include "r1c1-logo.html.tmpl"
+                    #include "include/r1c1-logo.html.tmpl"
                 </div>
                 <!-- Alerts -->
                 <div class='col-12 col-lg-6 py-lg-1'>
-                    #include "r1c2-alerts.html.tmpl"
+                    #include "include/r1c2-alerts.html.tmpl"
                 </div>
                 <!-- Datetime -->
                 <div class='col-12 col-lg-3 d-flex flex-lg-column my-auto py-1'>
-                    #include "r1c3-datetime.html.tmpl"
+                    #include "include/r1c3-datetime.html.tmpl"
                 </div>
                 <!-- Current Wx -->
                 <div class='col-12 col-lg-4 pt-1 bt'>
-                    <div class='row g-0'>
-                        <div class='col-6'>
-                            <div class='current-wx-icon'>---</div>                             
-                        </div>
-                        <div class='col-6 my-auto'>
-                            <div class='current-outTemp'>
-                                <span class='outTemp'>--.-<sup>&deg;</sup></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='row g-0'>
-                        <div class='col-6 current-wx'>
-                            <div class='current-wx-text'>-----</div>
-                            <div class='outHumidity'>---</div>
-                        </div>
-                        <div class='col-6 current-wx'>
-                            <div class='feels-like'>--</div>
-                            <div class='dewpoint'>---</div>
-                        </div>
-                    </div>
+                    #include "include/r2c1-current.html.tmpl"
                 </div>
                 <!-- Wind Section -->
                 <div class='col-12 col-lg-4 bt bs-lg' style='min-height: 235px;'>
                     <div class='row g-0 py-2'>
                         <div class='col d-flex justify-content-center'>
-                            <div class='position-relative' style='flex-basis: 150px; min-height: 150px;'>
-                                <div class='position-absolute'>
-                                    <canvas id='rose' width='150' height='150'></canvas>
-                                </div>
-                                <div class='position-absolute rose-arrow'>
-                                    <canvas id='rose-arrow' width='150' height='150'></canvas>
-                                </div>
-                                <div class='position-absolute w-100 wind-direction-deg'>--</div>
-                            </div>
+                            #include "include/r2c2-r1c1-dirdial.html.tmpl"
                         </div>
                         <div class='col g-0 py-2'>
-                            <div class='position-relative'>
-                                <div class='wind-meter mx-auto'></div>
-                                <div class='wind-speed-mph'>---</div>
-                                <div class='windometer-tickmark' style='transform: rotate(-45deg);'></div>
-                                <div class='windometer-tickmark' style='transform: rotate(0deg);'></div>
-                                <div class='windometer-tickmark' style='transform: rotate(45deg);'></div>
-                                <div class='windometer-tickmark-recentHi' style='transform: rotate(90deg);'></div>
-                                <div class='windometer-arrow'></div>
-                            </div>
-                            <div>
-                                <span class='windometer-legend-hi'>--</span>
-                            </div>
-                            <div>
-                                <span class='windSpd-20minMax'>--</span>
-                            </div>
+                            #include "include/r2c2-r1c2-spddial.html.tmpl"
                         </div>
                     </div>
                     <div class='row'>
                         <div class='col'>
-                            <div class=''>
-                                <span class='windDir-20minAvg'>--</span>
-                                <span class='windSpd-20minAvg'>--</span>
-                            </div>
-                            <div class=''> Average Wind </div>
+                            #include "include/r2c2-r2c1-windstatsL.html.tmpl"
                         </div>
                         <div class='col'>
-                            <div>
-                                <span class='wind-max'>--</span>
-                                <span> at </span>
-                                <span class='wind-max-time'>--</span>
-                            </div>
-                            <div class='wind-max-title'> Highest Wind </div>
+                            #include "include/r2c2-r2c2-windstatsR.html.tmpl"
                         </div>
                     </div>
                 </div>
                 <!-- Rain Bucket -->
                 <div class='col-6 col-lg-2 flex-center pt-3 bt'>
-                    <div class='position-relative w-100'>
-                        <div class='raingauge-bucket mx-auto'> 
-                            <div class='raingauge-rain'></div> 
-                            <div class='raingauge-tape' style='top:0%'></div> 
-                            <div class='raingauge-tape' style='top:25%'></div> 
-                            <div class='raingauge-tape' style='top:50%'></div> 
-                            <div class='raingauge-tape' style='top:75%'></div> 
-                            <div class='raingauge-text raingauge-dayRain'>--</div> 
-                        </div>
-                    </div> 
-                    <div class='pt-3 rainrate'>---</div> 
+                    #include "include/r2c3-r1c1-rainbucket.html.tmpl"
                 </div>
                 <!-- Rain Records -->
                 <div class='col-6 col-lg-2 flex-center pt-3 pb-4 bt '>
-                    <div class='row g-0 rain-records'>
-                        <div class='col'>
-                            <div class='rain-title'>Yesterday</div>
-                            <div class='rain-title'>Week</div>
-                            <div class='rain-title'>Month</div>
-                            <div class='rain-title'>Year</div>
-                        </div>
-                        <div class='col'>
-                            <div class='rain-value yesterday-rain'>---</div> 
-                            <div class='rain-value week-rain'>---</div> 
-                            <div class='rain-value month-rain'>---</div> 
-                            <div class='rain-value year-rain'>---</div> 
-                        </div>
-                    </div>
+                    #include "include/r2c3-r1c2-rainstats.html.tmpl"
                 </div>
                 <!-- Weather Extras and Records -->
                 <div class='col-12 col-lg-4 bt'>
                     <!-- Observations -->
-                    <div class='row g-0 my-3'>
-                        <div class='col'>
-                            <div class='uv'>---</div>
-                            <div class='uv-label'>UV Index</div>
-                        </div>
-                        <div class='col'>
-                            <div>
-                                <span class='barometer'>---</span>
-                                <span class='barometer-trend'>--</span>
-                            </div>
-                            <div>
-                                <div class='barometer-label'>Barometer</div>
-                            </div>
-                        </div>
-                    </div>
+                    #include "include/r3c1-r1-extraobs.html.tmpl"
                     <!-- Records -->
-                    <div class='row g-0 my-3'>
-                        <div class='col'>
-                            <div class=''>
-                                <div class='float-start records-high'>I</div>
-                                <div class='records-title'>Today's High</div>
-                                <div class='outTemp-max'>--</div>
-                                <div class='records-time outTemp-max-time'>--</div>
-                            </div>
-                        </div>
-                        <div class='col'>
-                            <div class=''>
-                                <div class='float-end records-low'>I</div>
-                                <div class='records-title'>Today's Low</div>
-                                <div class='outTemp-min'>--</div>
-                                <div class='records-time outTemp-min-time'>--</div>
-                            </div>
-                        </div>
-                    </div>
+                    #include "include/r3c1-r2-records.html.tmpl"
                     <!-- Inside -->
-                    <div class='row g-0 my-3'>
-                        <div class='col d-flex justify-content-center'>
-                            <div class='mx-2 inside-label'>Inside: </div>
-                            <div class='mx-2 inTemp'>--</div>
-                            <div class='mx-2 inHumidity'>--</div>
-                        </div>
-                    </div>
+                    #include "include/r3c1-r3-inside.html.tmpl"
                 </div>
                 <!-- Metar -->
                 <div class='col-12 col-lg-4 bt bs-lg be-lg'>
-                    <div class='row g-0 mt-2 bt bs-lg be-lg'>
-                        <div class='col'>
-                            <div class='metar-location'>--</div>
-                            <div class='metar-updated'>--</div>
-                            <div class='metar-oat'>--</div>
-                            <div class='metar-rules'>--</div>
-                        </div>
-                        <div class='col bs be'>
-                            <div class='metar-vis'>--</div>
-                            <div>
-                                <div class='d-inline-block metar-wind-direction'>--</div>
-                                <div class='d-inline-block metar-wind-direction-deg'>---</div>
-                            </div>
-                            <div>
-                                <div class='d-inline-block metar-wind-speed-kts'>--</div>
-                                <div class='d-inline-block metar-wind-gust-kts'>--</div>
-                            </div>
-                        </div>
-                        <div class='col'>
-                            <div class='py-1 bb metar-weather'>--</div>
-                            <div class='metar-cloud-layer' style='font-size: var(--text-normal);'>--</div>
-                        </div>
-                    </div>
+                    #include "include/r3c2-metar.html.tmpl"
                 </div>
                 <!-- Almanac -->
                 <div class='col-12 col-lg-4 py-1 bt'>
-                    <div class='row g-0'>
-                        <div class='col'></div>
-                        <div class='d-flex flex-column text-start alm-outer'>
-                            <div class='sunrise'>
-                                <div class='sunrise-title'>Sunrise</div>
-                                <div class='sunrise-time'>--</div>
-                            </div>
-                            <div class='mt-auto moonrise'>
-                                <div class='moonrise-time'>--</div>
-                                <div class='moonrise-title'>MoonRise</div>
-                            </div>
-                        </div>
-                        <div class='alm-inner'>
-                            <div class='daylight'>
-                                <span class='daylight-label'>Daylight: </span>
-                                <span class='daylight-time'></span>
-                            </div>
-                            <div>
-                                <canvas id='arcs' height='160' width='160'></canvas>
-                            </div>
-                            <div class='moon-phase'>----</div>
-                        </div>
-                        <div class='d-flex flex-column text-end alm-outer'>
-                            <div class='sunset'>
-                                <div class='sunset-title'>Sunset</div>
-                                <div class='sunset-time'>--</div>
-                            </div>
-                            <div class='mt-auto moonset'>
-                                <div class='moonset-time'>--</div>
-                                <div class='moonset-title'>MoonSet</div>
-                            </div>
-                        </div>
-                        <div class='col'></div>
-                    </div>
+                    #include "include/r3c3-sunmoon.html.tmpl"
                 </div>
-                <!-- Forecast 0 -->
-                <div class='col-6 col-lg-2 py-2 bt be'>
-                    <div class="forecast-p0-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p0-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p0-hilo-txt"></span>
-                                <span class="forecast-p0-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p0-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p0-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p0-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p0-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p0-windSpd"></span>
-                    </div>
-                </div>
-                <!-- Forecast 1 -->
-                <div class='col-6 col-lg-2 py-2 bt be-lg'>
-                    <div class="forecast-p1-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p1-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p1-hilo-txt"></span>
-                                <span class="forecast-p1-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p1-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p1-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p1-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p1-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p1-windSpd"></span>
-                    </div>
-                </div>
-                <!-- Forecast 2 -->
-                <div class='col-6 col-lg-2 py-2 bt be'>
-                    <div class="forecast-p2-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p2-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p2-hilo-txt"></span>
-                                <span class="forecast-p2-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p2-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p2-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p2-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p2-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p2-windSpd"></span>
-                    </div>
-                </div>
-                <!-- Forecast 3 -->
-                <div class='col-6 col-lg-2 py-2 bt be-lg'>
-                    <div class="forecast-p3-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p3-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p3-hilo-txt"></span>
-                                <span class="forecast-p3-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p3-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p3-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p3-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p3-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p3-windSpd"></span>
-                    </div>
-                </div>
-                <!-- Forecast 4 -->
-                <div class='col-6 col-lg-2 py-2 bt be'>
-                    <div class="forecast-p4-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p4-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p4-hilo-txt"></span>
-                                <span class="forecast-p4-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p4-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p4-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p4-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p4-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p4-windSpd"></span>
-                    </div>
-                </div>
-                <!-- Forecast 5 -->
-                <div class='col-6 col-lg-2 py-2 bt'>
-                    <div class="forecast-p5-date">--</div>
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <div class="forecast-p5-icon"></div>
-                        </div>
-                        <div class="col">
-                            <div>
-                                <span class="forecast-p5-hilo-txt"></span>
-                                <span class="forecast-p5-hilo-temp"></span>
-                            </div>
-                            <div>
-                                <span class="forecast-p5-pop"></span>
-                                <img src="icons/raindrop.png">
-                                <span class="forecast-p5-precip"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forecast-p5-wxPriCode"></div>
-                    <div>
-                        <span class="forecast-p5-windDir"></span>
-                        <img src="icons/windicon.png">
-                        <span class="forecast-p5-windSpd"></span>
-                    </div>
-                </div>
+                <!-- Forecast -->
+                #include "include/r4-forecast.html.tmpl"
             </div>
         </main>
     </body>
