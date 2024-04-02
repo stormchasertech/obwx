@@ -28,7 +28,7 @@
             "min": "$day.wind.min.format(add_label=False)",
             "maxtime": #echo $day.wind.maxtime.raw*1000#,
             "mintime": #echo $day.wind.mintime.raw*1000#,
-            "windSpd_20minMax": $span($time_delta=1200).windGust.max.format(add_label=False),
+            "windSpd_20minMax": "$span($time_delta=1200).windGust.max.format(add_label=False)",
             "windSpd_20minAvg": "$span($time_delta=1200).windSpeed.avg",
             "windDir_20minAvg": "$span($time_delta=1200).windDir.avg.ordinal_compass"
         },

@@ -1,3 +1,4 @@
 *.swp
 __pycache__/
 skins/obwx/icons/obwxLogo.png
+*.ico
