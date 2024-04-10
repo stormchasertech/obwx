@@ -118,6 +118,10 @@ const obwx = {
             // overshoot the minimum to indicate error
             return -95;
         }
+    },
+    // Capitilize the first character in a string
+    capitalizeFirst ( value ) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
     }
 }
 /////////////////////////
@@ -418,36 +422,50 @@ const processForecast = function ( data ) {
                 // Build layer array with layer objects
                 for ( let j = 0; j < rawSplit.length; j++ ) {
                     if ( rawSplit[j].slice(0,3) === 'FEW' ){
-                        layers.push({'coverage': 'Few at ','height': rawSplit[j].slice(3,6)*100});
+                        layers.push({'coverage': 'Few','height': rawSplit[j].slice(3,6)*100});
                     } else if ( rawSplit[j].slice(0,3) === 'SCT' ){
-                        layers.push({'coverage': 'Scattered at ','height': rawSplit[j].slice(3,6)*100});
+                        layers.push({'coverage': 'Scattered','height': rawSplit[j].slice(3,6)*100});
                     } else if ( rawSplit[j].slice(0,3) === 'BKN' ){
-                        layers.push({'coverage': 'Broken at ','height': rawSplit[j].slice(3,6)*100});
+                        layers.push({'coverage': 'Broken','height': rawSplit[j].slice(3,6)*100});
                     } else if ( rawSplit[j].slice(0,3) === 'OVC' ){
-                        layers.push({'coverage': 'Overcast at ','height': rawSplit[j].slice(3,6)*100});
+                        layers.push({'coverage': 'Overcast','height': rawSplit[j].slice(3,6)*100});
                     }
                 }
+                // Sort layers by height
                 layers.sort(( a,b )=> b.height - a.height );
-                return layers.map((layer) => `<div>\${layer.coverage}\${layer.height}</div>`).join('');
+                // Update cloud layers html, report no clouds if layers array is empty
+                if ( layers.length ) {
+                    return layers.map((layer) => 
+                        `<div class='col-6 text-end metar-label'>\${layer.coverage}</div>
+                        <div class='col-6 ps-1 text-start metar-label'>\${layer.height} ft</div>`
+                    ).join('');
+                } else {
+                    return `<div class='col-12 metar-label'>No Clouds</div>`;
+                }
             }
 
-            jQuery('.metar-location').html( response.id );
-            jQuery('.metar-updated').html( `\${td.t} \${td.p}` );
+            jQuery('.metar-location-id').html( response.id );
+            jQuery('.metar-location-name').html( `\${obwx.capitalizeFirst(response.place.name)} airport at` );
+            jQuery('.metar-updated').html( ` \${td.t} \${td.p}` );
             jQuery('.metar-updated').css( 'color', colorizeTime(response.ob.timestamp) );
-            jQuery('.metar-weather').html( response.ob.weatherShort );
+            jQuery('.metar-weather').html( response.ob.weather );
             jQuery('.metar-oat').html( `\${response.ob.tempF}&deg;F` );
             jQuery('.metar-vis').html( `\${response.ob.visibilityMI} sm` );
             jQuery('.metar-rules').html( response.ob.flightRule );
             jQuery('.metar-rules').css( 'color', colorizeRules(response.ob.flightRule) );
             jQuery('.metar-wind-direction').html( response.ob.windDir );
-            jQuery('.metar-wind-direction-deg').html( response.ob.windDirDEG );
+            jQuery('.metar-wind-direction-deg').html( `\${response.ob.windDirDEG}&deg;` );
             jQuery('.metar-wind-speed-kts').html( `\${response.ob.windSpeedKTS} kts` );
             jQuery('.metar-wind-speed-mph').html( response.ob.windSpeedMPH );
-            jQuery('.metar-cloud-layer').html( cloudLayers( response.raw ) );
+            jQuery('.cloud-layer').html( cloudLayers( response.raw ) );
 
-            // Wind gusts are null if not gusting, show gusts otherwise
-            response.ob.windGustKTS ? jQuery('.metar-wind-gust-kts').html(` G\${response.ob.windGustKTS}`) : '';
-            response.ob.windGustMPH ? jQuery('.metar-wind-gust-mph').html(` G\${response.ob.windGustMPH}`) : '';
+            // Wind gusts are null if not gusting
+            response.ob.windGustKTS ?
+                jQuery('.metar-wind-gust-kts').html(`G \${response.ob.windGustKTS}`) :
+                jQuery('.metar-wind-gust-kts').html('');
+            response.ob.windGustMPH ?
+                jQuery('.metar-wind-gust-mph').html(`G \${response.ob.windGustMPH}`) :
+                jQuery('.metar-wind-gust-mph').html('');
         }
     })();
 }

@@ -82,12 +82,6 @@ main {
 .outTemp {
     font-size: var(--text-outTemp);
 }
-
-/* Wind direction section */
-/*[class^="rose-"] {
-    position: absolute;
-    width: 100%;
-}*/
 .wind-direction-deg {
     top: 61px;
 }
@@ -230,7 +224,18 @@ main {
 }
 
 /* Metar */
-
+[class*="metar-"] {
+    font-size: var(--text-normal);
+    padding-top: 0.25rem;
+}
+.metar-location-name,
+.metar-updated {
+    font-size: var(--text-medium);
+}
+.metar-header {
+    width: fit-content;
+    margin: auto;
+}
 
 /* Almanac */
 .alm-outer {

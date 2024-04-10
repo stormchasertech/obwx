@@ -1,23 +1,41 @@
-<div class='row g-0 mt-2 bt bs-lg be-lg'>
-    <div class='col'>
-        <div class='metar-location'>--</div>
-        <div class='metar-updated'>--</div>
-        <div class='metar-oat'>--</div>
-        <div class='metar-rules'>--</div>
-    </div>
-    <div class='col bs be'>
-        <div class='metar-vis'>--</div>
-        <div>
-            <div class='d-inline-block metar-wind-direction'>--</div>
-            <div class='d-inline-block metar-wind-direction-deg'>---</div>
-        </div>
-        <div>
-            <div class='d-inline-block metar-wind-speed-kts'>--</div>
-            <div class='d-inline-block metar-wind-gust-kts'>--</div>
+<div class='row g-0 py-2'>
+    <div class='col-12'>
+        <div class='metar-header bb'>
+            <span class='metar-location-name'>--</span>
+            <span class='metar-updated'>--</span>
         </div>
     </div>
-    <div class='col'>
-        <div class='py-1 bb metar-weather'>--</div>
-        <div class='metar-cloud-layer' style='font-size: var(--text-normal);'>--</div>
+    <div class='col-12'>
+        <div class='metar-sky'>
+            <span>Sky:</span>
+            <span class='metar-weather'>--</span>
+        </div>
+    </div>
+    <div class='col-12'>
+        <div class='metar-winds'>
+            <span>Wind:</span>
+            <span class='metar-wind-direction'>--</span>
+            <span>at</span>
+            <span class='metar-wind-speed-kts'>--</span>
+            <span class='metar-wind-gust-kts'>--</span>
+        </div>
+    </div>
+</div>
+<div class='row g-0 pb-2'>
+    <div class='col-6'>
+        <div class='row g-0'>
+            <!-- Temp -->
+            <div class='col-6 pe-1 text-end metar-label'>Temp:</div>
+            <div class='col-6 ps-1 text-start metar-oat'>--</div>
+            <!-- Visibility -->
+            <div class='col-6 pe-1 text-end metar-label'>Vis:</div>
+            <div class='col-6 ps-1 text-start metar-vis'>--</div>
+            <!-- Flight Rules -->
+            <div class='col-6 pe-1 text-end metar-label'>Rules:</div>
+            <div class='col-6 ps-1 text-start metar-rules'>--</div>
+        </div>
+    </div>
+    <div class='col-6'>
+        <div class='row g-0 cloud-layer'>--</div>
     </div>
 </div>
