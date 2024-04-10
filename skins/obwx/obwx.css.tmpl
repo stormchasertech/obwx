@@ -84,12 +84,20 @@ main {
 .outTemp {
     font-size: var(--text-outTemp);
 }
-.wind-direction-deg {
-    top: 61px;
+
+/* Wind direction section */
+.wind-grid {
+    display: grid;
+}
+.wind-rose-container,
+.wind-arrow-container,
+.wind-text-container {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
 }
 .rose-arrow {
     transition: transform 2s ease-in-out;
-    top: -4px;
 }
 
 /* Wind speed section */

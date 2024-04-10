@@ -1,0 +1,51 @@
+<!-- Dir Dial -->
+<div class='row g-0'>
+    <div class='col-6 wind-grid'>
+        <div class='wind-rose-container pt-2'>
+            <canvas id='rose' width='150' height='150'></canvas>
+        </div>
+        <div class='wind-arrow-container rose-arrow'>
+            <canvas id='rose-arrow' width='150' height='150'></canvas>
+        </div>
+        <div class='wind-text-container'>
+            <div class='wind-direction-deg'>--</div>
+        </div>
+    </div>
+    <!-- Wind Dial -->
+    <div class='col-6 g-0 py-2'>
+        <div class='position-relative'>
+            <div class='wind-meter mx-auto'></div>
+            <div class='wind-speed-mph'>---</div>
+            <div class='windometer-tickmark' style='transform: rotate(-45deg);'></div>
+            <div class='windometer-tickmark' style='transform: rotate(0deg);'></div>
+            <div class='windometer-tickmark' style='transform: rotate(45deg);'></div>
+            <div class='windometer-tickmark-recentHi' style='transform: rotate(90deg);'></div>
+            <div class='windometer-arrow'></div>
+        </div>
+        <div>
+            <span class='windometer-legend-hi'>--</span>
+        </div>
+        <div>
+            <span class='windSpd-20minMax'>--</span>
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <!-- Stats Left -->
+    <div class='col'>
+        <div class=''>
+            <span class='windDir-20minAvg'>--</span>
+            <span class='windSpd-20minAvg'>--</span>
+        </div>
+        <div class=''> Average Wind </div>
+    </div>
+    <!-- Stats Right -->
+    <div class='col'>
+        <div>
+            <span class='wind-max'>--</span>
+            <span> at </span>
+            <span class='wind-max-time'>--</span>
+        </div>
+        <div class='wind-max-title'> Highest Wind </div>
+    </div>
+</div>
