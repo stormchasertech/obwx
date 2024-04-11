@@ -448,12 +448,13 @@ const processForecast = function ( data ) {
             jQuery('.metar-location-id').html( response.id );
             jQuery('.metar-location-name').html( `\${obwx.capitalizeFirst(response.place.name)} airport at` );
             jQuery('.metar-updated').html( ` \${td.t} \${td.p}` );
-            jQuery('.metar-updated').css( 'color', colorizeTime(response.ob.timestamp) );
+            document.documentElement.style.setProperty( '--metar-updated-color' , colorizeTime(response.ob.timestamp) );
+            //jQuery('.metar-updated').css( 'color', colorizeTime(response.ob.timestamp) );
             jQuery('.metar-weather').html( response.ob.weather );
             jQuery('.metar-oat').html( `\${response.ob.tempF}&deg;F` );
             jQuery('.metar-vis').html( `\${response.ob.visibilityMI} sm` );
             jQuery('.metar-rules').html( response.ob.flightRule );
-            jQuery('.metar-rules').css( 'color', colorizeRules(response.ob.flightRule) );
+            document.documentElement.style.setProperty( '--metar-rules-color' , colorizeRules(response.ob.flightRule) );
             jQuery('.metar-wind-direction').html( response.ob.windDir );
             jQuery('.metar-wind-direction-deg').html( `\${response.ob.windDirDEG}&deg;` );
             jQuery('.metar-wind-speed-kts').html( `\${response.ob.windSpeedKTS} kts` );

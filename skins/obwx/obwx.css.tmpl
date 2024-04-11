@@ -20,6 +20,8 @@
     --wind-max-dial: 45deg;
     --wind-dir-dial: 90deg;
     --rain-gauge-level: 105px;
+    --metar-updated-color: rgb(100,100,100);
+    --metar-rules-color: rgb(100,100,100);
 }
 
 /* Remove Scrollbars */
@@ -267,9 +269,15 @@ main {
 .metar-updated {
     font-size: var(--text-medium);
 }
+.metar-updated {
+    color: var(--metar-updated-color);
+}
 .metar-header {
     width: fit-content;
     margin: auto;
+}
+.metar-rules {
+    color: var(--metar-rules-color);
 }
 
 /* Almanac */
