@@ -140,7 +140,7 @@ const mqttconnect = function() {
         }
     }   
     function onMessageArrived ( message ) { 
-        const mqttData = jQuery.parseJSON(message.payloadString);  
+        const mqttData = JSON.parse(message.payloadString);  
         processObservations( mqttData );
 
         // interval_minute signals that archive and forecast data has been updated
@@ -155,8 +155,19 @@ const mqttconnect = function() {
 }
 
 const updateArcCast = function ( updated ) {
-    jQuery.getJSON( 'archive.json', processArchive );
-    jQuery.getJSON( 'forecast.json', processForecast );
+    // Fetch archive json data and send it off for processing
+    (async function getArchiveData() {
+        const response = await fetch("/archive.json");
+        const data = await response.json();
+        processArchive(data);
+    })();
+    // Fetch forecast json data and send it off for processing
+    (async function getForecastData() {
+        const response = await fetch("/forecast.json");
+        const data = await response.json();
+        processForecast(data);
+    })();
+
     obwx.lastUpdate = parseFloat(updated)*1000;
 }
 
