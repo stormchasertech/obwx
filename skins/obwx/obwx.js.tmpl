@@ -219,7 +219,7 @@ const processObservations = function ( data ) {
     }
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
         jQuery('.outTemp').html( `\${parseFloat( data.outTemp_F ).toFixed(1)}<sup>&deg;</sup>` );
-        jQuery('.outTemp').css( 'color', obwx.colorizeTemp( data.outTemp_F) );
+        document.documentElement.style.setProperty( '--outTemp-color' , obwx.colorizeTemp( data.outTemp_F) );
     }
     if ( data.hasOwnProperty( 'rainRate_inch_per_hour') ) {
         jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
