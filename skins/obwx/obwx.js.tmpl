@@ -225,12 +225,12 @@ const processObservations = function ( data ) {
         jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
     }
     if ( data.hasOwnProperty( 'windDir' )) {
-        jQuery('.rose-arrow').css( 'transform', `rotate(\${obwx.rotateWindDirNeedle( data.windDir )}deg` );
         jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
+        document.documentElement.style.setProperty( '--wind-dir-dial' , `\${obwx.rotateWindDirNeedle(data.windDir)}deg` );
     }
     if ( data.hasOwnProperty('windSpeed_mph') ) {
         jQuery('.wind-speed-mph').html( parseFloat(data.windSpeed_mph).toFixed(0) );
-        jQuery('.windometer-arrow').css('transform', `rotate(\${obwx.windSpdToAngle( data.windSpeed_mph )}deg)`);
+        document.documentElement.style.setProperty( '--wind-speed-dial' , `\${obwx.windSpdToAngle(data.windSpeed_mph)}deg` );
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
         jQuery('.uv').html( `\${parseFloat(data.UV).toFixed(1)}` );
@@ -272,7 +272,7 @@ const processArchive = function ( data ) {
 
         // Rotate wind indicators
         obwx.setWindSpdDial( windSpd_20minMax );
-        jQuery('.windometer-tickmark-recentHi').css('transform', `rotate(\${obwx.windSpdToAngle( windSpd_20minMax )}deg)`);
+        document.documentElement.style.setProperty('--wind-max-dial', `\${obwx.windSpdToAngle( windSpd_20minMax )}deg` );
         jQuery('.windometer-legend-hi').html ( obwx.windScaleMaxCurrent );
 
         // Daily wind records

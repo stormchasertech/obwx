@@ -14,6 +14,10 @@
     --obwx-color: $Extras.color;
     --obwx-background-color: $Extras.background_color;
     --obwx-border-color: $Extras.border_color;
+    /* Dynamically Updated Variables */
+    --wind-speed-dial: -45deg;
+    --wind-max-dial: 45deg;
+    --wind-dir-dial: 90deg;
 }
 
 /* Remove Scrollbars */
@@ -97,7 +101,8 @@ main {
     align-self: center;
 }
 .rose-arrow {
-    transition: transform 2s ease-in-out;
+    transition: transform 2500ms ease-in-out;
+    transform: rotate(var(--wind-dir-dial));
 }
 
 /* Wind speed section */
@@ -127,7 +132,8 @@ main {
     display: block;
     position: absolute;
     top: 0;
-    transition: transform 2s ease-in-out;
+    transform: rotate(var(--wind-speed-dial));
+    transition: transform 2500ms ease-in-out;
 }
 .windometer-arrow:after {
     content: "";
@@ -158,12 +164,20 @@ main {
   top: 2px; /*Moves the arrow away or towards center of circle*/
   left: 50%; /*Centers the arrow on the box edge (use 0 degree rotation) -2,198*/
 }
+.windometer-tickmark:nth-child(3) {
+    transform: rotate(45deg);
+}
+.windometer-tickmark:nth-child(4) {
+    transform: rotate(-45deg);
+}
 .windometer-tickmark-recentHi { 
   width: 100%; /*No changes needed*/
   height: 200%; /*No changes needed*/
   display: block;
   position: absolute;
   top: 0;
+  transform: rotate(var(--wind-max-dial));
+  transition: transform 2500ms ease-in-out;
 }
 .windometer-tickmark-recentHi:after {
   content: "";
