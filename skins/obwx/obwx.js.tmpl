@@ -50,12 +50,10 @@ const obwx = {
     localizeDate ( date ) {   
         const dateObj = new Date(date); 
         const settings = this.settings;
-        //const dateArr = new Intl.DateTimeFormat(undefined,this.dateTimeSettings).format(dateObj).replace(/,/g,'').split(' '); 
         function set ( newSetting ) { 
             const keyName = Object.keys(newSetting)[0];
             const value = Object.values(newSetting)[0];
             const newSet = { [keyName]: value };
-            //log('Return value is: ',newSet);
             return {...newSet,...settings};
         }
         return {
@@ -70,20 +68,6 @@ const obwx = {
             p: new Intl.DateTimeFormat(undefined,set({timeStyle:'long'})).format(dateObj).split(' ')[1],
             tz: new Intl.DateTimeFormat(undefined,set({timeStyle:'long'})).format(dateObj).split(' ')[2],
         }
-        //return { 
-        //    A: dateArr[0], //Monday 
-        //    a: new Intl.DateTimeFormat(undefined,{weekday:"short"}).format(dateObj), //Mon
-        //    test: new Intl.DateTimeFormat(undefined,set({weekday:'short'})).format(dateObj),
-        //    test2: new Intl.DateTimeFormat(undefined,set({month:'long'})).format(dateObj),
-        //    M: dateArr[1], //January 
-        //    m: new Intl.DateTimeFormat(undefined,{month:"short"}).format(dateObj), //Jan 
-        //    d: dateArr[2], //Day '8,9,10,11' 
-        //    Y: dateArr[3], //Year 2023
-        //    T: dateArr[5], //HH:MM:SS 
-        //    t: dateArr[5].substr(0,dateArr[5].length-3), //HH:MM 
-        //    p: dateArr[6], //AM/PM 
-        //    tz: dateArr[7], // timezone CST 
-        //};   
     }, 
     // Colorize based on temperature
     colorizeTemp ( temperature ) { 
