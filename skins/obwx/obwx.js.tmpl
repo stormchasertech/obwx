@@ -357,7 +357,7 @@ const processForecast = function ( data ) {
                 const temp =  parseFloat( response.periods[i].maxTempF ).toFixed(0);
                 jQuery(`.forecast-p\${i}-hilo-txt`).html( 'High: ' );
                 jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
-                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', obwx.colorizeTemp( temp ) );
+                document.documentElement.style.setProperty( `--forecast-p\${i}-temp-color` , obwx.colorizeTemp( temp ) );
 
             } else {
                 if (i === 0 || i === 1) {
@@ -369,7 +369,7 @@ const processForecast = function ( data ) {
                 const temp = parseFloat(response.periods[i].minTempF).toFixed(0);
                 jQuery(`.forecast-p\${i}-hilo-txt`).html( 'Low: ' );
                 jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
-                jQuery(`.forecast-p\${i}-hilo-temp`).css( 'color', obwx.colorizeTemp( temp ) );
+                document.documentElement.style.setProperty( `--forecast-p\${i}-temp-color` , obwx.colorizeTemp( temp ) );
             }
 
             if (response.periods[i].windSpeedMinMPH === response.periods[i].windSpeedMaxMPH ){
@@ -449,7 +449,6 @@ const processForecast = function ( data ) {
             jQuery('.metar-location-name').html( `\${obwx.capitalizeFirst(response.place.name)} airport at` );
             jQuery('.metar-updated').html( ` \${td.t} \${td.p}` );
             document.documentElement.style.setProperty( '--metar-updated-color' , colorizeTime(response.ob.timestamp) );
-            //jQuery('.metar-updated').css( 'color', colorizeTime(response.ob.timestamp) );
             jQuery('.metar-weather').html( response.ob.weather );
             jQuery('.metar-oat').html( `\${response.ob.tempF}&deg;F` );
             jQuery('.metar-vis').html( `\${response.ob.visibilityMI} sm` );
