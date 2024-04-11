@@ -19,6 +19,7 @@
     --wind-speed-dial: -45deg;
     --wind-max-dial: 45deg;
     --wind-dir-dial: 90deg;
+    --rain-gauge-level: 105px;
 }
 
 /* Remove Scrollbars */
@@ -209,7 +210,7 @@ main {
 }
 .raingauge-rain {
   position: absolute;
-  top: 105px;
+  top: var(--rain-gauge-level);
   height: 120px;
   width: 100%;
   background-color: \#0000cc; /* Blue inner rain*/

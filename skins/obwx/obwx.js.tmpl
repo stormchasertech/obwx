@@ -196,8 +196,9 @@ const processObservations = function ( data ) {
         // Move rain level in the gauge (percent of one inch)
         let rainLevel = (( 1 - dayRain ) * 112 ) + 1;
         rainLevel < 1 ? rainLevel = 1 : rainLevel;
-        jQuery('.raingauge-rain').css( `top`,`\${rainLevel}px` );
+        document.documentElement.style.setProperty( '--rain-gauge-level' , `\${rainLevel}px` );
         jQuery('.raingauge-dayRain').html( `\${dayRain}"` );
+
     }
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
         jQuery('.dewpoint').html(`Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;` );
