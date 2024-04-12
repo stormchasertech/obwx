@@ -279,7 +279,6 @@ const processArchive = function ( data ) {
         document.querySelector('.windSpd-20minAvg').textContent = data.today.wind.windSpd_20minAvg;
         document.querySelector('.wind-max').textContent = `\${parseFloat(data.today.wind.max).toFixed(0)} $unit.label.windSpeed`;
         document.querySelector('.wind-max-time').textContent = `\${obwx.localizeDate(data.today.wind.maxtime).t} \${obwx.localizeDate(data.today.wind.maxtime).p.toLowerCase()}`;
-        //document.querySelector('.wind-min-time').textContent = `\${obwx.localizeDate(data.today.wind.mintime).t} \${obwx.localizeDate(data.today.wind.mintime).p.toLowerCase()}`;
 
         // Daily outTemp records
         document.querySelector('.outTemp-max').innerHTML = data.today.outTemp.max;
@@ -287,25 +286,14 @@ const processArchive = function ( data ) {
         document.querySelector('.outTemp-max-time').textContent = `\${obwx.localizeDate(data.today.outTemp.maxtime).t} \${obwx.localizeDate(data.today.outTemp.maxtime).p.toLowerCase()}`;
         document.querySelector('.outTemp-min-time').textContent = `\${obwx.localizeDate(data.today.outTemp.mintime).t} \${obwx.localizeDate(data.today.outTemp.mintime).p.toLowerCase()}`;
 
-        // Daily dewpoint records
-        //document.querySelector('.dewpoint-max').textContent = data.today.dewpoint.max;
-        //document.querySelector('.dewpoint-min').textContent = data.today.dewpoint.min;
-        //document.querySelector('.dewpoint-max-time').textContent = `\${obwx.localizeDate(data.today.dewpoint.maxtime).t} \${obwx.localizeDate(data.today.dewpoint.maxtime).p.toLowerCase()}`;
-        //document.querySelector('.dewpoint-min-time').textContent = `\${obwx.localizeDate(data.today.dewpoint.mintime).t} \${obwx.localizeDate(data.today.dewpoint.mintime).p.toLowerCase()}`;
-
-        // Daily barometer records
+        // Daily barometer stats 
         document.querySelector('.barometer-trend').textContent = data.today.barometer.trend;
-        //document.querySelector('.barometer-max').textContent = data.today.barometer.max;
-        //document.querySelector('.barometer-min').textContent = data.today.barometer.min;
-        //document.querySelector('.barometer-max-time').textContent = `\${obwx.localizeDate(data.today.barometer.maxtime).t} \${obwx.localizeDate( data.today.barometer.maxtime).p.toLowerCase()}`;
-        //document.querySelector('.barometer-min-time').textContent = `\${obwx.localizeDate(data.today.barometer.mintime).t} \${obwx.localizeDate( data.today.barometer.mintime).p.toLowerCase()}`;
 
         // Rain records
         document.querySelector('.yesterday-rain').textContent = `\${parseFloat(data.today.rain.sum.yesterday).toFixed(2)}"`;
         document.querySelector('.week-rain').textContent = `\${parseFloat(data.today.rain.sum.week).toFixed(2)}"`;
         document.querySelector('.month-rain').textContent = `\${parseFloat(data.today.rain.sum.month).toFixed(2)}"`;
         document.querySelector('.year-rain').textContent = `\${parseFloat(data.today.rain.sum.year).toFixed(2)}"`;
-        //document.querySelector('.rainrate-max').textContent = `\${parseFloat(data.today.rain.maxRate).toFixed(2)}"/hr`;
     })();
 }
 
@@ -470,13 +458,6 @@ const processForecast = function ( data ) {
             response.ob.windGustKTS ?
                 document.querySelector('.metar-wind-gust-kts').textContent = `G \${response.ob.windGustKTS}` :
                 document.querySelector('.metar-wind-gust-kts').textContent = '';
-            //response.ob.windGustMPH ?
-            //    document.querySelector('.metar-wind-gust-mph').textContent = `G \${response.ob.windGustMPH}` :
-            //    document.querySelector('.metar-wind-gust-mph').textContent = '';
-
-            //document.querySelector('.metar-location-id').textContent = response.id;
-            //document.querySelector('.metar-wind-direction-deg').innerHTML = `\${response.ob.windDirDEG}&deg;`;
-            //document.querySelector('.metar-wind-speed-mph').textContent = response.ob.windSpeedMPH;
         }
     })();
 }
