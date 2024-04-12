@@ -312,8 +312,8 @@ const processArchive = function ( data ) {
 const processForecast = function ( data ) {
     (function currentWx () {
         const icon = (data.current[0].response[0].periods[0].icon).split('.');
-        jQuery('.current-wx-icon').html(`<img src="./icons/\${icon[0]}@2x.png">`);
-        jQuery('.current-wx-text').html( data.current[0].response[0].periods[0].weatherPrimary );
+        document.querySelector('.current-wx-icon').innerHTML = `<img src="./icons/\${icon[0]}@2x.png">`;
+        document.querySelector('.current-wx-text').textContent = data.current[0].response[0].periods[0].weatherPrimary;
     })();
 
     (function weatherAlerts () {
@@ -356,40 +356,40 @@ const processForecast = function ( data ) {
 
             if (response.periods[i].isDay) {
                 if (i === 0) {
-                    jQuery(`.forecast-p\${i}-date`).html('Today');
+                    document.querySelector(`.forecast-p\${i}-date`).textContent = 'Today';
                 } else {
                     const td = obwx.localizeDate( response.periods[i].dateTimeISO );
-                    jQuery(`.forecast-p\${i}-date`).html( td.A );
+                    document.querySelector(`.forecast-p\${i}-date`).textContent = td.A;
                 }
                 const temp =  parseFloat( response.periods[i].maxTempF ).toFixed(0);
-                jQuery(`.forecast-p\${i}-hilo-txt`).html( 'High: ' );
-                jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
+                document.querySelector(`.forecast-p\${i}-hilo-txt`).textContent = 'High: ';
+                document.querySelector(`.forecast-p\${i}-hilo-temp`).innerHTML = `\${temp} &deg;`;
                 document.documentElement.style.setProperty( `--forecast-p\${i}-temp-color` , obwx.colorizeTemp( temp ) );
 
             } else {
                 if (i === 0 || i === 1) {
-                    jQuery(`.forecast-p\${i}-date`).html('Tonight');
+                    document.querySelector(`.forecast-p\${i}-date`).textContent = 'Tonight';
                 } else {
                     const td = obwx.localizeDate( response.periods[i].dateTimeISO );
-                    jQuery(`.forecast-p\${i}-date`).html( `\${td.a} Night` );
+                    document.querySelector(`.forecast-p\${i}-date`).textContent = `\${td.a} Night`;
                 }
                 const temp = parseFloat(response.periods[i].minTempF).toFixed(0);
-                jQuery(`.forecast-p\${i}-hilo-txt`).html( 'Low: ' );
-                jQuery(`.forecast-p\${i}-hilo-temp`).html( `${temp} &deg;` );
+                document.querySelector(`.forecast-p\${i}-hilo-txt`).textContent = 'Low: ';
+                document.querySelector(`.forecast-p\${i}-hilo-temp`).innerHTML = `\${temp} &deg;`;
                 document.documentElement.style.setProperty( `--forecast-p\${i}-temp-color` , obwx.colorizeTemp( temp ) );
             }
 
             if (response.periods[i].windSpeedMinMPH === response.periods[i].windSpeedMaxMPH ){
-                jQuery(`.forecast-p\${i}-windSpd`).html(response.periods[i].windSpeedMPH + '');
+                document.querySelector(`.forecast-p\${i}-windSpd`).textContent = response.periods[i].windSpeedMPH;
             } else {
-                jQuery(`.forecast-p\${i}-windSpd`).html(`\${response.periods[i].windSpeedMinMPH} - \${response.periods[i].windSpeedMaxMPH}`);
+                document.querySelector(`.forecast-p\${i}-windSpd`).textContent = `\${response.periods[i].windSpeedMinMPH} - \${response.periods[i].windSpeedMaxMPH}`;
             }
 
-            jQuery(`.forecast-p\${i}-windDir`).html(response.periods[i].windDir);
-            jQuery(`.forecast-p\${i}-icon`).html(`<img src="./icons/\${response.periods[i].icon}" align="right">`);
-            jQuery(`.forecast-p\${i}-wxPriCode`).html( response.periods[i].weatherPrimary );
-            jQuery(`.forecast-p\${i}-pop`).html(response.periods[i].pop + '%');
-            jQuery(`.forecast-p\${i}-precip`).html(response.periods[i].precipIN + '"');
+            document.querySelector(`.forecast-p\${i}-windDir`).textContent = response.periods[i].windDir;
+            document.querySelector(`.forecast-p\${i}-icon`).innerHTML = `<img src="./icons/\${response.periods[i].icon}" align="right">`;
+            document.querySelector(`.forecast-p\${i}-wxPriCode`).textContent = response.periods[i].weatherPrimary;
+            document.querySelector(`.forecast-p\${i}-pop`).textContent = `\${response.periods[i].pop} %`;
+            document.querySelector(`.forecast-p\${i}-precip`).textContent = `\${response.periods[i].precipIN}"`;
         }
     })();
 
