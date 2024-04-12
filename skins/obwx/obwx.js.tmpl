@@ -452,28 +452,31 @@ const processForecast = function ( data ) {
                 }
             }
 
-            jQuery('.metar-location-id').html( response.id );
-            jQuery('.metar-location-name').html( `\${obwx.capitalizeFirst(response.place.name)} airport at` );
-            jQuery('.metar-updated').html( ` \${td.t} \${td.p}` );
-            document.documentElement.style.setProperty( '--metar-updated-color' , colorizeTime(response.ob.timestamp) );
-            jQuery('.metar-weather').html( response.ob.weather );
-            jQuery('.metar-oat').html( `\${response.ob.tempF}&deg;F` );
-            jQuery('.metar-vis').html( `\${response.ob.visibilityMI} sm` );
-            jQuery('.metar-rules').html( response.ob.flightRule );
+            // Update Metar classes
+            document.querySelector('.metar-location-name').textContent = `\${obwx.capitalizeFirst(response.place.name)} airport at`;
+            document.querySelector('.metar-updated').textContent = ` \${td.t} \${td.p}`;
+            document.querySelector('.metar-weather').textContent = response.ob.weather;
+            document.querySelector('.metar-oat').innerHTML = `\${response.ob.tempF}&deg;F`;
+            document.querySelector('.metar-vis').textContent = `\${response.ob.visibilityMI} sm`;
+            document.querySelector('.metar-rules').textContent = response.ob.flightRule;
+            document.querySelector('.metar-wind-direction').textContent = response.ob.windDir;
+            document.querySelector('.metar-wind-speed-kts').textContent = `\${response.ob.windSpeedKTS} kts`;
+            document.querySelector('.cloud-layer').innerHTML = cloudLayers( response.raw );
+            // Update Metar CSS
             document.documentElement.style.setProperty( '--metar-rules-color' , colorizeRules(response.ob.flightRule) );
-            jQuery('.metar-wind-direction').html( response.ob.windDir );
-            jQuery('.metar-wind-direction-deg').html( `\${response.ob.windDirDEG}&deg;` );
-            jQuery('.metar-wind-speed-kts').html( `\${response.ob.windSpeedKTS} kts` );
-            jQuery('.metar-wind-speed-mph').html( response.ob.windSpeedMPH );
-            jQuery('.cloud-layer').html( cloudLayers( response.raw ) );
+            document.documentElement.style.setProperty( '--metar-updated-color' , colorizeTime(response.ob.timestamp) );
 
-            // Wind gusts are null if not gusting
+            // Print '' when Wind gusts are null (not gusting)
             response.ob.windGustKTS ?
-                jQuery('.metar-wind-gust-kts').html(`G \${response.ob.windGustKTS}`) :
-                jQuery('.metar-wind-gust-kts').html('');
-            response.ob.windGustMPH ?
-                jQuery('.metar-wind-gust-mph').html(`G \${response.ob.windGustMPH}`) :
-                jQuery('.metar-wind-gust-mph').html('');
+                document.querySelector('.metar-wind-gust-kts').textContent = `G \${response.ob.windGustKTS}` :
+                document.querySelector('.metar-wind-gust-kts').textContent = '';
+            //response.ob.windGustMPH ?
+            //    document.querySelector('.metar-wind-gust-mph').textContent = `G \${response.ob.windGustMPH}` :
+            //    document.querySelector('.metar-wind-gust-mph').textContent = '';
+
+            //document.querySelector('.metar-location-id').textContent = response.id;
+            //document.querySelector('.metar-wind-direction-deg').innerHTML = `\${response.ob.windDirDEG}&deg;`;
+            //document.querySelector('.metar-wind-speed-mph').textContent = response.ob.windSpeedMPH;
         }
     })();
 }
