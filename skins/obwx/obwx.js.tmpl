@@ -1,5 +1,5 @@
 #errorCatcher Echo
-// OBWX 
+// OBWX - properties and methods used throughout the js file
 const obwx = { 
     lastUpdate: undefined,
     windDirNeedle: 0,
@@ -46,6 +46,17 @@ const obwx = {
         { 'tempF': -45, 'color': 'rgb(220,220,225)' },
         { 'tempF': -50, 'color': 'rgb(240,240,240)' }
     ],
+    // Initialize the site
+    initialize () {
+        // Draw the wind compass canvas
+        drawCompassRose();
+        // Draw the composs 'needle' canvas
+        drawCompassArrow();
+        // Populate the site with 'non-live' data
+        updateArcCast();
+        // Connect to mqtt with incoming 'live' data
+        mqttconnect();
+    },
     // All dates on the site will be localized through this method
     localizeDate ( date ) {   
         const dateObj = new Date(date); 
@@ -112,6 +123,7 @@ const obwx = {
 // Connect to mqtt server
 /////////////////////////
 const mqttconnect = function() {
+    const mqttclient = 'obwx' + Math.floor(Math.random() * 123456789);
     const client = new Paho.Client('$Extras.websocket_host', $Extras.websocket_port, mqttclient);
     const mqtt_options = {};
 
@@ -854,3 +866,5 @@ function drawAlmanac ( data ) {
         }
     }
 }
+// Start it up!
+obwx.initialize();
