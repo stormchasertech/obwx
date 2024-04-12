@@ -176,15 +176,15 @@ const updateArcCast = function ( updated ) {
 ////////////////////////////////////////////
 const processObservations = function ( data ) {
     if ( data.hasOwnProperty( 'appTemp_F' ) ) {
-        jQuery('.feels-like').html( `Feels Like: \${parseFloat(data.appTemp_F).toFixed(1)}&deg;` );
+        document.querySelector('.feels-like').innerHTML = `Feels Like: \${parseFloat(data.appTemp_F).toFixed(1)}&deg;`;
     }
     if ( data.hasOwnProperty('barometer_inHg') ) {
-        jQuery('.barometer').html(`\${parseFloat( data.barometer_inHg ).toFixed(2)}` );
+        document.querySelector('.barometer').textContent = `\${parseFloat( data.barometer_inHg ).toFixed(2)}`;
     }
     if ( data.hasOwnProperty( 'dateTime' ) ) {
         const td = obwx.localizeDate(parseFloat(data.dateTime)*1000);
-        jQuery('.updated-date').html( `\${td.A}, \${td.m} \${td.d}` );
-        jQuery('.updated-time').html( td.T );
+        document.querySelector('.updated-date').textContent = `\${td.A}, \${td.m} \${td.d}`;
+        document.querySelector('.updated-time').textContent = `\${td.T}`;
     }
     if ( data.hasOwnProperty( 'dayRain_in' ) ) {
         const dayRain = parseFloat(data.dayRain_in).toFixed(2);
@@ -192,44 +192,43 @@ const processObservations = function ( data ) {
         let rainLevel = (( 1 - dayRain ) * 112 ) + 1;
         rainLevel < 1 ? rainLevel = 1 : rainLevel;
         document.documentElement.style.setProperty( '--rain-gauge-level' , `\${rainLevel}px` );
-        jQuery('.raingauge-dayRain').html( `\${dayRain}"` );
-
+        document.querySelector('.raingauge-dayRain').textContent = `\${dayRain}"`;
     }
     if ( data.hasOwnProperty( 'dewpoint_F' ) ) {
-        jQuery('.dewpoint').html(`Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;` );
+        document.querySelector('.dewpoint').innerHTML = `Dewpoint: \${parseFloat( data.dewpoint_F ).toFixed(1)}&deg;`;
     }
     if ( data.hasOwnProperty( 'extraTemp1_F' ) ) {
-        jQuery('.extraTemp1').html(`\${parseFloat( data.extraTemp1_F ).toFixed(1)}&deg;` );
+        document.querySelector('.extraTemp1').innerHTML = `\${parseFloat( data.extraTemp1_F ).toFixed(1)}&deg;`;
     }
     if ( data.hasOwnProperty( 'extraHumid1' ) ) {
-        jQuery('.extraHumid1').html(`\${parseFloat( data.extraHumid1 ).toFixed(0)}&percnt;` );
+        document.querySelector('.extraHumid1').innerHTML = `\${parseFloat( data.extraHumid1 ).toFixed(0)}&percnt;`;
     }
     if ( data.hasOwnProperty( 'inHumidity' ) ) {
-        jQuery('.inHumidity').html(`\${parseFloat( data.inHumidity ).toFixed(0)} &percnt;` );
+        document.querySelector('.inHumidity').innerHTML = `\${parseFloat( data.inHumidity ).toFixed(0)} &percnt;`;
     }
     if ( data.hasOwnProperty( 'inTemp_F' ) ) {
-        jQuery('.inTemp').html(`\${parseFloat( data.inTemp_F ).toFixed(1)}&deg;` );
+        document.querySelector('.inTemp').innerHTML = `\${parseFloat( data.inTemp_F ).toFixed(1)}&deg;`;
     }
     if ( data.hasOwnProperty( 'outHumidity' ) ) {
-        jQuery('.outHumidity').html(`Humidity: \${parseFloat( data.outHumidity ).toFixed(1)} &percnt;`);
+        document.querySelector('.outHumidity').innerHTML = `Humidity: \${parseFloat( data.outHumidity ).toFixed(1)} &percnt;`;
     }
     if ( data.hasOwnProperty( 'outTemp_F' ) ) {
-        jQuery('.outTemp').html( `\${parseFloat( data.outTemp_F ).toFixed(1)}<sup>&deg;</sup>` );
+        document.querySelector('.outTemp').innerHTML = `\${parseFloat( data.outTemp_F ).toFixed(1)}<sup>&deg;</sup>`;
         document.documentElement.style.setProperty( '--outTemp-color' , obwx.colorizeTemp( data.outTemp_F) );
     }
     if ( data.hasOwnProperty( 'rainRate_inch_per_hour') ) {
-        jQuery('.rainrate').html( `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`);
+        document.querySelector('.rainrate').textContent = `\${parseFloat(data.rainRate_inch_per_hour).toFixed(2)}"/hr`;
     }
     if ( data.hasOwnProperty( 'windDir' )) {
-        jQuery('.wind-direction-deg').html( parseFloat(data.windDir).toFixed(0) );
         document.documentElement.style.setProperty( '--wind-dir-dial' , `\${obwx.rotateWindDirNeedle(data.windDir)}deg` );
+        document.querySelector('.wind-direction-deg').textContent = parseFloat(data.windDir).toFixed(0);
     }
     if ( data.hasOwnProperty('windSpeed_mph') ) {
-        jQuery('.wind-speed-mph').html( parseFloat(data.windSpeed_mph).toFixed(0) );
         document.documentElement.style.setProperty( '--wind-speed-dial' , `\${obwx.windSpdToAngle(data.windSpeed_mph)}deg` );
+        document.querySelector('.wind-speed-mph').textContent = parseFloat(data.windSpeed_mph).toFixed(0);
     }
     if ( data.hasOwnProperty( 'UV' ) ) {
-        jQuery('.uv').html( `\${parseFloat(data.UV).toFixed(1)}` );
+        document.querySelector('.uv').textContent = `\${parseFloat(data.UV).toFixed(1)}`;
     }
     // Other rain loop data items = hourRain_in , rain24_in, rain_in, rain_total
 }
@@ -319,22 +318,33 @@ const processForecast = function ( data ) {
         const response = data.alerts[0].response;
         const wxAlerts = [];
 
+        // Build the wxAlerts array
         if ( data.alerts[0].success && data.alerts[0].error === null ) {
             for ( let i = 0; i < response.length; i++ ) {
                 const tdB = obwx.localizeDate(response[i].timestamps.beginsISO);
                 const tdE = obwx.localizeDate(response[i].timestamps.expiresISO);
                 const alertObj = {
+                    index: [i],
                     name: response[i].details.name,
                     color: response[i].details.color,
                     begins: `\${tdB.a} \${tdB.t} \${tdB.p}`,
                     ends: `\${tdE.a} \${tdE.t} \${tdE.p} \${tdE.tz}`,
+                    divClass: `wx-alert-\${i}`,
                 }
                 wxAlerts.push(alertObj);
             }
         }
-        jQuery('.weather-alerts').html(wxAlerts.map(function (a) {
-            return `<div class="wx-alert" style="color:\#\${a.color};">\${a.name} - \${a.begins} until \${a.ends}</div>`
-        }).join(''));
+
+        // Add each alert div to the DOM
+        document.querySelector('.weather-alerts').innerHTML = wxAlerts.map(function (a) {
+            return `<div class="\${a.divClass}">\${a.name} - \${a.begins} until \${a.ends}</div>`
+        }).join('');
+
+        // Colorize the alerts
+        wxAlerts.forEach( (a)=>
+            document.documentElement.style.setProperty( `--\${a.divClass}-color` , `\#\${a.color}`)
+        );
+
     })();
 
     (function forecast () {

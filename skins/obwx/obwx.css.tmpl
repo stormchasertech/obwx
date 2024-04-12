@@ -28,6 +28,12 @@
     --forecast-p3-temp-color: rgb(100,100,100);
     --forecast-p4-temp-color: rgb(100,100,100);
     --forecast-p5-temp-color: rgb(100,100,100);
+    --wx-alert-0-color: \#556655;
+    --wx-alert-1-color: \#556655;
+    --wx-alert-2-color: \#556655;
+    --wx-alert-3-color: \#556655;
+    --wx-alert-4-color: \#556655;
+    --wx-alert-5-color: \#556655;
 }
 
 /* Remove Scrollbars */
@@ -74,6 +80,14 @@ main {
 .section-header {
     min-height: calc(var(--text-large) * var(--bs-body-line-height) * 3);
 }
+
+/* Alerts Section */
+.wx-alert-0 { color: var(--wx-alert-0-color); }
+.wx-alert-1 { color: var(--wx-alert-1-color); }
+.wx-alert-2 { color: var(--wx-alert-2-color); }
+.wx-alert-3 { color: var(--wx-alert-3-color); }
+.wx-alert-4 { color: var(--wx-alert-4-color); }
+.wx-alert-5 { color: var(--wx-alert-5-color); }
 
 /* Update time and date section */
 .updated-date,.updated-time {
@@ -310,21 +324,9 @@ main {
 }
 
 /* Forecast Section */
-.forecast-p0-hilo-temp {
-    color: var(--forecast-p0-temp-color);
-}
-.forecast-p1-hilo-temp {
-    color: var(--forecast-p1-temp-color);
-}
-.forecast-p2-hilo-temp {
-    color: var(--forecast-p2-temp-color);
-}
-.forecast-p3-hilo-temp {
-    color: var(--forecast-p3-temp-color);
-}
-.forecast-p4-hilo-temp {
-    color: var(--forecast-p4-temp-color);
-}
-.forecast-p5-hilo-temp {
-    color: var(--forecast-p5-temp-color);
-}
+.forecast-p0-hilo-temp { color: var(--forecast-p0-temp-color); }
+.forecast-p1-hilo-temp { color: var(--forecast-p1-temp-color); }
+.forecast-p2-hilo-temp { color: var(--forecast-p2-temp-color); }
+.forecast-p3-hilo-temp { color: var(--forecast-p3-temp-color); }
+.forecast-p4-hilo-temp { color: var(--forecast-p4-temp-color); }
+.forecast-p5-hilo-temp { color: var(--forecast-p5-temp-color); }
