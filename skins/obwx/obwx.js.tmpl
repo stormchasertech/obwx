@@ -236,25 +236,28 @@ const processObservations = function ( data ) {
 const processArchive = function ( data ) {
     // Almanac data
     (function almanac () {
+        // Build dayLight object
         const daylight = {
             raw: data.almanac.sun.daylight,
             hrs(){ return Math.floor( this.raw / 3600 ) },
             mins(){ return Math.floor( this.raw / 3600 % 1 * 60 ) },
         }
-        jQuery('.daylight-time').html( `\${daylight.hrs()}h \${daylight.mins()}m`);
-        jQuery('.sunrise-time').html( obwx.localizeDate(data.almanac.sun.rise).t );
-        jQuery('.sunset-time').html( obwx.localizeDate(data.almanac.sun.set).t );
+        // Update DOM with updated data
+        document.querySelector('.daylight-time').textContent = `\${daylight.hrs()}h \${daylight.mins()}m`;
+        document.querySelector('.sunrise-time').textContent = obwx.localizeDate(data.almanac.sun.rise).t;
+        document.querySelector('.sunset-time').textContent = obwx.localizeDate(data.almanac.sun.set).t;
 
-        let moonrise = obwx.localizeDate(data.almanac.moon.rise);
-        let moonset =  obwx.localizeDate(data.almanac.moon.set);
-        jQuery('.moonrise-time').html( `\${moonrise.t}\${moonrise.p.split('')[0].toLowerCase()}` );
-        jQuery('.moonset-time').html( `\${moonset.t}\${moonset.p.split('')[0].toLowerCase()}` );
+        // Set moon data and update DOM
+        const moonrise = obwx.localizeDate(data.almanac.moon.rise);
+        const moonset =  obwx.localizeDate(data.almanac.moon.set);
+        document.querySelector('.moonrise-time').textContent = `\${moonrise.t}\${moonrise.p.split('')[0].toLowerCase()}`;
+        document.querySelector('.moonset-time').textContent = `\${moonset.t}\${moonset.p.split('')[0].toLowerCase()}`;
 
         // Alternate Full/New moon labels
         if ( data.almanac.moon.phase == 'New' || data.almanac.moon.phase == 'Full' ) {
-            jQuery('.moon-phase').html( `\${data.almanac.moon.phase} Moon`);
+            document.querySelector('.moon-phase').textContent = `\${data.almanac.moon.phase} Moon`;
         } else {
-            jQuery('.moon-phase').html( data.almanac.moon.phase );
+            document.querySelector('.moon-phase').textContent = data.almanac.moon.phase;
         }
 
         // Draw sun and moon widget
