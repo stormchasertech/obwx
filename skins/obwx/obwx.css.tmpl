@@ -59,8 +59,8 @@ main {
 /* Flex Utilities */
 .flex-center {
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 /* Responsive Borders */
@@ -302,11 +302,7 @@ main {
 
 /* Almanac */
 .alm-outer {
-    flex-basis: 80px;
     padding: calc(var(--bs-body-line-height) * var(--text-medium)) 0;
-}
-.alm-inner {
-    flex-basis: 160px;
 }
 .daylight,
 .phase {
