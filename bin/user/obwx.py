@@ -32,9 +32,16 @@ class GetAerisForecast(StdService):
 
         log.info('OBWX initialized')
 
-        self.bind(weewx.NEW_ARCHIVE_RECORD, self.get_updated_forecast)
+        self.bind(weewx.NEW_ARCHIVE_RECORD, self.update_aeris_data)
 
-    def get_updated_forecast (self, event):
+    def fetch_aeris_data (self, url):
+            req = Request(url, None, self.headers)
+            response = urlopen(req)
+            page = response.read()
+            response.close
+            return page
+
+    def update_aeris_data (self, event):
 
         forecast_update_needed = False
 
@@ -53,45 +60,41 @@ class GetAerisForecast(StdService):
 
         # Update/create forecast file 
         if forecast_update_needed:
-            ## Make the API requests
-            req = Request(self.current_url, None, self.headers)
-            response = urlopen(req)
-            current_page = response.read()
-            response.close
 
-            req = Request(self.observations_url, None, self.headers)
-            response = urlopen(req)
-            observations_page = response.read()
-            response.close
-
-            req = Request(self.daynight_url, None, self.headers)
-            response = urlopen(req)
-            daynight_page = response.read()
-            response.close
-
-            req = Request(self.alerts_url, None, self.headers)
-            response = urlopen(req)
-            alerts_page = response.read()
-            response.close
-
-            ## Combine the json information 
-            forecast_file_result = json.dumps(
-                {
-                    'timestamp' : int(time.time()),
-                    'current' : [json.loads(current_page)],
-                    'observations' : [json.loads(observations_page)],
-                    'daynight' : [json.loads(daynight_page)],
-                    'alerts' : [json.loads(alerts_page)],
-                },
-            )
-
-            ## Write the json information to file
             try:
-                with open(self.forecast_file, 'w+') as file:
-                    file.write(forecast_file_result)
-                log.info('Forecast file has been updated')
+                # Get current conditions
+                current_page = self.fetch_aeris_data (self.current_url)
+                # Get METAR observations
+                observations_page = self.fetch_aeris_data (self.observations_url)
+                # Get Forecast data
+                daynight_page = self.fetch_aeris_data (self.daynight_url)
+                # Get Alerts data
+                alerts_page = self.fetch_aeris_data (self.alerts_url)
+
             except Exception:
-                log.info('Forecast file NOT updated')
+                log.warning('Error fetching Aeris Weather data')
+
+            else:
+                ## Combine the json information 
+                forecast_file_result = json.dumps(
+                    {
+                        'timestamp' : int(time.time()),
+                        'current' : [json.loads(current_page)],
+                        'observations' : [json.loads(observations_page)],
+                        'daynight' : [json.loads(daynight_page)],
+                        'alerts' : [json.loads(alerts_page)],
+                    },
+                )
+
+                ## Write the json information to file
+                try:
+                    with open(self.forecast_file, 'w+') as file:
+                        file.write(forecast_file_result)
+
+                    log.info('Aeris weather data has been updated')
+
+                except Exception:
+                    log.warning('Error writing Aeris data file')
 
         else:
-            log.info('Forecast file generation skipped')
+            log.info('Aeris update skipped')
