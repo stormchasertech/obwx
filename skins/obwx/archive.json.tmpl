@@ -30,7 +30,8 @@
             "mintime": #echo $day.wind.mintime.raw*1000#,
             "windSpd_20minMax": "$span($time_delta=1200).windGust.max.format(add_label=False)",
             "windSpd_20minAvg": "$span($time_delta=1200).windSpeed.avg",
-            "windDir_20minAvg": "$span($time_delta=1200).windDir.avg.ordinal_compass"
+            "windDir_20minAvg": "$span($time_delta=1200).windDir.avg.ordinal_compass",
+            "windVecDir_20minAvg": "$span($time_delta=1200).wind.vecdir.ordinal_compass"
         },
         "barometer": {
             "trend":"$trend.barometer.format(format_string='%.2f',add_label=False)",
