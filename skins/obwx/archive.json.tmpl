@@ -4,7 +4,7 @@
 ## ==== Set some useful variables ====
 #set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
 ## ==== Check if an observation is present ====
-#def test($obs, $val)
+#def setObs($obs, $val)
     #if $val
         "$obs": $val,
     #end if
@@ -19,19 +19,19 @@
         "serveruptime": "$station.os_uptime"
     },
     "current": {
-        $test("UV",$current.UV.raw)
-        $test("appTemp_F", $current.appTemp.raw)
-        $test("barometer_inHg", $current.barometer.raw)
-        $test("dewpoint_F", $current.dewpoint.raw)
-        $test("inHumidity", $current.inHumidity.raw)
-        $test("inTemp_F", $current.inTemp.raw)
-        $test("outTemp_F", $current.outTemp.raw)
-        $test("outHumidity", $current.outHumidity.raw)
-        $test("dayRain_in", $day.rain.sum.raw)
-        $test("rainRate_inch_per_hour", $current.rainRate.raw)
-        $test("windDir", $current.windDir.raw)
-        $test("windGust_mph", $current.windGust.raw)
-        $test("windSpeed_mph", $current.windSpeed.raw)
+        $setObs("UV",$current.UV.raw)
+        $setObs("appTemp_F", $current.appTemp.raw)
+        $setObs("barometer_inHg", $current.barometer.raw)
+        $setObs("dewpoint_F", $current.dewpoint.raw)
+        $setObs("inHumidity", $current.inHumidity.raw)
+        $setObs("inTemp_F", $current.inTemp.raw)
+        $setObs("outTemp_F", $current.outTemp.raw)
+        $setObs("outHumidity", $current.outHumidity.raw)
+        $setObs("dayRain_in", $day.rain.sum.raw)
+        $setObs("rainRate_inch_per_hour", $current.rainRate.raw)
+        $setObs("windDir", $current.windDir.raw)
+        $setObs("windGust_mph", $current.windGust.raw)
+        $setObs("windSpeed_mph", $current.windSpeed.raw)
         "dateTime": $current.dateTime.raw
     },
     "today": {
