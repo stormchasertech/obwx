@@ -1,7 +1,15 @@
 #encoding UTF-8
 #import datetime
 #errorCatcher Echo
+## ==== Set some useful variables ====
 #set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
+## ==== Check if an observation is present ====
+#def test($obs, $val)
+    #if $val
+        "$obs": $val,
+    #end if
+#end def
+## ==== Begin JSON ====
 {
     "timestamp" : #echo $current.dateTime.raw*1000#,
     "station": {
@@ -11,19 +19,20 @@
         "serveruptime": "$station.os_uptime"
     },
     "current": {
-        "UV": "$current.UV",
-        "appTemp": "$current.appTemp",
-        "barometer": "$current.barometer",
-        "dewpoint": "$current.dewpoint",
-        "inHumidity": "$current.inHumidity",
-        "inTemp": "$current.inTemp",
-        "outTemp": "$current.outTemp.format",
-        "outHumidity": "$current.outHumidity",
-        "rain": "$current.rain",
-        "rainRate": "$current.rainRate",
-        "windDir": "$current.windDir",
-        "windGust": "$current.windGust",
-        "windSpeed": "$current.windSpeed"
+        $test("UV",$current.UV.raw)
+        $test("appTemp_F", $current.appTemp.raw)
+        $test("barometer_inHg", $current.barometer.raw)
+        $test("dewpoint_F", $current.dewpoint.raw)
+        $test("inHumidity", $current.inHumidity.raw)
+        $test("inTemp_F", $current.inTemp.raw)
+        $test("outTemp_F", $current.outTemp.raw)
+        $test("outHumidity", $current.outHumidity.raw)
+        $test("dayRain_in", $day.rain.sum.raw)
+        $test("rainRate_inch_per_hour", $current.rainRate.raw)
+        $test("windDir", $current.windDir.raw)
+        $test("windGust_mph", $current.windGust.raw)
+        $test("windSpeed_mph", $current.windSpeed.raw)
+        "dateTime": $current.dateTime.raw
     },
     "today": {
         "outTemp": {
