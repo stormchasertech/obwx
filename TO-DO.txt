@@ -1,50 +1,7 @@
-Problem: My "semi-newbie to bootstrap and CSS" misteps and errors have caught up and 
-    making issues finishing up the site's overall structure.
+Proposed New Features: 
+___ Allow users to change observation types in the 'extras,records' section
 
-Solution: I've shored up my bootstrap and css skills and its time to implement 
-    some cleaner/more optimized html/boostrap with a complete css rewrite (which is a mess).
-
------------------------------------------------------------------------------------------------
-
-Re-bootstrap all sections (Complete)
-  -- Using moblie first thinking, remove the three row sturcture and use wrapping columns instead
-  -- A section can contain one column if it contains a large feature (sun-moon section)
-  -- Or a section can contain multiple columns for smaller separate features (forecast section)     
-
-Re-write CSS (On-Going)
-  -- Start from scratch
-  -- Copy paste most 'css art', some can be optimized with less repeated code
-  -- Use variables for common text-sizes
-
-Re-class
-  -- Remove un-used classes (Complete)
-
------------------------------------------------------------------------------------------------
-
-After major restructuing, place section items in their 'close to final' positions:
-
-Checklist:
-_C_ Header Section
-_C_ Temp Section
-_C_ Wind Section
-_C_ Rain section
-_I_ Records section
-_I_ Metar section
-_C_ Sun-moon section
-_C_ Forecast section
-
-
------------------------------------------------------------------------------------------------
-
-_I_ Need to track changes. Boost github knowledge with respect to branches/merging/etc. (On-Going)
-_C_ Upload this branch (Complete)
-
------------------------------------------------------------------------------------------------
-
-Features and Changes:
-_N_ Allow "inside temp/humid" section data and labels to be changed in skin.conf
+Proposed Changes:
 _I_ Change font size, or capitalization of warning/watches ... currently line wraps on STstormWatch/Warnings
-
-
------------------------------------------------------------------------------------------------
+___ A few sections need margin/padding adjusting for 'mobile' views
 
