@@ -169,7 +169,7 @@ const mqttconnect = function() {
 const updateArcCast = function ( updateTime ) {
     // Fetch archive json data and send it off for processing
     (async function getArchiveData() {
-        const response = await fetch("/archive.json");
+        const response = await fetch("/obwx.json");
         const data = await response.json();
         processArchive(data);
         // triggered when updateTime is not included during site initialization
