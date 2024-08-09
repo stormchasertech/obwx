@@ -1,7 +1,7 @@
 #errorCatcher Echo
 // OBWX - properties and methods used throughout the js file
 const obwx = { 
-    lastUpdate: undefined,
+    lastArchiveUpdate: undefined,
     windDirNeedle: 0,
     windScaleMaxCurrent: undefined,
     windScaleMaxDefault: 20, // Will need a fix for metric units, maybe add to skin.conf
@@ -166,13 +166,19 @@ const mqttconnect = function() {
     client.onConnectionLost = onConnectionLost;
 }
 
-const updateArcCast = function ( updated ) {
+const updateArcCast = function ( updateTime ) {
     // Fetch archive json data and send it off for processing
     (async function getArchiveData() {
-        const response = await fetch("/archive.json");
+        const response = await fetch("/obwx.json");
         const data = await response.json();
         processArchive(data);
+        // triggered when updateTime is not included during site initialization
+        if ( !updateTime ) {
+            // populate page with current observations from database
+            processObservations( data.current );
+        }
     })();
+
     // Fetch forecast json data and send it off for processing
     (async function getForecastData() {
         const response = await fetch("/forecast.json");
@@ -180,7 +186,8 @@ const updateArcCast = function ( updated ) {
         processForecast(data);
     })();
 
-    obwx.lastUpdate = parseFloat(updated)*1000;
+    // Make a note when archive was updated
+    obwx.lastArchiveUpdate = parseFloat(updateTime);
 }
 
 ////////////////////////////////////////////

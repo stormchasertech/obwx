@@ -1,0 +1,13 @@
+#encoding UTF-8
+#errorCatcher Echo
+{
+    "timestamp" : #echo $current.dateTime.raw*1000#
+    ,
+    #include "include-json/station.json.inc"
+    ,
+    #include "include-json/current.json.inc"
+    ,
+    #include "include-json/today.json.inc"
+    ,
+    #include "include-json/almanac.json.inc"
+}

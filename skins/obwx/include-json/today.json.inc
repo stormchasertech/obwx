@@ -1,15 +1,8 @@
 #encoding UTF-8
-#import datetime
 #errorCatcher Echo
-#set $daylight = $almanac.sun.set.raw - $almanac.sun.rise.raw
-{
-    "timestamp" : #echo $current.dateTime.raw*1000#,
-    "station": {
-        "latitude": "$station.stn_info.latitude_f",
-        "longitude": "$station.stn_info.longitude_f",
-        "altitude": "$station.altitude",
-        "serveruptime": "$station.os_uptime"
-    },
+#*
+    Daily Observations and Records JSON data
+*#
     "today": {
         "outTemp": {
             "max": "$day.outTemp.max",
@@ -30,8 +23,7 @@
             "mintime": #echo $day.wind.mintime.raw*1000#,
             "windSpd_20minMax": "$span($time_delta=1200).windGust.max.format(add_label=False)",
             "windSpd_20minAvg": "$span($time_delta=1200).windSpeed.avg",
-            "windDir_20minAvg": "$span($time_delta=1200).windDir.avg.ordinal_compass",
-            "windVecDir_20minAvg": "$span($time_delta=1200).wind.vecdir.ordinal_compass"
+            "windDir_20minAvg": "$span($time_delta=1200).wind.vecdir.ordinal_compass"
         },
         "barometer": {
             "trend":"$trend.barometer.format(format_string='%.2f',add_label=False)",
@@ -51,36 +43,4 @@
                 "year": "$year.rain.sum"
             }
         }
-    },
-    "almanac": {
-        "sun": {
-            "rise": #echo $almanac.sun.rise.raw*1000#,
-            "transit": #echo $almanac.sun.transit.raw*1000#,
-            "set": #echo $almanac.sun.set.raw*1000#,
-            "daylight": $daylight,
-            "antitransit": {
-                "previous": #echo $almanac.sun.previous_antitransit.raw*1000#,
-                "next": #echo $almanac.sun.next_antitransit.raw*1000#
-            }
-        },
-        "moon": {
-            "rise": #echo $almanac.moon.rise.raw*1000#,
-            "set": #echo $almanac.moon.set.raw*1000#,
-            "phase": "$almanac.moon_phase",
-            "percentfull": "$almanac.moon_fullness",
-            "index": "$almanac.moon_index",
-            "antitransit": {
-                "previous": #echo $almanac.moon.previous_antitransit.raw*1000#,
-                "next": #echo $almanac.moon.next_antitransit.raw*1000#
-            },
-            "new": {
-                "previous": #echo $almanac.previous_new_moon.raw*1000#,
-                "next": #echo $almanac.next_new_moon.raw*1000#
-            },
-            "full": {
-                "previous": #echo $almanac.previous_full_moon.raw*1000#,
-                "next": #echo $almanac.next_full_moon.raw*1000#
-            }
-        }
     }
-}
