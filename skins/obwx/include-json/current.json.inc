@@ -5,7 +5,7 @@
 *#
 #def setObs($obs, $val)
   #if $val
-    "$obs": $val,
+  "$obs": $val,
   #end if
 #end def
 #*
